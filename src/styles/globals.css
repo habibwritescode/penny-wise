@@ -2,21 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+/* :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
-}
+} */
 
-@media (prefers-color-scheme: dark) {
+/* @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
   }
-}
+} */
 
-body {
+/* body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(
       to bottom,
@@ -24,7 +24,7 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
-}
+} */
 
 @layer utilities {
   .text-balance {
@@ -32,10 +32,13 @@ body {
   }
 }
 
+
+/* START OF SHADCNUI */
+
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 3.9%;
+    --background: 30, 36%, 96%;
+    --foreground: 177 52% 3.9%;
     --card: 0 0% 100%;
     --card-foreground: 0 0% 3.9%;
     --popover: 0 0% 100%;
@@ -59,6 +62,31 @@ body {
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+
+    /* DESIGN SYSTEM COLOR VARIABLES */
+    --beige-500: 23 6% 57%;
+    --beige-100:  30 36% 96%;
+    --grey-900:  252, 7%, 13%;
+    --grey-500:  0, 0%, 41%;
+    --grey-300:  0, 0%, 70%;
+    --grey-100:  0, 0%, 95%;
+    --green:  177, 52%, 32%;
+    --yellow:  28, 73%, 81%;
+    --cyan:  190, 52%, 68%;
+    --navy:  248, 8%, 41%;
+    --red:  7, 58%, 50%;
+    --purple:  259, 30%, 56%;
+    --pink:  288 29% 62%;
+    --turquoise:  180, 16%, 42%;
+    --brown:  21, 30%, 44%;
+    --magenta:  332, 30%, 44%;
+    --blue:  205, 48%, 47%;
+    --navy-grey:  214, 11%, 63%;
+    --army-green:  83, 20%, 47%;
+    --gold:  47, 50%, 59%; 
+    --orange: 18, 47%, 52%;
+    /* END OF DESIGN SYSTEM COLOR VARIABLES */
+
   }
   .dark {
     --background: 0 0% 3.9%;
