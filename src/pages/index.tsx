@@ -1,118 +1,198 @@
-import Image from "next/image";
+import Typography from "@/components/typography";
 import { Inter } from "next/font/google";
+
+import CaretIcon from "../../public/assets/icons/caret-right.svg";
+import JarIcon from "../../public/assets/icons/jar.svg";
+import Link from "next/link";
+import ExpenseItem from "@/components/expense-item";
+import data from "../../data.json";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import utils from "@/utils";
+import currencyFormatter from "@/utils/formatCurrency";
+import BudgetChart from "@/components/budget-chart";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default function Home() {
+type IContainerCardProps = {
+  title: string;
+  linkTitle?: string;
+  route: string;
+  children: React.ReactElement;
+};
+
+const ContainerCard = ({
+  title,
+  linkTitle = "See Details",
+  route,
+  children,
+}: IContainerCardProps) => {
   return (
-    <main
-      className={`flex min-h-screen flex-col items-center justify-between p-24 ${inter.className}`}
-    >
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/pages/index.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <div className="bg-white p-8 rounded-2xl">
+      <div className="flex justify-between items-center">
+        <Typography tag="h3" variant="preset-2">
+          {title}
+        </Typography>
+
+        <Link href={route} className="flex items-center gap-3">
+          <Typography tag="span" variant="preset-4" className="text-grey-500">
+            {linkTitle}
+          </Typography>
+          <CaretIcon />
+        </Link>
+      </div>
+
+      {children}
+    </div>
+  );
+};
+// HOMEPAGE
+
+export default function Home() {
+  const cardItems = [
+    { title: "Current Balance", value: "$4,836.00" },
+    { title: "Income", value: "$3,814.25" },
+    { title: "Expenses", value: "$1,700.50" },
+  ];
+
+  return (
+    <div className={` ${inter.className} pb-[80px] md:pb-0`}>
+      <Typography tag="h1">Overview</Typography>
+
+      <section className="my-[32px] grid lg:grid-cols-3 gap-6">
+        {cardItems.map((item, index) => {
+          const isFirstItem = index === 0;
+
+          return (
+            <div
+              key={item.title}
+              className={`grid gap-3 p-6 rounded-xl ${isFirstItem ? "bg-grey-900" : "bg-white"}`}
+            >
+              <Typography
+                variant="preset-4"
+                className={isFirstItem ? "text-white" : "text-grey-500"}
+              >
+                {item.title}
+              </Typography>
+              <Typography
+                className={isFirstItem ? "text-white" : "text-grey-900"}
+              >
+                {item.value}
+              </Typography>
+            </div>
+          );
+        })}
+      </section>
+
+      <section className="grid lg:grid-cols-10 gap-6">
+        <section className="lg:col-span-6 w-full grid gap-6">
+          <ContainerCard title="Pots" route="/pots">
+            <div className="grid xl:grid-cols-[247px_1fr] gap-5 mt-5">
+              <div className="bg-beige-100 rounded-xl p-5 flex items-center gap-6">
+                <JarIcon />
+                <div className="grid gap-3">
+                  <Typography variant="preset-4" className="text-grey-500">
+                    Total Saved
+                  </Typography>
+                  <Typography>$850</Typography>
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-4">
+                {data.pots.slice(0, 4).map((item) => (
+                  <ExpenseItem
+                    key={item.name}
+                    title={item.name}
+                    value={currencyFormatter.format(item.total)}
+                    bgColor={item.theme}
+                  />
+                ))}
+              </div>
+            </div>
+          </ContainerCard>
+
+          <ContainerCard
+            title="Transactions"
+            route="/transactions"
+            linkTitle="View All"
           >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+            <ul className="divide-y divide-grey-100">
+              {data.transactions.slice(0, 5).map((item) => (
+                <li key={item.name} className="flex justify-between py-6">
+                  <div className="flex gap-4 items-center">
+                    <Avatar>
+                      <AvatarImage src={item.avatar} alt={item.name} />
+                      <AvatarFallback>CN</AvatarFallback>
+                    </Avatar>
+                    <Typography variant="preset-4-bold">{item.name}</Typography>
+                  </div>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700/10 after:dark:from-sky-900 after:dark:via-[#0141ff]/40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+                  <div className="grid">
+                    <Typography
+                      variant="preset-4-bold"
+                      className={
+                        item.amount > 0 ? "text-green" : "text-grey-900"
+                      }
+                    >
+                      {currencyFormatter.format(item.amount)}
+                    </Typography>
+                    <Typography variant="preset-5" className="text-grey-500">
+                      {utils.formatToLongDate(item.date)}
+                    </Typography>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </ContainerCard>
+        </section>
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+        <section className="lg:col-span-4 grid gap-6">
+          <ContainerCard title="Budgets" route="/budgets">
+            <div className="flex flex-col xl:flex-row mt-14">
+              <BudgetChart />
+              <div className="grid grid-cols-2 xl:grid-cols-1 gap-4">
+                {data.budgets.map((item) => (
+                  <ExpenseItem
+                    key={item.category}
+                    title={item.category}
+                    value={currencyFormatter.format(item.maximum)}
+                    bgColor={item.theme}
+                  />
+                ))}
+              </div>
+            </div>
+          </ContainerCard>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+          <ContainerCard title="Recurring Bills" route="/recurring-bills">
+            <div className="mt-8 grid gap-4">
+              <div className="flex items-center justify-between bg-beige-100 h-[61px] w-full border-l-cyan border-l-4 rounded-lg px-4">
+                <Typography variant="preset-4" className="text-grey-500">
+                  Paid Bills
+                </Typography>
+                <Typography variant="preset-4-bold">
+                  {currencyFormatter.format(100)}
+                </Typography>
+              </div>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Discover and deploy boilerplate example Next.js&nbsp;projects.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+              <div className="flex items-center justify-between bg-beige-100 h-[61px] w-full border-l-cyan border-l-4 rounded-lg px-4">
+                <Typography variant="preset-4" className="text-grey-500">
+                  Paid Bills
+                </Typography>
+                <Typography variant="preset-4-bold">
+                  {currencyFormatter.format(100)}
+                </Typography>
+              </div>
+              <div className="flex items-center justify-between bg-beige-100 h-[61px] w-full border-l-cyan border-l-4 rounded-lg px-4">
+                <Typography variant="preset-4" className="text-grey-500">
+                  Paid Bills
+                </Typography>
+                <Typography variant="preset-4-bold">
+                  {currencyFormatter.format(100)}
+                </Typography>
+              </div>
+            </div>
+          </ContainerCard>
+        </section>
+      </section>
+    </div>
   );
 }

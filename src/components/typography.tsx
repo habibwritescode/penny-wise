@@ -1,6 +1,6 @@
 import React, { FC } from "react";
 
-type TextPreset =
+type ITextVariants =
   | "preset-1"
   | "preset-2"
   | "preset-3"
@@ -9,7 +9,7 @@ type TextPreset =
   | "preset-5"
   | "preset-5-bold";
 
-const textPresets: Record<TextPreset, string> = {
+const textPresets: Record<ITextVariants, string> = {
   "preset-1": "text-[32px] font-bold leading-tight",
   "preset-2": "text-xl font-bold leading-tight",
   "preset-3": "text-base font-bold leading-normal",
@@ -19,22 +19,22 @@ const textPresets: Record<TextPreset, string> = {
   "preset-5-bold": "text-xs font-bold leading-normal",
 };
 
-interface TypographyProps {
-  preset?: TextPreset;
+interface ITypographyProps {
+  variant?: ITextVariants;
   tag?: keyof JSX.IntrinsicElements; // Allows 'div', 'h1', 'p', 'span', etc.
   className?: string; // For additional Tailwind classes
   children: React.ReactNode;
 }
 
-const Typography: FC<TypographyProps> = ({
-  preset = "preset-1",
+const Typography: FC<ITypographyProps> = ({
+  variant = "preset-1",
   tag = "p",
   className = "text-grey-900",
   children,
   ...props
 }) => {
   const Tag = tag;
-  const presetClasses = textPresets[preset];
+  const presetClasses = textPresets[variant];
   const combinedClasses = `${presetClasses} ${className}`;
 
   return (
