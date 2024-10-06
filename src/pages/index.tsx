@@ -37,7 +37,7 @@ const ContainerCard = ({
           <Typography tag="span" variant="preset-4" className="text-grey-500">
             {linkTitle}
           </Typography>
-          <CaretIcon />
+          <CaretIcon className="text-[#696868]" />
         </Link>
       </div>
 
@@ -55,7 +55,7 @@ export default function Home() {
   ];
 
   return (
-    <div className={` ${inter.className} pb-[80px] md:pb-0`}>
+    <div className={` ${inter.className} `}>
       <Typography tag="h1">Overview</Typography>
 
       <section className="my-[32px] grid lg:grid-cols-3 gap-6">
