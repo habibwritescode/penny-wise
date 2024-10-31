@@ -1,4 +1,4 @@
-const utils = {
+const dateTimeFormatter = {
   formatToLongDate: (dateString: string) => {
     if (!dateString) {
       return "";
@@ -17,4 +17,4 @@ const utils = {
   },
 };
 
-export default utils;
+export default dateTimeFormatter;
