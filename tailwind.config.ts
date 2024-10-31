@@ -6,6 +6,7 @@ const config: Config = {
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./src/modules/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
     extend: {
@@ -23,7 +24,7 @@ const config: Config = {
       colors: {
         // DESIGN SYSTEM COLORS
         beige: {
-          500: "hsl(var(--beige-500:))",
+          500: "hsl(var(--beige-500))",
           100: "hsl(var(--beige-100))",
         },
         grey: {
@@ -47,7 +48,7 @@ const config: Config = {
         armygreen: "hsl(var(--army-green))",
         gold: "hsl(var(--gold))",
         orange: "hsl(var(--orange))",
-        // END OF DESIGN SYATEM COLORS
+        // END OF DESIGN SYSTEM COLORS
 
         background: "hsl(var(--background))",
         foreground: "hsl(var(--foreground))",
