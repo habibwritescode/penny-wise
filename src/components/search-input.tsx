@@ -1,4 +1,3 @@
-import React from "react";
 import { Input } from "./ui/input";
 
 import SearchIcon from "../../public/assets/icons/search.svg";

@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import { cn } from "@/lib/utils";
 
 type ITextVariants =
   | "preset-1"
@@ -29,16 +30,16 @@ interface ITypographyProps {
 const Typography: FC<ITypographyProps> = ({
   variant = "preset-1",
   tag = "p",
-  className = "text-grey-900",
+  className,
   children,
   ...props
 }) => {
   const Tag = tag;
   const presetClasses = textPresets[variant];
-  const combinedClasses = `${presetClasses} ${className}`;
+  // const combinedClasses = `${presetClasses} ${className}`;
 
   return (
-    <Tag className={combinedClasses} {...props}>
+    <Tag className={cn("text-grey-900", presetClasses, className)} {...props}>
       {children}
     </Tag>
   );

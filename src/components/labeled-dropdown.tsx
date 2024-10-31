@@ -11,13 +11,13 @@ import {
 } from "@/components/ui/select";
 import Typography from "./typography";
 
-type Options = {
+type Option = {
   name: string;
   value: string;
 };
 
 type Props = {
-  options: Options[];
+  options: Option[];
   label: string;
   onChange: (value: string) => void;
 };

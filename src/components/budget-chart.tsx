@@ -8,7 +8,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-import data from "../../data.json";
+import data from "@/utils/data.json";
 import currencyFormatter from "@/utils/formatCurrency";
 
 const chartData = data.budgets.map((item) => ({

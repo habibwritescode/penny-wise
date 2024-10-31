@@ -1,6 +1,6 @@
 import * as React from "react";
 import * as SelectPrimitive from "@radix-ui/react-select";
-import { Check, ChevronUp } from "lucide-react";
+import { Check } from "lucide-react";
 import CaretIcon from "../../../public/assets/icons/caret-right.svg";
 
 import { cn } from "@/lib/utils";
@@ -43,7 +43,7 @@ const SelectScrollUpButton = React.forwardRef<
     )}
     {...props}
   >
-    <ChevronUp className="h-4 w-4" />
+    <CaretIcon className="h-4 w-4 -rotate-90" />
   </SelectPrimitive.ScrollUpButton>
 ));
 SelectScrollUpButton.displayName = SelectPrimitive.ScrollUpButton.displayName;
