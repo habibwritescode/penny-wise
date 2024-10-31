@@ -1,11 +1,4 @@
-export type ITransaction = {
-  avatar: string;
-  amount: number;
-  name: string;
-  category: string;
-  date: string;
-  recurring: boolean;
-};
+import { ITransaction } from "@/utils/types";
 
 export const SORT_OPTIONS = [
   { name: "Latest", value: "latest" },

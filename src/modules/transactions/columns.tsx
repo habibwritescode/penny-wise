@@ -1,11 +1,11 @@
-import Typography from "@/components/typography";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import utils from "@/utils";
 import currencyFormatter from "@/utils/formatCurrency";
 import { ColumnDef } from "@tanstack/react-table";
-import { ITransaction } from "./utils";
+import { ITransaction } from "@/utils/types";
+import dateTimeFormatter from "@/utils/dateTimeFormatter";
+import Typography from "@/components/typography";
 
-export const columns: ColumnDef<ITransaction>[] = [
+const columns: ColumnDef<ITransaction>[] = [
   {
     accessorKey: "name",
     header: "Recipient/Sender",
@@ -33,7 +33,7 @@ export const columns: ColumnDef<ITransaction>[] = [
     header: "Transaction Date",
     cell: ({ row }) => (
       <Typography variant="preset-5" className="text-grey-500">
-        {utils.formatToLongDate(row.getValue("date"))}
+        {dateTimeFormatter.formatToLongDate(row.getValue("date"))}
       </Typography>
     ),
   },
@@ -55,3 +55,5 @@ export const columns: ColumnDef<ITransaction>[] = [
     },
   },
 ];
+
+export default columns;
