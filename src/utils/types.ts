@@ -18,3 +18,10 @@ export type ICategory =
   | "Bills"
   | "Dining Out"
   | "Personal Care";
+
+export interface IPot {
+  name: string;
+  target: number;
+  total: number;
+  theme: string;
+}
