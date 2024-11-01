@@ -8,7 +8,8 @@ import currencyFormatter from "@/utils/formatCurrency";
 import { IBudget, ITransaction } from "@/utils/types";
 import dateTimeFormatter from "@/utils/dateTimeFormatter";
 
-import ActionDropdown from "../../../components/action-dropdown";
+import ActionDropdown from "@/components/action-dropdown";
+import { Progress } from "@/components/ui/progress";
 import DeleteBudget from "./delete-budget";
 
 type Props = {
@@ -59,7 +60,13 @@ const BudgetCard = ({ budget, items }: Props) => {
           Maximum of {currencyFormatter.format(budget.maximum)}
         </Typography>
 
-        <ProgressBar percentageValue={40} color={budget.theme} />
+        <div className="bg-beige-100 p-1 rounded-[4px]">
+          <Progress
+            value={40}
+            color={budget.theme}
+            className="h-6 rounded-[4px] bg-beige-100"
+          />
+        </div>
 
         <div className="grid grid-cols-2 gap-4 mt-4 mb-5">
           <ExpenseItem

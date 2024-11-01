@@ -1,17 +1,6 @@
-import { useEffect, useState } from "react";
-
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-
-import Modal from "../../../components/modal";
-import { Form } from "../../../components/ui/form";
-import FormInput from "../../../components/form-input";
-import FormSelect from "../../../components/form-select";
-import { Button } from "../../../components/ui/button";
-import { CATEGORIES, COLORS } from "@/utils/constants";
-import data from "@/utils/data.json";
-import Typography from "../../../components/typography";
+import Modal from "@/components/modal";
+import { Button } from "@/components/ui/button";
+import Typography from "@/components/typography";
 import { IBudget } from "@/utils/types";
 
 type Props = {
@@ -34,7 +23,7 @@ const DeleteBudget = ({ isOpen, onClose, budget }: Props) => {
     >
       <>
         <Button
-          className="w-full bg-red"
+          className="w-full bg-red mb-2"
           type="submit"
           variant="destructive"
           size="xl"

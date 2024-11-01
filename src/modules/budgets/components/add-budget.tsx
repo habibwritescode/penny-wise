@@ -1,17 +1,14 @@
-import { useEffect, useState } from "react";
-
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import Modal from "../../../components/modal";
-import { Form } from "../../../components/ui/form";
-import FormInput from "../../../components/form-input";
-import FormSelect from "../../../components/form-select";
-import { Button } from "../../../components/ui/button";
+import Modal from "@/components/modal";
+import { Form } from "@/components/ui/form";
+import FormInput from "@/components/form-input";
+import FormSelect from "@/components/form-select";
+import { Button } from "@/components/ui/button";
 import { CATEGORIES } from "@/utils/constants";
-import data from "@/utils/data.json";
-import THEME_OPTIONS from "../utils/theme-options";
+import THEME_OPTIONS from "@/utils/theme-options";
 
 const CATEGORY_OPTIONS = CATEGORIES.map((item) => ({
   name: item,
@@ -84,7 +81,7 @@ const AddBudget = ({ isOpen, onClose }: Props) => {
             options={THEME_OPTIONS}
           />
 
-          <Button className="w-full" type="submit">
+          <Button className="w-full" size="xl" type="submit">
             Add Budget
           </Button>
         </form>
