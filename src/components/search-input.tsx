@@ -11,11 +11,7 @@ type Props = {
 const SearchInput = ({ placeholder, value, onChange }: Props) => {
   return (
     <div className="max-w-[320px] min-w-max w-full relative">
-      <Input
-        placeholder="Search transactions"
-        value={value}
-        onChange={onChange}
-      />
+      <Input placeholder={placeholder} value={value} onChange={onChange} />
       <SearchIcon className="absolute top-1/2 right-4 transform -translate-y-1/2" />
     </div>
   );
