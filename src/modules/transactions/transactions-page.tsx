@@ -9,10 +9,9 @@ import {
   CATEGORY_OPTIONS,
   CategoryFilter,
   filterAndSortTransactions,
-  SORT_OPTIONS,
-  SortFilter,
 } from "./utils";
 import columns from "./columns";
+import { SORT_OPTIONS, SortFilter } from "@/utils/types";
 
 const TransactionsPage = () => {
   const [searchValue, setSearchValue] = useState("");
@@ -30,7 +29,7 @@ const TransactionsPage = () => {
     <div>
       <Typography tag="h1">Transactions</Typography>
 
-      <div className="mt-10 bg-white p-8">
+      <div className="mt-10 bg-white p-8 rounded-xl">
         <div className="flex justify-between gap-6 mb-6">
           <SearchInput
             placeholder="Search transactions"
@@ -47,7 +46,7 @@ const TransactionsPage = () => {
             <LabeledDropdown
               label="Category"
               options={CATEGORY_OPTIONS}
-              onChange={(value) => setCategoryFilter(value)}
+              onChange={(value) => setCategoryFilter(value as CategoryFilter)}
             />
           </div>
         </div>

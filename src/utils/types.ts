@@ -25,3 +25,20 @@ export interface IPot {
   total: number;
   theme: string;
 }
+
+export const SORT_OPTIONS = [
+  { name: "Latest", value: "latest" },
+  { name: "Oldest", value: "oldest" },
+  { name: "A to Z", value: "ascending" },
+  { name: "Z to A", value: "descending" },
+  { name: "Highest", value: "highest" },
+  { name: "Lowest", value: "lowest" },
+];
+
+export type SortFilter =
+  | "latest"
+  | "oldest"
+  | "descending"
+  | "ascending"
+  | "highest"
+  | "lowest";

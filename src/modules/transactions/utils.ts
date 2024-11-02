@@ -1,13 +1,6 @@
 import { ITransaction } from "@/utils/types";
 
-export const SORT_OPTIONS = [
-  { name: "Latest", value: "latest" },
-  { name: "Oldest", value: "oldest" },
-  { name: "A to Z", value: "ascending" },
-  { name: "Z to A", value: "descending" },
-  { name: "Highest", value: "highest" },
-  { name: "Lowest", value: "lowest" },
-];
+
 
 export const CATEGORY_OPTIONS = [
   { name: "All Transactions", value: "All" },
@@ -19,20 +12,19 @@ export const CATEGORY_OPTIONS = [
   { name: "Personal Care", value: "Personal Care" },
 ];
 
-export type SortFilter =
-  | "latest"
-  | "oldest"
-  | "descending"
-  | "ascending"
-  | "highest"
-  | "lowest";
-
-export type CategoryFilter = (typeof CATEGORY_OPTIONS)[number]["value"];
+export type CategoryFilter =
+  | "All"
+  | "Entertainment"
+  | "Bills"
+  | "Groceries"
+  | "Dining"
+  | "Transportation"
+  | "Personal Care";
 
 type FilterFunctionProps = {
   transactions: ITransaction[];
   sortFilter: string;
-  categoryFilter: string;
+  categoryFilter?: string;
   searchValue: string;
 };
 
