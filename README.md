@@ -1,8 +1,8 @@
 # Pennywise
 
-### Overview
-A brief introduction to what the app does:
-> Pennywise is a personal finance app designed to help users track transactions, manage budgets, organize savings pots, and monitor recurring bills in one place.
+## Overview
+
+Pennywise is a personal finance app designed to help users track transactions, manage budgets, organize savings pots, and monitor recurring bills in one place.
 
 ---
 
@@ -17,7 +17,7 @@ A brief introduction to what the app does:
 
 ## Tech Stack
 
-- **UI**: Nextjs with Typescript
-- **Styling**: Tailwind and Shadcn
+- **UI**: Nextjs plus Typescript
+- **Styling**: Tailwind plus Shadcn
 - **State Management**: Zustand
 - **Other**: React Hook Form, zod
