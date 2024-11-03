@@ -5,7 +5,6 @@ import {
   SelectContent,
   SelectGroup,
   SelectItem,
-  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -38,7 +37,6 @@ export function LabeledDropdown({ options, label, onChange }: Props) {
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>
-            {/* <SelectLabel>Fruits</SelectLabel> */}
             {options?.map((option) => (
               <SelectItem key={option.value} value={option.value}>
                 {option.name}

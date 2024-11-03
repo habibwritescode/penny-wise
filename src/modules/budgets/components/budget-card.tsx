@@ -1,7 +1,6 @@
 import { useMemo, useState } from "react";
 
 import ExpenseItem from "@/components/expense-item";
-import ProgressBar from "@/components/progress-bar";
 import Typography from "@/components/typography";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import currencyFormatter from "@/utils/formatCurrency";

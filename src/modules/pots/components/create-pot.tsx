@@ -1,5 +1,3 @@
-import { useEffect, useState } from "react";
-
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,14 +7,7 @@ import { Form } from "@/components/ui/form";
 import FormInput from "@/components/form-input";
 import FormSelect from "@/components/form-select";
 import { Button } from "@/components/ui/button";
-import { CATEGORIES } from "@/utils/constants";
-import data from "@/utils/data.json";
 import THEME_OPTIONS from "@/utils/theme-options";
-
-const CATEGORY_OPTIONS = CATEGORIES.map((item) => ({
-  name: item,
-  value: item,
-}));
 
 const formSchema = z.object({
   name: z.string().min(1, { message: "Required" }),

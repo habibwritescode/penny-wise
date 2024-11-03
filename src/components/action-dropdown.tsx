@@ -1,5 +1,4 @@
 import * as React from "react";
-import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import MenuIcon from "../../public/assets/icons/dots-horizontal.svg";
 
 import { Button } from "@/components/ui/button";
@@ -7,7 +6,6 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
@@ -40,7 +38,6 @@ const ActionDropdown = ({ items, trigger }: Props) => {
             >
               {item.name}
             </DropdownMenuItem>
-            // <DropdownMenuSeparator />
           ))}
         </DropdownMenuContent>
       </DropdownMenu>

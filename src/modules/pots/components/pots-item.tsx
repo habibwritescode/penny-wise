@@ -1,11 +1,8 @@
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
-import ExpenseItem from "@/components/expense-item";
-import ProgressBar from "@/components/progress-bar";
 import Typography from "@/components/typography";
 import currencyFormatter from "@/utils/formatCurrency";
-import { IPot, ITransaction } from "@/utils/types";
-import dateTimeFormatter from "@/utils/dateTimeFormatter";
+import { IPot } from "@/utils/types";
 
 import ActionDropdown from "@/components/action-dropdown";
 import DeletePot from "./delete-pot";
@@ -91,6 +88,7 @@ const PotsItem = ({ pot }: Props) => {
           >
             + Add Money
           </Button>
+
           <Button
             variant="ghost"
             size="xl"

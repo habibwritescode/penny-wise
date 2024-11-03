@@ -27,6 +27,7 @@ const DeletePot = ({ isOpen, onClose, pot }: Props) => {
           type="submit"
           variant="destructive"
           size="xl"
+          onClick={onSubmit}
         >
           <Typography variant="preset-4-bold" className="text-white">
             Yes, Confirm Deletion

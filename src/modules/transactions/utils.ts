@@ -1,7 +1,5 @@
 import { ITransaction } from "@/utils/types";
 
-
-
 export const CATEGORY_OPTIONS = [
   { name: "All Transactions", value: "All" },
   { name: "Entertainment", value: "Entertainment" },
