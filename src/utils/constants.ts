@@ -8,7 +8,7 @@ export const CATEGORIES = [
   "Education",
   "Lifestyle",
   "Shopping",
-  "Genenral",
+  "General",
 ];
 
 export const COLORS = {

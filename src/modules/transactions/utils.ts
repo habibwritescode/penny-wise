@@ -1,6 +1,6 @@
 import { ITransaction } from "@/utils/types";
 
-export const CATEGORY_OPTIONS = [
+export const CATEGORY_FILTER_OPTIONS = [
   { name: "All Transactions", value: "All" },
   { name: "Entertainment", value: "Entertainment" },
   { name: "Bills", value: "Bills" },
@@ -8,22 +8,30 @@ export const CATEGORY_OPTIONS = [
   { name: "Dining Out", value: "Dining" },
   { name: "Transportation", value: "Transportation" },
   { name: "Personal Care", value: "Personal Care" },
+  { name: "Education", value: "Education" },
+  { name: "Lifestyle", value: "Lifestyle" },
+  { name: "Shopping", value: "Shopping" },
+  { name: "General", value: "General" },
 ];
 
-export type CategoryFilter =
+export type ICategoryFilter =
   | "All"
   | "Entertainment"
   | "Bills"
   | "Groceries"
   | "Dining"
   | "Transportation"
-  | "Personal Care";
+  | "Personal Care"
+  | "Education"
+  | "Lifestyle"
+  | "Shopping"
+  | "General";
 
 type FilterFunctionProps = {
   transactions: ITransaction[];
   sortFilter: string;
   categoryFilter?: string;
-  searchValue: string;
+  searchValue?: string;
 };
 
 export const filterAndSortTransactions = ({

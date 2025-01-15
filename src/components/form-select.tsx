@@ -33,13 +33,16 @@ const FormSelect = ({ control, label, placeholder, options, name }: Props) => {
       control={control}
       name={name}
       render={({ field }) => (
-        <FormItem>
+        <FormItem key={`key${field.value}`}>
           <FormLabel className="text-grey-500">{label}</FormLabel>
 
           <Select onValueChange={field.onChange} defaultValue={field.value}>
+            {/* <Select onValueChange={field.onChange}> */}
             <FormControl>
               <SelectTrigger>
                 <SelectValue placeholder={placeholder} />
+                {/* {field.value || }
+                </SelectValue> */}
               </SelectTrigger>
             </FormControl>
             <SelectContent>

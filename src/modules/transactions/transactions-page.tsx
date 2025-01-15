@@ -2,32 +2,53 @@ import { useState } from "react";
 
 import Typography from "@/components/typography";
 import { DataTable } from "@/components/data-table/data-table";
-import data from "@/utils/data.json";
 import SearchInput from "@/components/search-input";
 import { LabeledDropdown } from "@/components/labeled-dropdown";
 import {
-  CATEGORY_OPTIONS,
-  CategoryFilter,
+  CATEGORY_FILTER_OPTIONS,
+  ICategoryFilter,
   filterAndSortTransactions,
 } from "./utils";
 import columns from "./columns";
 import { SORT_OPTIONS, SortFilter } from "@/utils/types";
+import { Button } from "@/components/ui/button";
+import AddTransaction from "./components/add-transaction";
+import useBoundStore from "@/lib/store/store";
 
 const TransactionsPage = () => {
-  const [searchValue, setSearchValue] = useState("");
-  const [sortFilter, setSortFilter] = useState<SortFilter | "">("");
-  const [categoryFilter, setCategoryFilter] = useState<CategoryFilter | "">("");
+  const transactions = useBoundStore((store) => store.transactions);
 
-  const transactions = filterAndSortTransactions({
-    transactions: data.transactions,
+  const [openModal, setOpenModal] = useState<"add-transaction" | null>(null);
+  const [searchValue, setSearchValue] = useState("");
+  const [sortFilter, setSortFilter] = useState<SortFilter | "">("latest");
+  const [categoryFilter, setCategoryFilter] = useState<ICategoryFilter | "">(
+    "All"
+  );
+
+  const filteredTransactions = filterAndSortTransactions({
+    transactions: transactions,
     sortFilter,
     categoryFilter,
     searchValue,
   });
 
+  const handleCloseModal = () => setOpenModal(null);
+
   return (
     <div>
-      <Typography tag="h1">Transactions</Typography>
+      <div className="flex justify-between items-center">
+        <Typography tag="h1">Transactions</Typography>
+
+        <Button
+          className="rounded-[8px]"
+          size="xl"
+          onClick={() => setOpenModal("add-transaction")}
+        >
+          <Typography tag="span" variant="preset-4-bold" className="text-white">
+            + Add Tranasaction
+          </Typography>
+        </Button>
+      </div>
 
       <div className="mt-10 bg-white p-8 rounded-xl">
         <div className="flex justify-between gap-6 mb-6">
@@ -45,14 +66,19 @@ const TransactionsPage = () => {
             />
             <LabeledDropdown
               label="Category"
-              options={CATEGORY_OPTIONS}
-              onChange={(value) => setCategoryFilter(value as CategoryFilter)}
+              options={CATEGORY_FILTER_OPTIONS}
+              onChange={(value) => setCategoryFilter(value as ICategoryFilter)}
             />
           </div>
         </div>
 
-        <DataTable columns={columns} data={transactions} />
+        <DataTable columns={columns} data={filteredTransactions} />
       </div>
+
+      <AddTransaction
+        isOpen={openModal === "add-transaction"}
+        onClose={handleCloseModal}
+      />
     </div>
   );
 };

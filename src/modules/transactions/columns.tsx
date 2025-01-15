@@ -43,12 +43,14 @@ const columns: ColumnDef<ITransaction>[] = [
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("amount"));
       const formatted = currencyFormatter.format(amount);
+      const isIncome = row.original.type === "Income";
 
       return (
         <Typography
           variant="preset-4-bold"
-          className={`text-right ${amount > 0 ? "text-green" : "text-grey-900"}`}
+          className={`text-right ${isIncome ? "text-green" : "text-grey-900"}`}
         >
+          {isIncome ? "+" : "-"}
           {formatted}
         </Typography>
       );

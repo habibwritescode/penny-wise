@@ -8,7 +8,7 @@ import {
 
 type Props = {
   title: string;
-  description: string;
+  description?: string;
   children: React.ReactElement;
   isOpen: boolean;
   onClose: () => void;
@@ -28,9 +28,11 @@ const Modal = ({ title, description, isOpen, onClose, children }: Props) => {
           <DialogTitle className="text-[32px] font-bold leading-tight text-grey-900">
             {title}
           </DialogTitle>
-          <DialogDescription className="text-grey-500">
-            {description}
-          </DialogDescription>
+          {description && (
+            <DialogDescription className="text-grey-500">
+              {description}
+            </DialogDescription>
+          )}
         </DialogHeader>
         <div>{children}</div>
       </DialogContent>

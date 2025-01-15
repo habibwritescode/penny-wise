@@ -4,13 +4,17 @@ export interface IBudget {
   theme: string;
 }
 
+export type TransactionType = "Income" | "Expense";
+
 export interface ITransaction {
-  avatar: string;
+  id: string;
+  avatar?: string;
   amount: number;
   name: string;
   category: string;
   date: string;
   recurring: boolean;
+  type: TransactionType;
 }
 
 export type ICategory =
