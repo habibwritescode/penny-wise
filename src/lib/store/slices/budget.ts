@@ -7,7 +7,8 @@ type State = {
 };
 
 type Action = {
-  //   createBudget?: (budget: IBudget) => void;
+  createBudget: (budget: IBudget) => void;
+  deleteBudget: (category: string) => void;
 };
 
 export type IBudgetSlice = State & Action;
@@ -21,7 +22,40 @@ const createBudgetSlice: StateCreator<BoundStoreT, [], [], IBudgetSlice> = (
   //   get
 ) => ({
   ...initialState,
-  // createBudget: (item) => set(() => ({ ...item })),
+  createBudget: (values) =>
+    set((state: State) => {
+      const oldItems = state.budgets;
+      const existingItem = oldItems.find(
+        (budget) => budget.category === values.category
+      );
+
+      if (existingItem) {
+        const newItems = oldItems.map((item) => {
+          if (item.category !== values.category) return item;
+
+          return {
+            ...values,
+            maximum: Math.max(item.maximum, values.maximum),
+          };
+        });
+
+        return { budgets: newItems };
+      } else {
+        return {
+          budgets: [...oldItems, values],
+        };
+      }
+    }),
+
+  deleteBudget: (category) =>
+    set((state: State) => {
+      const oldItems = state.budgets;
+      const newItems = oldItems.filter(
+        (budget) => budget.category !== category
+      );
+
+      return { budgets: newItems };
+    }),
 });
 
 export default createBudgetSlice;

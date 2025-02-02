@@ -8,21 +8,38 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart";
 
-import data from "@/utils/data.json";
 import currencyFormatter from "@/utils/formatCurrency";
-
-const chartData = data.budgets.map((item) => ({
-  budget: item.category,
-  amount: item.maximum,
-  fill: item.theme,
-}));
+import useBoundStore from "@/lib/store/store";
 
 const chartConfig = {} satisfies ChartConfig;
 
 const BudgetChart = () => {
+  const allTransactions = useBoundStore((store) => store.transactions);
+  const budgets = useBoundStore((store) => store.budgets);
+
+  const outgoingTransactions = allTransactions.filter(
+    (item) => item.type === "Expense"
+  );
+
+  const createdBudgetCategories = budgets.map((item) => item.category);
+
+  const budgetTransactionsTotal = () => {
+    const total = outgoingTransactions
+      .filter((item) => createdBudgetCategories.includes(item.category))
+      .reduce((acc, curr) => acc + curr.amount, 0);
+
+    return Math.abs(total);
+  };
+
+  const chartData = budgets.map((item) => ({
+    budget: item.category,
+    amount: item.maximum,
+    fill: item.theme,
+  }));
+
   const totalBudgetLimit = useMemo(() => {
     return chartData.reduce((acc, curr) => acc + curr.amount, 0);
-  }, []);
+  }, [chartData]);
 
   return (
     <div className="w-full">
@@ -57,7 +74,7 @@ const BudgetChart = () => {
                         y={viewBox.cy}
                         className="fill-foreground text-xl font-bold"
                       >
-                        {currencyFormatter.format(totalBudgetLimit)}
+                        {currencyFormatter.format(budgetTransactionsTotal())}
                       </tspan>
                       <tspan
                         x={viewBox.cx}

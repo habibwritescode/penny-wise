@@ -9,6 +9,9 @@ import FormSelect from "@/components/form-select";
 import { Button } from "@/components/ui/button";
 import { CATEGORIES } from "@/utils/constants";
 import THEME_OPTIONS from "@/utils/theme-options";
+import useBoundStore from "@/lib/store/store";
+import { IBudget } from "@/utils/types";
+import { useEffect } from "react";
 
 const CATEGORY_OPTIONS = CATEGORIES.map((item) => ({
   name: item,
@@ -17,44 +20,59 @@ const CATEGORY_OPTIONS = CATEGORIES.map((item) => ({
 
 const formSchema = z.object({
   category: z.string().min(1, { message: "Required" }),
-  spend: z.string().min(1, { message: "Required" }),
+  maximum: z.string().min(1, { message: "Required" }),
   theme: z.string().min(1, { message: "Required" }),
 });
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
+  budget?: IBudget;
+  type?: "add" | "edit";
 };
 
-const AddBudget = ({ isOpen, onClose }: Props) => {
+const AddBudget = ({ isOpen, onClose, budget, type }: Props) => {
+  const createBudget = useBoundStore((store) => store.createBudget);
+
+  const isEdit = type === "edit";
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      category: "",
-      spend: "",
-      theme: "",
+      category: budget?.category || "",
+      maximum: budget?.maximum ? String(budget?.maximum) : "",
+      theme: budget?.theme || "",
     },
   });
 
-  // const [isMounted, setIsMounted] = useState(false);
-
-  // useEffect(() => {
-  //   setIsMounted(true);
-  // }, []);
-
-  // if (!isMounted) {
-  //   return null;
-  // }
+  const { reset } = form;
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log("values", values);
+    createBudget({
+      category: values.category,
+      maximum: Number(values.maximum),
+      theme: values.theme,
+    });
+
     onClose();
   };
 
+  useEffect(() => {
+    reset({
+      category: budget?.category || "",
+      maximum: budget?.maximum ? String(budget?.maximum) : "",
+      theme: budget?.theme || "",
+    });
+  }, [budget, reset]);
+
   return (
     <Modal
-      title="Add New Budget"
-      description="Choose a category to set a spending budget. These categories can help you monitor spending."
+      title={isEdit ? "Edit Budget" : "Add New Budget"}
+      description={
+        isEdit
+          ? "As your budgets change, feel free to update your spending limits."
+          : "Choose a category to set a spending budget. These categories can help you monitor spending."
+      }
       isOpen={isOpen}
       onClose={onClose}
     >
@@ -66,9 +84,10 @@ const AddBudget = ({ isOpen, onClose }: Props) => {
             placeholder="Select Category"
             control={form.control}
             options={CATEGORY_OPTIONS}
+            disabled={isEdit}
           />
           <FormInput
-            name="spend"
+            name="maximum"
             placeholder="Maximum Spend"
             label="Maximum Spend"
             control={form.control}
@@ -82,7 +101,7 @@ const AddBudget = ({ isOpen, onClose }: Props) => {
           />
 
           <Button className="w-full" size="xl" type="submit">
-            Add Budget
+            {isEdit ? "Save Changes" : "Add Budget"}
           </Button>
         </form>
       </Form>

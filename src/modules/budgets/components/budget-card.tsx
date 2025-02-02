@@ -10,6 +10,7 @@ import dateTimeFormatter from "@/utils/dateTimeFormatter";
 import ActionDropdown from "@/components/action-dropdown";
 import { Progress } from "@/components/ui/progress";
 import DeleteBudget from "./delete-budget";
+import AddBudget from "./add-budget";
 
 type Props = {
   budget: IBudget;
@@ -17,11 +18,18 @@ type Props = {
 };
 
 const BudgetCard = ({ budget, items }: Props) => {
+  const [openModal, setOpenModal] = useState<"delete" | "edit" | null>(null);
+
   const totalSpent = useMemo(() => {
-    return items.reduce((acc, curr) => acc + curr.amount, 0);
+    const total = items.reduce((acc, curr) => acc + curr.amount, 0);
+
+    return Math.abs(total);
   }, [items]);
 
-  const [openModal, setOpenModal] = useState<"delete" | "edit" | null>(null);
+  const getProgressPercent = (maximum: number, spent: number) => {
+    const percentage = (spent / maximum) * 100;
+    return percentage >= 100 ? 100 : percentage;
+  };
 
   const handleCloseModal = () => {
     setOpenModal(null);
@@ -44,7 +52,7 @@ const BudgetCard = ({ budget, items }: Props) => {
             items={[
               {
                 name: "Edit Budget",
-                onSelect: () => null,
+                onSelect: () => setOpenModal("edit"),
               },
               {
                 name: "Delete Budget",
@@ -61,7 +69,7 @@ const BudgetCard = ({ budget, items }: Props) => {
 
         <div className="bg-beige-100 p-1 rounded-[4px]">
           <Progress
-            value={40}
+            value={getProgressPercent(budget.maximum, totalSpent)}
             color={budget.theme}
             className="h-6 rounded-[4px] bg-beige-100"
           />
@@ -70,14 +78,12 @@ const BudgetCard = ({ budget, items }: Props) => {
         <div className="grid grid-cols-2 gap-4 mt-4 mb-5">
           <ExpenseItem
             title="Spent"
-            value={currencyFormatter.format(Math.abs(totalSpent))}
+            value={currencyFormatter.format(totalSpent)}
             bgColor={budget.theme}
           />
           <ExpenseItem
             title="Remaining"
-            value={currencyFormatter.format(
-              budget.maximum - Math.abs(totalSpent)
-            )}
+            value={currencyFormatter.format(budget.maximum - totalSpent)}
             bgColor="#F8F4F0"
           />
         </div>
@@ -101,9 +107,9 @@ const BudgetCard = ({ budget, items }: Props) => {
                 <div className="grid">
                   <Typography
                     variant="preset-5-bold"
-                    className={item.amount > 0 ? "text-green" : "text-grey-900"}
+                    className={"text-grey-900"}
                   >
-                    {currencyFormatter.format(item.amount)}
+                    -{currencyFormatter.format(item.amount)}
                   </Typography>
                   <Typography variant="preset-5" className="text-grey-500">
                     {dateTimeFormatter.formatToLongDate(item.date)}
@@ -119,6 +125,13 @@ const BudgetCard = ({ budget, items }: Props) => {
         budget={budget}
         isOpen={openModal === "delete"}
         onClose={handleCloseModal}
+      />
+
+      <AddBudget
+        isOpen={openModal === "edit"}
+        onClose={handleCloseModal}
+        budget={budget}
+        type="edit"
       />
     </>
   );

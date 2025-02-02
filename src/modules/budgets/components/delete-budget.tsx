@@ -2,6 +2,7 @@ import Modal from "@/components/modal";
 import { Button } from "@/components/ui/button";
 import Typography from "@/components/typography";
 import { IBudget } from "@/utils/types";
+import useBoundStore from "@/lib/store/store";
 
 type Props = {
   isOpen: boolean;
@@ -10,7 +11,10 @@ type Props = {
 };
 
 const DeleteBudget = ({ isOpen, onClose, budget }: Props) => {
+  const deleteBudget = useBoundStore((store) => store.deleteBudget);
+
   const onSubmit = () => {
+    deleteBudget(budget.category);
     onClose();
   };
 

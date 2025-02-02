@@ -3,34 +3,36 @@ import { Button } from "@/components/ui/button";
 import BudgetChart from "@/components/budget-chart";
 import currencyFormatter from "@/utils/formatCurrency";
 
-import data from "@/utils/data.json";
 import BudgetCard from "../../modules/budgets/components/budget-card";
 import { ICategory, ITransaction } from "@/utils/types";
 import AddBudget from "@/modules/budgets/components/add-budget";
 import { useState } from "react";
-
-const getItems = (category: string) => {
-  const items = data.transactions
-    .filter((item) => item.category === category)
-    .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-
-  return items;
-};
+import useBoundStore from "@/lib/store/store";
 
 const getTotal = (items: ITransaction[] = []) => {
-  const total = items.reduce((acc, curr) => acc + curr.amount, 0);
+  const total = items?.reduce((acc, curr) => acc + curr.amount, 0);
   return Math.abs(total);
 };
 
+type OpenModal = "add-budget" | null;
+
 const BudgetsPage = () => {
-  const categoryItems: Record<ICategory, ITransaction[]> = {
-    Entertainment: getItems("Entertainment"),
-    Bills: getItems("Bills"),
-    "Dining Out": getItems("Dining Out"),
-    "Personal Care": getItems("Personal Care"),
+  const allTransactions = useBoundStore((store) => store.transactions);
+  const budgets = useBoundStore((store) => store.budgets);
+
+  const outgoingTransactions = allTransactions.filter(
+    (item) => item.type === "Expense"
+  );
+
+  const getCategoryItems = (category: string) => {
+    const items = outgoingTransactions
+      .filter((item) => item.category === category)
+      .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+
+    return items;
   };
 
-  const [openModal, setOpenModal] = useState<"add-budget" | null>(null);
+  const [openModal, setOpenModal] = useState<OpenModal>(null);
 
   const handleCloseModal = () => setOpenModal(null);
 
@@ -65,7 +67,7 @@ const BudgetsPage = () => {
               </Typography>
 
               <ul className="mt-2 divide-y divide-grey-100">
-                {data.budgets.map((item) => (
+                {budgets.map((item) => (
                   <li key={item.category} className="flex justify-between py-4">
                     <div className="flex items-center gap-4">
                       <div
@@ -80,7 +82,7 @@ const BudgetsPage = () => {
                     <div className="flex items-center gap-2">
                       <Typography tag="span" variant="preset-3">
                         {currencyFormatter.format(
-                          getTotal(categoryItems[item.category as ICategory])
+                          getTotal(getCategoryItems(item.category as ICategory))
                         )}
                       </Typography>
                       <Typography tag="span" variant="preset-5">
@@ -94,11 +96,11 @@ const BudgetsPage = () => {
           </section>
 
           <section className="w-full col-span-6 grid gap-6">
-            {data.budgets.map((item) => (
+            {budgets.map((item) => (
               <BudgetCard
                 key={item.category}
                 budget={item}
-                items={categoryItems[item.category as ICategory]}
+                items={getCategoryItems(item.category as ICategory)}
               />
             ))}
           </section>
