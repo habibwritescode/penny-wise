@@ -25,9 +25,17 @@ type Props = {
   placeholder: string;
   name: string;
   control: any;
+  disabled?: boolean;
 };
 
-const FormSelect = ({ control, label, placeholder, options, name }: Props) => {
+const FormSelect = ({
+  control,
+  label,
+  placeholder,
+  options,
+  name,
+  disabled,
+}: Props) => {
   return (
     <FormField
       control={control}
@@ -36,7 +44,11 @@ const FormSelect = ({ control, label, placeholder, options, name }: Props) => {
         <FormItem key={`key${field.value}`}>
           <FormLabel className="text-grey-500">{label}</FormLabel>
 
-          <Select onValueChange={field.onChange} defaultValue={field.value}>
+          <Select
+            onValueChange={field.onChange}
+            disabled={disabled}
+            defaultValue={field.value}
+          >
             {/* <Select onValueChange={field.onChange}> */}
             <FormControl>
               <SelectTrigger>
