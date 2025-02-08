@@ -11,6 +11,7 @@ import ActionDropdown from "@/components/action-dropdown";
 import { Progress } from "@/components/ui/progress";
 import DeleteBudget from "./delete-budget";
 import AddBudget from "./add-budget";
+import { calculatePercent } from "@/utils/math";
 
 type Props = {
   budget: IBudget;
@@ -25,11 +26,6 @@ const BudgetCard = ({ budget, items }: Props) => {
 
     return Math.abs(total);
   }, [items]);
-
-  const getProgressPercent = (maximum: number, spent: number) => {
-    const percentage = (spent / maximum) * 100;
-    return percentage >= 100 ? 100 : percentage;
-  };
 
   const handleCloseModal = () => {
     setOpenModal(null);
@@ -69,7 +65,7 @@ const BudgetCard = ({ budget, items }: Props) => {
 
         <div className="bg-beige-100 p-1 rounded-[4px]">
           <Progress
-            value={getProgressPercent(budget.maximum, totalSpent)}
+            value={calculatePercent(budget.maximum, totalSpent)}
             color={budget.theme}
             className="h-6 rounded-[4px] bg-beige-100"
           />
