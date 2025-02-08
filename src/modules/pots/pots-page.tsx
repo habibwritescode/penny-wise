@@ -1,11 +1,13 @@
 import Typography from "@/components/typography";
 import { Button } from "@/components/ui/button";
-import data from "@/utils/data.json";
 import { useState } from "react";
 import PotsItem from "./components/pots-item";
 import CreatePot from "./components/create-pot";
+import useBoundStore from "@/lib/store/store";
 
 const PotsPage = () => {
+  const pots = useBoundStore((store) => store.pots);
+
   const [openModal, setOpenModal] = useState<"add-pot" | null>(null);
 
   const handleCloseModal = () => setOpenModal(null);
@@ -32,7 +34,7 @@ const PotsPage = () => {
         </div>
 
         <section className="grid grid-cols-2 gap-4">
-          {data.pots.map((pot) => (
+          {pots.map((pot) => (
             <PotsItem key={pot.name} pot={pot} />
           ))}
         </section>

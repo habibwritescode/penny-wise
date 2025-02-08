@@ -8,7 +8,9 @@ import ActionDropdown from "@/components/action-dropdown";
 import DeletePot from "./delete-pot";
 import { Progress } from "@/components/ui/progress";
 import { Button } from "@/components/ui/button";
-import WithdrawPot from "./withdraw-pot";
+import { calculatePercent } from "@/utils/math";
+import AddOrWitdrawPot from "./add-or-withdraw";
+import CreatePot from "./create-pot";
 
 type Props = {
   pot: IPot;
@@ -17,11 +19,9 @@ type Props = {
 type ModalType = "delete" | "edit" | "withdraw" | "add" | null;
 
 const PotsItem = ({ pot }: Props) => {
-  // const totalSpent = useMemo(() => {
-  //   return items.reduce((acc, curr) => acc + curr.amount, 0);
-  // }, [items]);
-
   const [openModal, setOpenModal] = useState<ModalType>(null);
+
+  const progressPercent = calculatePercent(pot.total, pot.target);
 
   const handleCloseModal = () => {
     setOpenModal(null);
@@ -44,7 +44,7 @@ const PotsItem = ({ pot }: Props) => {
             items={[
               {
                 name: "Edit Pot",
-                onSelect: () => null,
+                onSelect: () => setOpenModal("edit"),
               },
               {
                 name: "Delete Pot",
@@ -60,19 +60,19 @@ const PotsItem = ({ pot }: Props) => {
             Total Saved
           </Typography>
           <Typography tag="p" variant="preset-1">
-            {currencyFormatter.format(pot.total)}
+            {currencyFormatter.format(pot.total || 0)}
           </Typography>
         </div>
 
         <Progress
-          value={40}
+          value={progressPercent}
           color={pot.theme}
           className="h-2 rounded-[4px] bg-beige-100"
         />
 
         <div className="flex justify-between items-center mt-3 mb-10">
           <Typography tag="p" variant="preset-5" className="text-grey-500">
-            30%
+            {progressPercent.toFixed(2)}%
           </Typography>
           <Typography tag="p" variant="preset-5" className="text-grey-500">
             Target of {currencyFormatter.format(pot.target)}
@@ -106,9 +106,17 @@ const PotsItem = ({ pot }: Props) => {
         onClose={handleCloseModal}
       />
 
-      <WithdrawPot
+      <AddOrWitdrawPot
         pot={pot}
-        isOpen={openModal === "withdraw"}
+        isOpen={openModal === "withdraw" || openModal === "add"}
+        onClose={handleCloseModal}
+        isAdd={openModal === "add"}
+      />
+
+      <CreatePot
+        isEdit
+        pot={pot}
+        isOpen={openModal === "edit"}
         onClose={handleCloseModal}
       />
     </>

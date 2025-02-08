@@ -2,6 +2,7 @@ import Modal from "@/components/modal";
 import { Button } from "@/components/ui/button";
 import Typography from "@/components/typography";
 import { IPot } from "@/utils/types";
+import useBoundStore from "@/lib/store/store";
 
 type Props = {
   isOpen: boolean;
@@ -10,7 +11,10 @@ type Props = {
 };
 
 const DeletePot = ({ isOpen, onClose, pot }: Props) => {
+  const deletePot = useBoundStore((store) => store.deletePot);
+
   const onSubmit = () => {
+    deletePot(pot.name);
     onClose();
   };
 
