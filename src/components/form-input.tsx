@@ -15,6 +15,7 @@ type Props = {
   label: string;
   placeholder: string;
   inputType?: "number" | "text" | "password";
+  disabled?: boolean;
 };
 
 const FormInput = ({
@@ -23,6 +24,7 @@ const FormInput = ({
   label,
   placeholder,
   inputType = "text",
+  disabled,
 }: Props) => {
   const [type, setType] = useState(inputType);
 
@@ -35,7 +37,12 @@ const FormInput = ({
           <FormLabel className="text-grey-500">{label}</FormLabel>
           <FormControl>
             <div className="relative">
-              <Input placeholder={placeholder} {...field} type={type} />
+              <Input
+                placeholder={placeholder}
+                {...field}
+                type={type}
+                disabled={disabled}
+              />
 
               {inputType === "password" && (
                 <div className="absolute top-1/2 right-2 transform -translate-y-1/2">
