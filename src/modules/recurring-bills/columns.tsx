@@ -29,8 +29,8 @@ const columns: ColumnDef<ITransaction>[] = [
     accessorKey: "date",
     header: "Due Date",
     cell: ({ row }) => (
-      <Typography variant="preset-5" className="text-grey-500">
-        {dateTimeFormatter.formatToLongDate(row.getValue("date"))}
+      <Typography variant="preset-5" className="text-green">
+        Monthly-{dateTimeFormatter.getDayOfMonth(row.getValue("date"))}
       </Typography>
     ),
   },
@@ -44,7 +44,7 @@ const columns: ColumnDef<ITransaction>[] = [
       return (
         <Typography
           variant="preset-4-bold"
-          className={`text-right ${amount > 0 ? "text-green" : "text-grey-900"}`}
+          className="text-right text-grey-900"
         >
           {formatted}
         </Typography>

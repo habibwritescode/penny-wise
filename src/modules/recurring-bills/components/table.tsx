@@ -1,17 +1,21 @@
 import { DataTable } from "@/components/data-table/data-table";
 import { LabeledDropdown } from "@/components/labeled-dropdown";
 import SearchInput from "@/components/search-input";
-import data from "@/utils/data.json";
 import { SORT_OPTIONS, SortFilter } from "@/utils/types";
 import { useState } from "react";
 import columns from "../columns";
 import { filterAndSortTransactions } from "../../transactions/utils";
+import useBoundStore from "@/lib/store/store";
 
 const RecurringBillsTable = () => {
+  const allTransactions = useBoundStore((store) => store.transactions);
+
   const [searchValue, setSearchValue] = useState("");
   const [sortFilter, setSortFilter] = useState<SortFilter | "">("");
 
-  const recurringBills = data.transactions.filter((item) => item.recurring);
+  const recurringBills = allTransactions.filter(
+    (item) => item.recurring && item.type === "Expense"
+  );
 
   const transactions = filterAndSortTransactions({
     transactions: recurringBills,
