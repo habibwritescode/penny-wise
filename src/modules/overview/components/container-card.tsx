@@ -19,7 +19,7 @@ const ContainerCard = ({
   return (
     <div className="bg-white p-8 rounded-2xl">
       <div className="flex justify-between items-center">
-        <Typography tag="h3" variant="preset-2">
+        <Typography tag="h2" variant="preset-2">
           {title}
         </Typography>
 
