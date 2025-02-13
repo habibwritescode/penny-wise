@@ -14,7 +14,18 @@ type Action = {
 export type IBudgetSlice = State & Action;
 
 export const initialState = {
-  budgets: [],
+  budgets: [
+    {
+      category: "Entertainment",
+      maximum: 50.0,
+      theme: "#277C78",
+    },
+    {
+      category: "Bills",
+      maximum: 750.0,
+      theme: "#82C9D7",
+    },
+  ],
 };
 
 const createBudgetSlice: StateCreator<BoundStoreT, [], [], IBudgetSlice> = (

@@ -15,7 +15,20 @@ type Action = {
 export type IPotSlice = State & Action;
 
 export const initialState = {
-  pots: [],
+  pots: [
+    {
+      name: "Savings",
+      target: 2000.0,
+      total: 159.0,
+      theme: "#277C78",
+    },
+    {
+      name: "Concert Ticket",
+      target: 150.0,
+      total: 110.0,
+      theme: "#626070",
+    },
+  ],
 };
 
 const createPotSlice: StateCreator<BoundStoreT, [], [], IPotSlice> = (
