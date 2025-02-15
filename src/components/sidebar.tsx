@@ -78,9 +78,12 @@ const Sidebar = ({ isExpanded, setIsExpanded }: Props) => {
           return (
             <li
               key={item.title}
-              className={`${isActive ? "bg-background border-l-green border-l-4" : "border-l-transparent"} group border-l-4 text-green flex ${isExpanded ? "pl-9" : "justify-center"} h-14 cursor-pointer rounded-r-lg`}
+              className={`${isActive ? "bg-background border-l-green border-l-4" : "border-l-transparent"} group border-l-4 text-green flex ${isExpanded ? "pl-9" : "pl-3 "} h-14 cursor-pointer rounded-r-lg`}
             >
-              <Link href={item.route} className="flex items-center gap-5">
+              <Link
+                href={item.route}
+                className="flex items-center gap-5 w-full"
+              >
                 <item.icon
                   className={` ${isActive ? "text-green" : "text-[#B3B3B3] group-hover:text-grey-100"}`}
                 />

@@ -13,17 +13,19 @@ const TotalBills = () => {
   const totalBills = recurringBills.reduce((sum, transaction) => {
     return sum + transaction.amount;
   }, 0);
+
   return (
-    <div className="bg-primary p-6 rounded-xl">
+    <div className="bg-primary p-6 rounded-xl flex gap-5 items-center sm:flex-col sm:gap-8 sm:items-start">
       <WavyIcon />
+      <div>
+        <Typography tag="p" variant="preset-4" className="mb-3 text-white">
+          Total Bills
+        </Typography>
 
-      <Typography tag="p" variant="preset-4" className="mt-8 mb-3 text-white">
-        Total Bills
-      </Typography>
-
-      <Typography tag="p" className="text-white">
-        {currencyFormatter.format(totalBills)}
-      </Typography>
+        <Typography tag="p" className="text-white">
+          {currencyFormatter.format(totalBills)}
+        </Typography>
+      </div>
     </div>
   );
 };
