@@ -25,11 +25,11 @@ const Modal = ({ title, description, isOpen, onClose, children }: Props) => {
     <Dialog open={isOpen} onOpenChange={onChange}>
       <DialogContent className="max-w-[335px] md:max-w-[560px]">
         <DialogHeader>
-          <DialogTitle className="text-[32px] font-bold leading-tight text-grey-900">
+          <DialogTitle className="text-left text-[32px] font-bold leading-tight text-grey-900">
             {title}
           </DialogTitle>
           {description && (
-            <DialogDescription className="text-grey-500">
+            <DialogDescription className="text-left text-grey-500">
               {description}
             </DialogDescription>
           )}

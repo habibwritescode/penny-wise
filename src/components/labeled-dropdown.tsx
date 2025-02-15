@@ -19,21 +19,25 @@ type Props = {
   options: Option[];
   label: string;
   onChange: (value: string) => void;
+  icon: React.ReactElement;
 };
 
-export function LabeledDropdown({ options, label, onChange }: Props) {
+export function LabeledDropdown({ options, label, onChange, icon }: Props) {
   return (
     <div className="flex gap-2 items-center">
       <Typography
         variant="preset-4"
-        className="text-grey-500 min-w-fit"
+        className="text-grey-500 min-w-fit hidden md:block"
         tag="label"
       >
         {label}
       </Typography>
       <Select onValueChange={onChange} defaultValue={options[0].value}>
-        <SelectTrigger className="gap-4">
-          <SelectValue placeholder={options[0].name} />
+        <SelectTrigger className="gap-4 border-0 md:border">
+          <div className="hidden md:block">
+            <SelectValue placeholder={options[0].name} />
+          </div>
+          <div className="md:hidden">{icon}</div>
         </SelectTrigger>
         <SelectContent>
           <SelectGroup>

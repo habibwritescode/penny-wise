@@ -8,7 +8,7 @@ import createTransactionSlice, {
 } from "@/lib/store/slices/transaction";
 
 export type BoundStoreT = ITransactionSlice &
-  IBudgetSlice &
+  IBudgetSlice & 
   IAuthSlice &
   IPotSlice;
 

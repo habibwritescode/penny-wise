@@ -6,6 +6,7 @@ import { useState } from "react";
 import columns from "../columns";
 import { filterAndSortTransactions } from "../../transactions/utils";
 import useBoundStore from "@/lib/store/store";
+import FilterIcon from "../../../../public/assets/icons/filter.svg";
 
 const RecurringBillsTable = () => {
   const allTransactions = useBoundStore((store) => store.transactions);
@@ -25,7 +26,7 @@ const RecurringBillsTable = () => {
 
   return (
     <div className="bg-white p-8 rounded-xl">
-      <div className="flex justify-between gap-6 mb-6">
+      <div className="flex justify-between gap-6 -mb-4 md:mb-6">
         <SearchInput
           placeholder="Search bills"
           value={searchValue}
@@ -37,6 +38,7 @@ const RecurringBillsTable = () => {
             label="Sort by"
             options={SORT_OPTIONS}
             onChange={(value) => setSortFilter(value as SortFilter)}
+            icon={<FilterIcon />}
           />
         </div>
       </div>

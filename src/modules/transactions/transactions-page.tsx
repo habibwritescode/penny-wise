@@ -14,6 +14,8 @@ import { SORT_OPTIONS, SortFilter } from "@/utils/types";
 import { Button } from "@/components/ui/button";
 import AddTransaction from "./components/add-transaction";
 import useBoundStore from "@/lib/store/store";
+import SortIcon from "../../../public/assets/icons/sort.svg";
+import FilterIcon from "../../../public/assets/icons/filter.svg";
 
 const TransactionsPage = () => {
   const transactions = useBoundStore((store) => store.transactions);
@@ -51,7 +53,7 @@ const TransactionsPage = () => {
       </div>
 
       <div className="mt-10 bg-white p-8 rounded-xl">
-        <div className="flex justify-between gap-6 mb-6">
+        <div className="flex justify-between gap-6 -mb-4 md:mb-6">
           <SearchInput
             placeholder="Search transactions"
             value={searchValue}
@@ -63,11 +65,13 @@ const TransactionsPage = () => {
               label="Sort by"
               options={SORT_OPTIONS}
               onChange={(value) => setSortFilter(value as SortFilter)}
+              icon={<SortIcon />}
             />
             <LabeledDropdown
               label="Category"
               options={CATEGORY_FILTER_OPTIONS}
               onChange={(value) => setCategoryFilter(value as ICategoryFilter)}
+              icon={<FilterIcon />}
             />
           </div>
         </div>

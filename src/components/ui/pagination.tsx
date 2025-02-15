@@ -79,7 +79,7 @@ const PaginationPrevious = ({
     {...props}
   >
     <CaretIcon className="rotate-180 text-grey-500" />
-    <Typography tag="span" variant="preset-4">
+    <Typography tag="span" variant="preset-4" className="hidden md:block">
       Prev
     </Typography>
   </PaginationLink>
@@ -99,7 +99,7 @@ const PaginationNext = ({
     )}
     {...props}
   >
-    <Typography tag="span" variant="preset-4">
+    <Typography tag="span" variant="preset-4" className="hidden md:block">
       Next
     </Typography>
     <CaretIcon className="text-grey-500" />

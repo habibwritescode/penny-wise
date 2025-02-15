@@ -12,7 +12,7 @@ const Layout = ({ children }: { children: React.ReactElement }) => {
         setIsExpanded={setIsSidebarExpanded}
       />
       <main
-        className={`${isSidebarExpanded ? "md:ml-[300px]" : "md:ml-[88px]"} w-full min-h-screen p-4 sm:p-10 pb-[80px] md:pb-0`}
+        className={`${isSidebarExpanded ? "md:ml-[300px]" : "md:ml-[88px]"} w-full min-h-screen p-4 sm:p-10 mb-[80px]`}
       >
         <div className="max-w-[1140px]">{children}</div>
       </main>

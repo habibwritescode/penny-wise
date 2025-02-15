@@ -9,13 +9,13 @@ const RecurringBillsPage = () => {
       <div className="pb-8">
         <Typography tag="h1">Recurring Bills</Typography>
 
-        <section className="grid grid-cols-10 gap-6 mt-10">
-          <div className="space-y-6 col-span-3">
+        <section className="grid gap-6 mt-10 lg:grid-cols-10">
+          <div className=" grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-1 lg:gap-0 lg:space-y-6 lg:col-span-3">
             <TotalBills />
             <BillsSummary />
           </div>
 
-          <div className="col-span-7">
+          <div className="lg:col-span-7">
             <RecurringBillsTable />
           </div>
         </section>

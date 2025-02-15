@@ -66,7 +66,7 @@ const OverviewPage = () => {
       </section>
 
       <section className="grid lg:grid-cols-10 gap-6">
-        <section className="lg:col-span-6 w-full grid gap-6">
+        <section className="lg:col-span-6 w-full grid gap-6 auto-rows-min">
           <Pots />
           <Transactions />
         </section>

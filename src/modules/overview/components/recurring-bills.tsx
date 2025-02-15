@@ -32,7 +32,7 @@ const RecurringBills = () => {
             className="flex items-center justify-between bg-beige-100 h-[61px] w-full border-l-4 rounded-lg px-4"
           >
             <Typography variant="preset-4" className="text-grey-500">
-              Paid Bills
+              {item.title}
             </Typography>
             <Typography variant="preset-4-bold">
               {currencyFormatter.format(item.amount)}

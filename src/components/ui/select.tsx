@@ -25,7 +25,7 @@ const SelectTrigger = React.forwardRef<
   >
     {children}
     <SelectPrimitive.Icon asChild>
-      <CaretIcon className="h-4 w-4 rotate-90 text-black" />
+      <CaretIcon className="h-4 w-4 hidden md:block rotate-90 text-black" />
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
 ));

@@ -33,7 +33,7 @@ const PotsPage = () => {
           </Button>
         </div>
 
-        <section className="grid grid-cols-2 gap-4">
+        <section className="grid md:grid-cols-2 gap-4">
           {pots.map((pot) => (
             <PotsItem key={pot.name} pot={pot} />
           ))}
