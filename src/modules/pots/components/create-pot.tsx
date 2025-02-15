@@ -7,10 +7,10 @@ import { Form } from "@/components/ui/form";
 import FormInput from "@/components/form-input";
 import FormSelect from "@/components/form-select";
 import { Button } from "@/components/ui/button";
-import THEME_OPTIONS from "@/utils/theme-options";
 import useBoundStore from "@/lib/store/store";
 import { useEffect, useMemo } from "react";
 import { IPot } from "@/utils/types";
+import getThemeOptions from "@/utils/theme-options";
 
 const formSchema = z.object({
   name: z.string().min(1, { message: "Required" }),
@@ -26,7 +26,10 @@ type Props = {
 };
 
 const CreatePot = ({ isOpen, onClose, isEdit, pot }: Props) => {
+  const pots = useBoundStore((store) => store.pots);
   const createPot = useBoundStore((store) => store.createPot);
+
+  const themeOptions = useMemo(() => getThemeOptions(pots), [pots]);
 
   const defaultValues = useMemo(() => {
     return {
@@ -91,7 +94,7 @@ const CreatePot = ({ isOpen, onClose, isEdit, pot }: Props) => {
             label="Theme"
             placeholder="Theme"
             control={form.control}
-            options={THEME_OPTIONS}
+            options={themeOptions}
           />
 
           <Button className="w-full" size="xl" type="submit">

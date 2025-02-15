@@ -59,7 +59,11 @@ const FormSelect = ({
             </FormControl>
             <SelectContent>
               {options?.map((option) => (
-                <SelectItem key={option.value} value={option.value}>
+                <SelectItem
+                  key={option.value}
+                  value={option.value}
+                  className="grid grid-cols-1"
+                >
                   {option.name}
                 </SelectItem>
               ))}

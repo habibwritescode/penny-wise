@@ -8,10 +8,10 @@ import FormInput from "@/components/form-input";
 import FormSelect from "@/components/form-select";
 import { Button } from "@/components/ui/button";
 import { CATEGORIES } from "@/utils/constants";
-import THEME_OPTIONS from "@/utils/theme-options";
 import useBoundStore from "@/lib/store/store";
 import { IBudget } from "@/utils/types";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
+import getThemeOptions from "@/utils/theme-options";
 
 const CATEGORY_OPTIONS = CATEGORIES.map((item) => ({
   name: item,
@@ -33,8 +33,11 @@ type Props = {
 
 const AddBudget = ({ isOpen, onClose, budget, type }: Props) => {
   const createBudget = useBoundStore((store) => store.createBudget);
+  const budgets = useBoundStore((store) => store.budgets);
 
   const isEdit = type === "edit";
+
+  const themeOptions = useMemo(() => getThemeOptions(budgets), [budgets]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -97,7 +100,7 @@ const AddBudget = ({ isOpen, onClose, budget, type }: Props) => {
             label="Theme"
             placeholder="Theme"
             control={form.control}
-            options={THEME_OPTIONS}
+            options={themeOptions}
           />
 
           <Button className="w-full" size="xl" type="submit">
