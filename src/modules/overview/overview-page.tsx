@@ -1,5 +1,4 @@
 import Typography from "@/components/typography";
-import { Inter } from "next/font/google";
 
 import Pots from "./components/pots";
 import Transactions from "./components/transactions";
@@ -8,8 +7,6 @@ import RecurringBills from "./components/recurring-bills";
 import useBoundStore from "@/lib/store/store";
 import currencyFormatter from "@/utils/formatCurrency";
 import { ITransaction, TransactionType } from "@/utils/types";
-
-const inter = Inter({ subsets: ["latin"] });
 
 // HOMEPAGE
 
@@ -35,7 +32,7 @@ const OverviewPage = () => {
   ];
 
   return (
-    <div className={` ${inter.className} `}>
+    <div>
       <div className="flex justify-between items-center">
         <Typography tag="h1">Overview</Typography>
       </div>
