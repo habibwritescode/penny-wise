@@ -13,7 +13,7 @@ const Budget = () => {
       <div className="flex flex-col xl:flex-row mt-14">
         <BudgetChart />
         <div className="grid grid-cols-2 xl:grid-cols-1 gap-4">
-          {budgets.map((item) => (
+          {budgets.slice(0, 4).map((item) => (
             <ExpenseItem
               key={item.category}
               title={item.category}
