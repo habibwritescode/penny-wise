@@ -65,7 +65,7 @@ const BudgetCard = ({ budget, items }: Props) => {
 
         <div className="bg-beige-100 p-1 rounded-[4px]">
           <Progress
-            value={calculatePercent(budget.maximum, totalSpent)}
+            value={calculatePercent(totalSpent, budget.maximum)}
             color={budget.theme}
             className="h-6 rounded-[4px] bg-beige-100"
           />
