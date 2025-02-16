@@ -55,6 +55,11 @@ const AddTransaction = ({ isOpen, onClose }: Props) => {
     },
   });
 
+  const handleClose = () => {
+    form.reset();
+    onClose();
+  };
+
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     createTransaction({
       id: crypto.randomUUID(),
@@ -67,8 +72,7 @@ const AddTransaction = ({ isOpen, onClose }: Props) => {
       recurring: values.recurring,
     });
 
-    form.reset();
-    onClose();
+    handleClose();
   };
 
   return (
@@ -76,7 +80,7 @@ const AddTransaction = ({ isOpen, onClose }: Props) => {
       title="Add Transaction"
       description="Record your transaction"
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleClose}
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

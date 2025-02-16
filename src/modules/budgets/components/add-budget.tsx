@@ -50,6 +50,11 @@ const AddBudget = ({ isOpen, onClose, budget, type }: Props) => {
 
   const { reset } = form;
 
+  const handleClose = () => {
+    reset();
+    onClose();
+  };
+
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     createBudget({
       category: values.category,
@@ -57,7 +62,7 @@ const AddBudget = ({ isOpen, onClose, budget, type }: Props) => {
       theme: values.theme,
     });
 
-    onClose();
+    handleClose();
   };
 
   useEffect(() => {
@@ -77,7 +82,7 @@ const AddBudget = ({ isOpen, onClose, budget, type }: Props) => {
           : "Choose a category to set a spending budget. These categories can help you monitor spending."
       }
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleClose}
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">

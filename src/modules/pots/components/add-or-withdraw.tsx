@@ -41,6 +41,11 @@ const AddOrWitdrawPot = ({ pot, isOpen, onClose, isAdd }: Props) => {
     : pot.total - Number(amountInput || 0);
   const newPercent = calculatePercent(newTotal, pot.target);
 
+  const handleClose = () => {
+    reset();
+    onClose();
+  };
+
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     if (newTotal < 0) {
       setError("amount", {
@@ -52,8 +57,7 @@ const AddOrWitdrawPot = ({ pot, isOpen, onClose, isAdd }: Props) => {
 
     updatePotTotal(newTotal, pot.name);
 
-    reset();
-    onClose();
+    handleClose();
   };
 
   return (
@@ -61,7 +65,7 @@ const AddOrWitdrawPot = ({ pot, isOpen, onClose, isAdd }: Props) => {
       title={`${isAdd ? "Add to" : "Withdraw from"} '${pot.name}'`}
       description={isAdd ? "Increase your pot amount." : "Withdraw from pot."}
       isOpen={isOpen}
-      onClose={onClose}
+      onClose={handleClose}
     >
       <>
         <div className="flex justify-between items-center mb-4">
