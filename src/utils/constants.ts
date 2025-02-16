@@ -11,7 +11,7 @@ export const CATEGORIES = [
   "General",
 ];
 
-export const COLORS = {
+export const COLOURS = {
   Green: "#277C78",
   Yellow: "#F2CDAC",
   Cyan: "#82C9D7",

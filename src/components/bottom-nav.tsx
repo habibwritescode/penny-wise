@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Typography from "./typography";
-import { navItems } from "./sidebar";
+import { navItems } from "./sidebar-nav-list";
 
 const BottomNav = () => {
   const router = useRouter();
