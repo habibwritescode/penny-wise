@@ -1,13 +1,16 @@
 import Typography from "@/components/typography";
+import { COLOURS } from "@/utils/constants";
 
-import { COLORS } from "@/utils/constants";
-
-type ColorKey = keyof typeof COLORS;
+type ColourKey = keyof typeof COLOURS;
 
 const getThemeOptions = (list: any[]) => {
-  const options = Object.keys(COLORS).map((item) => {
-    const colorVariable = item.toLowerCase().replace(" ", "-");
-    const inUseColors = list.map((item) => item.theme);
+  const colourNames = Object.keys(COLOURS) as ColourKey[];
+  const inUseColors = list.map((item) => item.theme);
+
+  const options = colourNames.map((colorName) => {
+    const colorNameVariable = colorName.toLowerCase().replace(" ", "-");
+    const colorHex = COLOURS[colorName];
+    const isUsed = inUseColors.includes(colorHex);
 
     return {
       name: (
@@ -15,15 +18,15 @@ const getThemeOptions = (list: any[]) => {
           <div className="flex gap-3 items-center">
             <span
               className="h-4 w-4 rounded-full"
-              style={{ backgroundColor: `hsl(var(--${colorVariable}))` }}
+              style={{ backgroundColor: `hsl(var(--${colorNameVariable}))` }}
             />
             <Typography tag="span" variant="preset-4" className="text-grey-500">
-              {item}
+              {colorName}
             </Typography>
           </div>
 
           <div>
-            {inUseColors.includes(COLORS[item as ColorKey]) && (
+            {isUsed && (
               <Typography
                 tag="span"
                 variant="preset-5"
@@ -35,7 +38,8 @@ const getThemeOptions = (list: any[]) => {
           </div>
         </div>
       ),
-      value: item,
+      // value: colorName,
+      value: colorHex,
     };
   });
 

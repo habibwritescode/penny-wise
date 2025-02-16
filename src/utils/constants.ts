@@ -23,6 +23,6 @@ export const COLOURS = {
   Magenta: "#934F6F",
   Blue: "#3F82B2",
   "Navy Grey": "#97A0AC",
-  "Army Green": "#97A0AC",
+  "Army Green": "#7F9161",
   Pink: "#BE6C49",
 } as const;
