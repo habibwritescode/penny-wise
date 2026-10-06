@@ -20,9 +20,8 @@ const LoginForm = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log("values", values);
-  };
+  // TODO: submit to the auth API once it exists. Never log credentials.
+  const onSubmit = () => {};
 
   return (
     <Form {...form}>
