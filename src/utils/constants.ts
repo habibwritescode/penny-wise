@@ -26,3 +26,5 @@ export const COLOURS = {
   "Army Green": "#7F9161",
   Pink: "#BE6C49",
 } as const;
+
+export const SIDEBAR_TRANSITION = "transition-all duration-500 ease-in-out";

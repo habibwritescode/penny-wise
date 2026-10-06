@@ -1,5 +1,5 @@
-
 import { cn } from "@/lib/utils";
+import { SIDEBAR_TRANSITION } from "@/utils/constants";
 
 import ArrowIcon from "../../public/assets/icons/arrow-minimize.svg";
 import Typography from "./typography";
@@ -7,14 +7,16 @@ import Typography from "./typography";
 interface Props {
   isExpanded: boolean;
   handleToggle: () => void;
-  transitionClasses: string;
 }
 
-const SidebarFooter = ({ isExpanded, handleToggle, transitionClasses }: Props) => {
+const SidebarFooter = ({ isExpanded, handleToggle }: Props) => {
   return (
-    <div
-      className="absolute bottom-20 cursor-pointer w-full group"
+    <button
+      type="button"
+      className="absolute bottom-20 w-full group"
       onClick={handleToggle}
+      aria-expanded={isExpanded}
+      aria-label={isExpanded ? "Minimize menu" : "Expand menu"}
     >
       <div
         className={cn(
@@ -26,21 +28,21 @@ const SidebarFooter = ({ isExpanded, handleToggle, transitionClasses }: Props) =
           className={cn(
             "text-[#B3B3B3] group-hover:text-grey-100",
             !isExpanded && "-rotate-180",
-            transitionClasses
+            SIDEBAR_TRANSITION
           )}
         />
         <Typography
           variant="preset-3"
           className={cn(
-            "text-grey-500 group-hover:text-grey-100",
+            "overflow-hidden whitespace-nowrap text-grey-500 group-hover:text-grey-100",
             isExpanded ? "opacity-100 max-w-[200px]" : "opacity-0 max-w-0",
-            transitionClasses
+            SIDEBAR_TRANSITION
           )}
         >
           Minimize Menu
         </Typography>
       </div>
-    </div>
+    </button>
   );
 };
 
