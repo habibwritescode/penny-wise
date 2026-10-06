@@ -6,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
   FormControl,
-  //   FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -63,9 +62,6 @@ const DatePicker = ({ control, name, label }: Props) => {
               />
             </PopoverContent>
           </Popover>
-          {/* <FormDescription>
-            Your date of birth is used to calculate your age.
-          </FormDescription> */}
           <FormMessage />
         </FormItem>
       )}

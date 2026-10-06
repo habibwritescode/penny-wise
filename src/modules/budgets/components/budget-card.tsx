@@ -2,6 +2,7 @@ import { useMemo, useState } from "react";
 
 import ExpenseItem from "@/components/expense-item";
 import Typography from "@/components/typography";
+import getInitials from "@/utils/getInitials";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import currencyFormatter from "@/utils/formatCurrency";
 import { IBudget, ITransaction } from "@/utils/types";
@@ -79,7 +80,9 @@ const BudgetCard = ({ budget, items }: Props) => {
           />
           <ExpenseItem
             title="Remaining"
-            value={currencyFormatter.format(budget.maximum - totalSpent)}
+            value={currencyFormatter.format(
+              Math.max(budget.maximum - totalSpent, 0)
+            )}
             bgColor="#F8F4F0"
           />
         </div>
@@ -90,12 +93,12 @@ const BudgetCard = ({ budget, items }: Props) => {
           </Typography>
 
           <ul className="divide-y divide-[#d3d1d1]">
-            {items.slice(0, 3).map((item, index) => (
-              <li key={item.name + index} className="flex justify-between py-4">
+            {items.slice(0, 3).map((item) => (
+              <li key={item.id} className="flex justify-between py-4">
                 <div className="flex gap-4 items-center">
                   <Avatar>
                     <AvatarImage src={item.avatar} alt={item.name} />
-                    <AvatarFallback>CN</AvatarFallback>
+                    <AvatarFallback>{getInitials(item.name)}</AvatarFallback>
                   </Avatar>
                   <Typography variant="preset-4-bold">{item.name}</Typography>
                 </div>

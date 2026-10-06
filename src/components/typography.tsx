@@ -36,7 +36,6 @@ const Typography: FC<ITypographyProps> = ({
 }) => {
   const Tag = tag;
   const presetClasses = textPresets[variant];
-  // const combinedClasses = `${presetClasses} ${className}`;
 
   return (
     <Tag className={cn("text-grey-900", presetClasses, className)} {...props}>

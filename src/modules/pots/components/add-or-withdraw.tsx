@@ -88,7 +88,11 @@ const AddOrWitdrawPot = ({ pot, isOpen, onClose, isAdd }: Props) => {
         </div>
 
         <div className="flex justify-between items-center mt-3 mb-7">
-          <Typography tag="p" variant="preset-5" className="text-red">
+          <Typography
+            tag="p"
+            variant="preset-5"
+            className={isAdd ? "text-green" : "text-red"}
+          >
             {Math.abs(newPercent).toFixed(2)}%
           </Typography>
           <Typography tag="p" variant="preset-5" className="text-grey-500">

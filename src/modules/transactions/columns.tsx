@@ -4,6 +4,7 @@ import { ColumnDef } from "@tanstack/react-table";
 import { ITransaction } from "@/utils/types";
 import dateTimeFormatter from "@/utils/dateTimeFormatter";
 import Typography from "@/components/typography";
+import getInitials from "@/utils/getInitials";
 
 const columns: ColumnDef<ITransaction>[] = [
   {
@@ -18,7 +19,7 @@ const columns: ColumnDef<ITransaction>[] = [
         <div className="flex gap-4 items-center">
           <Avatar>
             <AvatarImage src={avatarSrc} alt={name} />
-            <AvatarFallback>CN</AvatarFallback>
+            <AvatarFallback>{getInitials(name)}</AvatarFallback>
           </Avatar>
           <div className="grid gap-1">
             <Typography variant="preset-4-bold">{name}</Typography>

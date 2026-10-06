@@ -52,7 +52,7 @@ const TransactionsPage = () => {
           onClick={() => setOpenModal("add-transaction")}
         >
           <Typography tag="span" variant="preset-4-bold" className="text-white">
-            + Add Tranasaction
+            + Add Transaction
           </Typography>
         </Button>
       </div>

@@ -64,7 +64,6 @@ const AddTransaction = ({ isOpen, onClose }: Props) => {
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     createTransaction({
       id: crypto.randomUUID(),
-      // avatar: values.avatar,
       name: values.name,
       amount: Number(values.amount),
       type: values.type,

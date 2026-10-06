@@ -1,7 +1,7 @@
 import {
   Pagination,
   PaginationContent,
-  // PaginationEllipsis,
+  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
@@ -18,6 +18,24 @@ type Props = {
   isNextPageDisabled: boolean;
 };
 
+// First, last, and the pages either side of the current one; gaps become ellipses.
+export const getVisiblePages = (totalPages: number, currentPage: number) => {
+  const pages: (number | "ellipsis")[] = [];
+
+  for (let page = 1; page <= totalPages; page++) {
+    const isEdge = page === 1 || page === totalPages;
+    const isNearCurrent = Math.abs(page - currentPage) <= 1;
+
+    if (isEdge || isNearCurrent) {
+      pages.push(page);
+    } else if (pages[pages.length - 1] !== "ellipsis") {
+      pages.push("ellipsis");
+    }
+  }
+
+  return pages;
+};
+
 const TablePagination = ({
   totalPages,
   currentPage,
@@ -27,7 +45,7 @@ const TablePagination = ({
   isPreviousPageDisabled,
   isNextPageDisabled,
 }: Props) => {
-  const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
+  const pages = getVisiblePages(totalPages, currentPage);
 
   return (
     <Pagination>
@@ -40,21 +58,23 @@ const TablePagination = ({
         </PaginationItem>
 
         <div className="flex gap-2">
-          {pages.map((page) => (
-            <PaginationItem key={page}>
-              <PaginationLink
-                onClick={() => setPage(page - 1)}
-                isActive={currentPage === page}
-              >
-                {page}
-              </PaginationLink>
-            </PaginationItem>
-          ))}
+          {pages.map((page, index) =>
+            page === "ellipsis" ? (
+              <PaginationItem key={`ellipsis-${index}`}>
+                <PaginationEllipsis />
+              </PaginationItem>
+            ) : (
+              <PaginationItem key={page}>
+                <PaginationLink
+                  onClick={() => setPage(page - 1)}
+                  isActive={currentPage === page}
+                >
+                  {page}
+                </PaginationLink>
+              </PaginationItem>
+            )
+          )}
         </div>
-
-        {/* <PaginationItem>
-          <PaginationEllipsis />
-        </PaginationItem> */}
 
         <PaginationItem>
           <PaginationNext onClick={onNext} disabled={isNextPageDisabled} />

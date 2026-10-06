@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import dateTimeFormatter from "@/utils/dateTimeFormatter";
 import Typography from "@/components/typography";
 import { formatTransactionAmount } from "@/utils/formatCurrency";
+import getInitials from "@/utils/getInitials";
 import { filterAndSortTransactions } from "@/modules/transactions/utils";
 
 const Transactions = () => {
@@ -28,7 +29,7 @@ const Transactions = () => {
             <div className="flex gap-4 items-center">
               <Avatar>
                 <AvatarImage src={item.avatar} alt={item.name} />
-                <AvatarFallback>CN</AvatarFallback>
+                <AvatarFallback>{getInitials(item.name)}</AvatarFallback>
               </Avatar>
               <Typography variant="preset-4-bold">{item.name}</Typography>
             </div>
