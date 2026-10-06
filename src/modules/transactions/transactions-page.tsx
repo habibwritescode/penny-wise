@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import Typography from "@/components/typography";
 import { DataTable } from "@/components/data-table/data-table";
@@ -27,12 +27,17 @@ const TransactionsPage = () => {
     "All"
   );
 
-  const filteredTransactions = filterAndSortTransactions({
-    transactions: transactions,
-    sortFilter,
-    categoryFilter,
-    searchValue,
-  });
+  // Memoised so the table only resets to page 1 when the filters change.
+  const filteredTransactions = useMemo(
+    () =>
+      filterAndSortTransactions({
+        transactions,
+        sortFilter,
+        categoryFilter,
+        searchValue,
+      }),
+    [transactions, sortFilter, categoryFilter, searchValue]
+  );
 
   const handleCloseModal = () => setOpenModal(null);
 

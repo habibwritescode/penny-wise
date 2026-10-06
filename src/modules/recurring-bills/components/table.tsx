@@ -2,9 +2,12 @@ import { DataTable } from "@/components/data-table/data-table";
 import { LabeledDropdown } from "@/components/labeled-dropdown";
 import SearchInput from "@/components/search-input";
 import { SORT_OPTIONS, SortFilter } from "@/utils/types";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import columns from "../columns";
-import { filterAndSortTransactions } from "../../transactions/utils";
+import {
+  filterAndSortTransactions,
+  getRecurringBills,
+} from "../../transactions/utils";
 import useBoundStore from "@/lib/store/store";
 import FilterIcon from "../../../../public/assets/icons/filter.svg";
 
@@ -14,15 +17,16 @@ const RecurringBillsTable = () => {
   const [searchValue, setSearchValue] = useState("");
   const [sortFilter, setSortFilter] = useState<SortFilter | "">("");
 
-  const recurringBills = allTransactions.filter(
-    (item) => item.recurring && item.type === "Expense"
+  // Memoised so the table only resets to page 1 when the filters change.
+  const transactions = useMemo(
+    () =>
+      filterAndSortTransactions({
+        transactions: getRecurringBills(allTransactions),
+        sortFilter,
+        searchValue,
+      }),
+    [allTransactions, sortFilter, searchValue]
   );
-
-  const transactions = filterAndSortTransactions({
-    transactions: recurringBills,
-    sortFilter,
-    searchValue,
-  });
 
   return (
     <div className="bg-white p-8 rounded-xl">
