@@ -28,12 +28,12 @@ export function LabeledDropdown({ options, label, onChange, icon }: Props) {
       <Typography
         variant="preset-4"
         className="text-grey-500 min-w-fit hidden md:block"
-        tag="label"
+        tag="span"
       >
         {label}
       </Typography>
       <Select onValueChange={onChange} defaultValue={options[0].value}>
-        <SelectTrigger className="gap-4 border-0 md:border">
+        <SelectTrigger className="gap-4 border-0 md:border" aria-label={label}>
           <div className="hidden md:block">
             <SelectValue placeholder={options[0].name} />
           </div>

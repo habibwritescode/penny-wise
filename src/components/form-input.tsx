@@ -45,16 +45,22 @@ const FormInput = ({
               />
 
               {inputType === "password" && (
-                <div className="absolute top-1/2 right-2 transform -translate-y-1/2">
+                <button
+                  type="button"
+                  className="absolute top-1/2 right-2 transform -translate-y-1/2"
+                  onClick={() =>
+                    setType(type === "password" ? "text" : "password")
+                  }
+                  aria-label={
+                    type === "password" ? "Show password" : "Hide password"
+                  }
+                >
                   {type === "password" ? (
-                    <Eye onClick={() => setType("text")} className="w-4 h-4" />
+                    <Eye className="w-4 h-4" />
                   ) : (
-                    <EyeOff
-                      onClick={() => setType("password")}
-                      className="w-4 h-4"
-                    />
+                    <EyeOff className="w-4 h-4" />
                   )}
-                </div>
+                </button>
               )}
             </div>
           </FormControl>
