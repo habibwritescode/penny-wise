@@ -33,7 +33,10 @@ const AddBudget = ({ isOpen, onClose, budget, type }: Props) => {
 
   const isEdit = type === "edit";
 
-  const themeOptions = useMemo(() => getThemeOptions(budgets), [budgets]);
+  const themeOptions = useMemo(
+    () => getThemeOptions(budgets, budget?.theme),
+    [budgets, budget?.theme]
+  );
 
   // A category can only have one budget; when editing, keep the current one.
   const categoryOptions = useMemo(() => {

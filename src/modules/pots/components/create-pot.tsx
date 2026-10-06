@@ -30,7 +30,10 @@ const CreatePot = ({ isOpen, onClose, isEdit, pot }: Props) => {
   const createPot = useBoundStore((store) => store.createPot);
   const updatePot = useBoundStore((store) => store.updatePot);
 
-  const themeOptions = useMemo(() => getThemeOptions(pots), [pots]);
+  const themeOptions = useMemo(
+    () => getThemeOptions(pots, pot?.theme),
+    [pots, pot?.theme]
+  );
 
   const defaultValues = useMemo(() => {
     return {

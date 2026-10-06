@@ -1,6 +1,5 @@
 import {
   FormControl,
-  // FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -17,6 +16,7 @@ import {
 type Options = {
   name: string | React.ReactElement;
   value: string;
+  disabled?: boolean;
 };
 
 type Props = {
@@ -49,12 +49,9 @@ const FormSelect = ({
             disabled={disabled}
             defaultValue={field.value}
           >
-            {/* <Select onValueChange={field.onChange}> */}
             <FormControl>
               <SelectTrigger>
                 <SelectValue placeholder={placeholder} />
-                {/* {field.value || }
-                </SelectValue> */}
               </SelectTrigger>
             </FormControl>
             <SelectContent>
@@ -62,6 +59,7 @@ const FormSelect = ({
                 <SelectItem
                   key={option.value}
                   value={option.value}
+                  disabled={option.disabled}
                   className="grid grid-cols-1"
                 >
                   {option.name}
@@ -69,10 +67,6 @@ const FormSelect = ({
               ))}
             </SelectContent>
           </Select>
-          {/* <FormDescription>
-            You can manage email addresses in your{" "}
-            <Link href="/examples/forms">email settings</Link>.
-          </FormDescription> */}
           <FormMessage />
         </FormItem>
       )}

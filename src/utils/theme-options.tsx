@@ -1,16 +1,19 @@
 import Typography from "@/components/typography";
 import { COLOURS } from "@/utils/constants";
 
-type ColourKey = keyof typeof COLOURS;
+type ColourName = keyof typeof COLOURS;
 
-const getThemeOptions = (list: any[]) => {
-  const colourNames = Object.keys(COLOURS) as ColourKey[];
-  const inUseColors = list.map((item) => item.theme);
+// `currentTheme` is the edited item's own colour, which stays selectable.
+const getThemeOptions = (list: { theme: string }[], currentTheme?: string) => {
+  const colourNames = Object.keys(COLOURS) as ColourName[];
+  const usedColours = list
+    .map((item) => item.theme)
+    .filter((theme) => theme !== currentTheme);
 
-  const options = colourNames.map((colorName) => {
-    const colorNameVariable = colorName.toLowerCase().replace(" ", "-");
-    const colorHex = COLOURS[colorName];
-    const isUsed = inUseColors.includes(colorHex);
+  return colourNames.map((colourName) => {
+    const colourVariable = colourName.toLowerCase().replace(" ", "-");
+    const colourHex = COLOURS[colourName];
+    const isUsed = usedColours.includes(colourHex);
 
     return {
       name: (
@@ -18,10 +21,10 @@ const getThemeOptions = (list: any[]) => {
           <div className="flex gap-3 items-center">
             <span
               className="h-4 w-4 rounded-full"
-              style={{ backgroundColor: `hsl(var(--${colorNameVariable}))` }}
+              style={{ backgroundColor: `hsl(var(--${colourVariable}))` }}
             />
             <Typography tag="span" variant="preset-4" className="text-grey-500">
-              {colorName}
+              {colourName}
             </Typography>
           </div>
 
@@ -38,12 +41,10 @@ const getThemeOptions = (list: any[]) => {
           </div>
         </div>
       ),
-      // value: colorName,
-      value: colorHex,
+      value: colourHex,
+      disabled: isUsed,
     };
   });
-
-  return options;
 };
 
 export default getThemeOptions;
