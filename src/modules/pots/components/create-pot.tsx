@@ -11,10 +11,11 @@ import useBoundStore from "@/lib/store/store";
 import { useEffect, useMemo } from "react";
 import { IPot } from "@/utils/types";
 import getThemeOptions from "@/utils/theme-options";
+import { positiveAmount } from "@/utils/schema";
 
 const formSchema = z.object({
-  name: z.string().min(1, { message: "Required" }),
-  target: z.string().min(1, { message: "Required" }),
+  name: z.string().trim().min(1, { message: "Required" }),
+  target: positiveAmount,
   theme: z.string().min(1, { message: "Required" }),
 });
 

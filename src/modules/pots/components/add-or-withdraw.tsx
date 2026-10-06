@@ -12,9 +12,10 @@ import currencyFormatter from "@/utils/formatCurrency";
 import MultiPartProgressBar from "@/components/multi-part-progress";
 import { calculatePercent } from "@/utils/math";
 import useBoundStore from "@/lib/store/store";
+import { positiveAmount } from "@/utils/schema";
 
 const formSchema = z.object({
-  amount: z.string().min(1, { message: "Required" }),
+  amount: positiveAmount,
 });
 
 type Props = {
@@ -46,11 +47,11 @@ const AddOrWitdrawPot = ({ pot, isOpen, onClose, isAdd }: Props) => {
     onClose();
   };
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = () => {
     if (newTotal < 0) {
       setError("amount", {
         type: "custom",
-        message: "Can't withdraw more than " + pot.total,
+        message: `Can't withdraw more than ${currencyFormatter.format(pot.total)}`,
       });
       return;
     }

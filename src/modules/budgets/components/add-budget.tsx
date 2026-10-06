@@ -12,10 +12,11 @@ import useBoundStore from "@/lib/store/store";
 import { IBudget } from "@/utils/types";
 import { useEffect, useMemo } from "react";
 import getThemeOptions from "@/utils/theme-options";
+import { positiveAmount } from "@/utils/schema";
 
 const formSchema = z.object({
   category: z.string().min(1, { message: "Required" }),
-  maximum: z.string().min(1, { message: "Required" }),
+  maximum: positiveAmount,
   theme: z.string().min(1, { message: "Required" }),
 });
 
@@ -115,6 +116,7 @@ const AddBudget = ({ isOpen, onClose, budget, type }: Props) => {
             name="maximum"
             placeholder="Maximum Spend"
             label="Maximum Spend"
+            inputType="number"
             control={form.control}
           />
           <FormSelect

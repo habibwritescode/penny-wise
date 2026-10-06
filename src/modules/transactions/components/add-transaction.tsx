@@ -11,6 +11,7 @@ import FormSelect from "@/components/form-select";
 import { CATEGORIES } from "@/utils/constants";
 import DatePicker from "@/components/date-picker";
 import Checkbox from "@/components/checkbox";
+import { positiveAmount } from "@/utils/schema";
 
 const CATEGORY_OPTIONS = CATEGORIES.map((item) => ({
   name: item,
@@ -28,7 +29,7 @@ const formSchema = z.object({
   date: z.date({
     message: "Required",
   }),
-  amount: z.string().min(1, { message: "Required" }),
+  amount: positiveAmount,
   recurring: z.boolean().default(false),
   type: z.enum(["Income", "Expense"], {
     errorMap: () => ({ message: "Invalid type" }),
