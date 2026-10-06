@@ -2,7 +2,6 @@ import Typography from "@/components/typography";
 import { Button } from "@/components/ui/button";
 
 import BudgetCard from "../../modules/budgets/components/budget-card";
-import { ICategory } from "@/utils/types";
 import AddBudget from "@/modules/budgets/components/add-budget";
 import { useState } from "react";
 import useBoundStore from "@/lib/store/store";
@@ -54,10 +53,7 @@ const BudgetsPage = () => {
               <BudgetCard
                 key={item.category}
                 budget={item}
-                items={getCategoryItems(
-                  item.category as ICategory,
-                  outgoingTransactions
-                )}
+                items={getCategoryItems(item.category, outgoingTransactions)}
               />
             ))}
           </section>

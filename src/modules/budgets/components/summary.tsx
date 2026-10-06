@@ -2,7 +2,7 @@ import BudgetChart from "@/components/budget-chart";
 import Typography from "@/components/typography";
 import useBoundStore from "@/lib/store/store";
 import currencyFormatter from "@/utils/formatCurrency";
-import { ICategory, ITransaction } from "@/utils/types";
+import { ITransaction } from "@/utils/types";
 import { getCategoryItems } from "../utils";
 
 const getTotal = (items: ITransaction[] = []) => {
@@ -44,10 +44,7 @@ const SpendingSummary = () => {
                 <Typography tag="span" variant="preset-3">
                   {currencyFormatter.format(
                     getTotal(
-                      getCategoryItems(
-                        item.category as ICategory,
-                        outgoingTransactions
-                      )
+                      getCategoryItems(item.category, outgoingTransactions)
                     )
                   )}
                 </Typography>

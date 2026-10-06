@@ -1,3 +1,5 @@
+import { CATEGORIES } from "@/utils/constants";
+
 export interface IBudget {
   category: string;
   maximum: number;
@@ -17,11 +19,7 @@ export interface ITransaction {
   type: TransactionType;
 }
 
-export type ICategory =
-  | "Entertainment"
-  | "Bills"
-  | "Dining Out"
-  | "Personal Care";
+export type Category = (typeof CATEGORIES)[number];
 
 export interface IPot {
   name: string;

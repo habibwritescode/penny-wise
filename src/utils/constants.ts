@@ -9,7 +9,7 @@ export const CATEGORIES = [
   "Lifestyle",
   "Shopping",
   "General",
-];
+] as const;
 
 export const COLOURS = {
   Green: "#277C78",

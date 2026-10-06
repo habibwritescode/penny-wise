@@ -1,31 +1,12 @@
-import { ITransaction } from "@/utils/types";
+import { CATEGORIES } from "@/utils/constants";
+import { Category, ITransaction } from "@/utils/types";
 
 export const CATEGORY_FILTER_OPTIONS = [
   { name: "All Transactions", value: "All" },
-  { name: "Entertainment", value: "Entertainment" },
-  { name: "Bills", value: "Bills" },
-  { name: "Groceries", value: "Groceries" },
-  { name: "Dining Out", value: "Dining" },
-  { name: "Transportation", value: "Transportation" },
-  { name: "Personal Care", value: "Personal Care" },
-  { name: "Education", value: "Education" },
-  { name: "Lifestyle", value: "Lifestyle" },
-  { name: "Shopping", value: "Shopping" },
-  { name: "General", value: "General" },
+  ...CATEGORIES.map((category) => ({ name: category, value: category })),
 ];
 
-export type ICategoryFilter =
-  | "All"
-  | "Entertainment"
-  | "Bills"
-  | "Groceries"
-  | "Dining"
-  | "Transportation"
-  | "Personal Care"
-  | "Education"
-  | "Lifestyle"
-  | "Shopping"
-  | "General";
+export type ICategoryFilter = "All" | Category;
 
 type FilterFunctionProps = {
   transactions: ITransaction[];
