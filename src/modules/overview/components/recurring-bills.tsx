@@ -1,24 +1,31 @@
 import Typography from "@/components/typography";
 import currencyFormatter from "@/utils/formatCurrency";
-import React from "react";
+import useBoundStore from "@/lib/store/store";
+import { getRecurringBills } from "@/modules/transactions/utils";
+import { getBillsSummary } from "@/modules/recurring-bills/utils";
 import ContainerCard from "./container-card";
 
 const RecurringBills = () => {
+  const transactions = useBoundStore((store) => store.transactions);
+  const { paid, upcoming, dueSoon } = getBillsSummary(
+    getRecurringBills(transactions)
+  );
+
   const listItems = [
     {
       title: "Paid Bills",
       borderColor: "hsl(var(--green))",
-      amount: 300,
+      amount: paid.total,
     },
     {
       title: "Total Upcoming",
       borderColor: "hsl(var(--yellow))",
-      amount: 320,
+      amount: upcoming.total,
     },
     {
       title: "Due Soon",
       borderColor: "hsl(var(--cyan))",
-      amount: 400,
+      amount: dueSoon.total,
     },
   ];
 
