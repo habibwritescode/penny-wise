@@ -6,6 +6,7 @@ import AddBudget from "@/modules/budgets/components/add-budget";
 import { useState } from "react";
 import useBoundStore from "@/lib/store/store";
 import { getCategoryItems } from "./utils";
+import { getExpenses } from "@/modules/transactions/utils";
 import SpendingSummary from "./components/summary";
 
 type OpenModal = "add-budget" | null;
@@ -14,9 +15,7 @@ const BudgetsPage = () => {
   const allTransactions = useBoundStore((store) => store.transactions);
   const budgets = useBoundStore((store) => store.budgets);
 
-  const outgoingTransactions = allTransactions.filter(
-    (item) => item.type === "Expense"
-  );
+  const outgoingTransactions = getExpenses(allTransactions);
 
   const [openModal, setOpenModal] = useState<OpenModal>(null);
 

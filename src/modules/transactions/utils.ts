@@ -8,6 +8,12 @@ export const CATEGORY_FILTER_OPTIONS = [
 
 export type ICategoryFilter = "All" | Category;
 
+export const getExpenses = (transactions: ITransaction[]) =>
+  transactions.filter((item) => item.type === "Expense");
+
+export const getRecurringBills = (transactions: ITransaction[]) =>
+  getExpenses(transactions).filter((item) => item.recurring);
+
 type FilterFunctionProps = {
   transactions: ITransaction[];
   sortFilter: string;

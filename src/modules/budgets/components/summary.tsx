@@ -3,6 +3,7 @@ import Typography from "@/components/typography";
 import useBoundStore from "@/lib/store/store";
 import currencyFormatter from "@/utils/formatCurrency";
 import { ITransaction } from "@/utils/types";
+import { getExpenses } from "@/modules/transactions/utils";
 import { getCategoryItems } from "../utils";
 
 const getTotal = (items: ITransaction[] = []) => {
@@ -14,9 +15,7 @@ const SpendingSummary = () => {
   const allTransactions = useBoundStore((store) => store.transactions);
   const budgets = useBoundStore((store) => store.budgets);
 
-  const outgoingTransactions = allTransactions.filter(
-    (item) => item.type === "Expense"
-  );
+  const outgoingTransactions = getExpenses(allTransactions);
 
   return (
     <div className="flex flex-col sm:flex-row md:flex-col bg-white rounded-xl w-full px-8 py-6 max-h-fit">

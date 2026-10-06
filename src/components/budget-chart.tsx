@@ -1,4 +1,3 @@
-import { useMemo } from "react";
 import { Label, Pie, PieChart } from "recharts";
 
 import {
@@ -10,6 +9,7 @@ import {
 
 import currencyFormatter from "@/utils/formatCurrency";
 import useBoundStore from "@/lib/store/store";
+import { getExpenses } from "@/modules/transactions/utils";
 
 const chartConfig = {} satisfies ChartConfig;
 
@@ -17,9 +17,7 @@ const BudgetChart = () => {
   const allTransactions = useBoundStore((store) => store.transactions);
   const budgets = useBoundStore((store) => store.budgets);
 
-  const outgoingTransactions = allTransactions.filter(
-    (item) => item.type === "Expense"
-  );
+  const outgoingTransactions = getExpenses(allTransactions);
 
   const createdBudgetCategories = budgets.map((item) => item.category);
 
@@ -37,9 +35,10 @@ const BudgetChart = () => {
     fill: item.theme,
   }));
 
-  const totalBudgetLimit = useMemo(() => {
-    return chartData.reduce((acc, curr) => acc + curr.amount, 0);
-  }, [chartData]);
+  const totalBudgetLimit = chartData.reduce(
+    (acc, curr) => acc + curr.amount,
+    0
+  );
 
   return (
     <div className="w-full">
