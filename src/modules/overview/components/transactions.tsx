@@ -5,7 +5,7 @@ import useBoundStore from "@/lib/store/store";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import dateTimeFormatter from "@/utils/dateTimeFormatter";
 import Typography from "@/components/typography";
-import currencyFormatter from "@/utils/formatCurrency";
+import { formatTransactionAmount } from "@/utils/formatCurrency";
 import { filterAndSortTransactions } from "@/modules/transactions/utils";
 
 const Transactions = () => {
@@ -24,7 +24,7 @@ const Transactions = () => {
     >
       <ul className="divide-y divide-grey-100">
         {filteredTransactions.slice(0, 5).map((item) => (
-          <li key={item.name} className="flex justify-between py-6">
+          <li key={item.id} className="flex justify-between py-6">
             <div className="flex gap-4 items-center">
               <Avatar>
                 <AvatarImage src={item.avatar} alt={item.name} />
@@ -36,9 +36,11 @@ const Transactions = () => {
             <div className="grid">
               <Typography
                 variant="preset-4-bold"
-                className={item.amount > 0 ? "text-green" : "text-grey-900"}
+                className={
+                  item.type === "Income" ? "text-green" : "text-grey-900"
+                }
               >
-                {currencyFormatter.format(item.amount)}
+                {formatTransactionAmount(item)}
               </Typography>
               <Typography variant="preset-5" className="text-grey-500">
                 {dateTimeFormatter.formatToLongDate(item.date)}

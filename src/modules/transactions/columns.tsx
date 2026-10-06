@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import currencyFormatter from "@/utils/formatCurrency";
+import { formatTransactionAmount } from "@/utils/formatCurrency";
 import { ColumnDef } from "@tanstack/react-table";
 import { ITransaction } from "@/utils/types";
 import dateTimeFormatter from "@/utils/dateTimeFormatter";
@@ -55,8 +55,6 @@ const columns: ColumnDef<ITransaction>[] = [
     accessorKey: "amount",
     header: () => <div className="text-right hidden md:block">Amount</div>,
     cell: ({ row }) => {
-      const amount = parseFloat(row.getValue("amount"));
-      const formatted = currencyFormatter.format(amount);
       const isIncome = row.original.type === "Income";
 
       return (
@@ -65,8 +63,7 @@ const columns: ColumnDef<ITransaction>[] = [
             variant="preset-4-bold"
             className={`text-right ${isIncome ? "text-green" : "text-grey-900"}`}
           >
-            {isIncome ? "+" : "-"}
-            {formatted}
+            {formatTransactionAmount(row.original)}
           </Typography>
           <Typography
             variant="preset-5"
