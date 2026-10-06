@@ -28,6 +28,7 @@ type Props = {
 const CreatePot = ({ isOpen, onClose, isEdit, pot }: Props) => {
   const pots = useBoundStore((store) => store.pots);
   const createPot = useBoundStore((store) => store.createPot);
+  const updatePot = useBoundStore((store) => store.updatePot);
 
   const themeOptions = useMemo(() => getThemeOptions(pots), [pots]);
 
@@ -44,7 +45,7 @@ const CreatePot = ({ isOpen, onClose, isEdit, pot }: Props) => {
     defaultValues,
   });
 
-  const { reset } = form;
+  const { reset, setError } = form;
 
   const handleClose = () => {
     reset();
@@ -52,12 +53,27 @@ const CreatePot = ({ isOpen, onClose, isEdit, pot }: Props) => {
   };
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    createPot({
-      name: values.name,
-      target: Number(values.target),
-      total: pot?.total || 0,
-      theme: values.theme,
-    });
+    if (isEdit && pot) {
+      updatePot(pot.name, {
+        target: Number(values.target),
+        theme: values.theme,
+      });
+    } else {
+      if (pots.some((item) => item.name === values.name)) {
+        setError("name", {
+          type: "custom",
+          message: "A pot with this name already exists",
+        });
+        return;
+      }
+
+      createPot({
+        name: values.name,
+        target: Number(values.target),
+        total: 0,
+        theme: values.theme,
+      });
+    }
 
     handleClose();
   };

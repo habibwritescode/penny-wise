@@ -13,11 +13,6 @@ import { IBudget } from "@/utils/types";
 import { useEffect, useMemo } from "react";
 import getThemeOptions from "@/utils/theme-options";
 
-const CATEGORY_OPTIONS = CATEGORIES.map((item) => ({
-  name: item,
-  value: item,
-}));
-
 const formSchema = z.object({
   category: z.string().min(1, { message: "Required" }),
   maximum: z.string().min(1, { message: "Required" }),
@@ -33,11 +28,23 @@ type Props = {
 
 const AddBudget = ({ isOpen, onClose, budget, type }: Props) => {
   const createBudget = useBoundStore((store) => store.createBudget);
+  const updateBudget = useBoundStore((store) => store.updateBudget);
   const budgets = useBoundStore((store) => store.budgets);
 
   const isEdit = type === "edit";
 
   const themeOptions = useMemo(() => getThemeOptions(budgets), [budgets]);
+
+  // A category can only have one budget; when editing, keep the current one.
+  const categoryOptions = useMemo(() => {
+    const usedCategories = budgets
+      .map((item) => item.category)
+      .filter((category) => category !== budget?.category);
+
+    return CATEGORIES.filter(
+      (category) => !usedCategories.includes(category)
+    ).map((category) => ({ name: category, value: category }));
+  }, [budgets, budget?.category]);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -56,11 +63,18 @@ const AddBudget = ({ isOpen, onClose, budget, type }: Props) => {
   };
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
-    createBudget({
-      category: values.category,
-      maximum: Number(values.maximum),
-      theme: values.theme,
-    });
+    if (isEdit) {
+      updateBudget(values.category, {
+        maximum: Number(values.maximum),
+        theme: values.theme,
+      });
+    } else {
+      createBudget({
+        category: values.category,
+        maximum: Number(values.maximum),
+        theme: values.theme,
+      });
+    }
 
     handleClose();
   };
@@ -91,7 +105,7 @@ const AddBudget = ({ isOpen, onClose, budget, type }: Props) => {
             label="Budget Category"
             placeholder="Select Category"
             control={form.control}
-            options={CATEGORY_OPTIONS}
+            options={categoryOptions}
             disabled={isEdit}
           />
           <FormInput

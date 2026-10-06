@@ -8,6 +8,7 @@ type State = {
 
 type Action = {
   createPot: (pot: IPot) => void;
+  updatePot: (name: string, values: Pick<IPot, "target" | "theme">) => void;
   deletePot: (name: string) => void;
   updatePotTotal: (total: number, name: string) => void;
 };
@@ -38,25 +39,18 @@ const createPotSlice: StateCreator<BoundStoreT, [], [], IPotSlice> = (
   ...initialState,
   createPot: (values) =>
     set((state: State) => {
-      const oldItems = state.pots;
-      const existingItem = oldItems.find((pot) => pot.name === values.name);
+      const exists = state.pots.some((pot) => pot.name === values.name);
+      if (exists) return state;
 
-      if (existingItem) {
-        const newItems = oldItems.map((item) => {
-          if (item.name !== values.name) return item;
-
-          return {
-            ...values,
-          };
-        });
-
-        return { pots: newItems };
-      } else {
-        return {
-          pots: [...oldItems, values],
-        };
-      }
+      return { pots: [...state.pots, values] };
     }),
+
+  updatePot: (name, values) =>
+    set((state: State) => ({
+      pots: state.pots.map((pot) =>
+        pot.name === name ? { ...pot, ...values } : pot
+      ),
+    })),
 
   deletePot: (name) =>
     set((state: State) => {

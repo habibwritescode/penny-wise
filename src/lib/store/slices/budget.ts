@@ -8,6 +8,10 @@ type State = {
 
 type Action = {
   createBudget: (budget: IBudget) => void;
+  updateBudget: (
+    category: string,
+    values: Pick<IBudget, "maximum" | "theme">
+  ) => void;
   deleteBudget: (category: string) => void;
 };
 
@@ -35,28 +39,20 @@ const createBudgetSlice: StateCreator<BoundStoreT, [], [], IBudgetSlice> = (
   ...initialState,
   createBudget: (values) =>
     set((state: State) => {
-      const oldItems = state.budgets;
-      const existingItem = oldItems.find(
+      const exists = state.budgets.some(
         (budget) => budget.category === values.category
       );
+      if (exists) return state;
 
-      if (existingItem) {
-        const newItems = oldItems.map((item) => {
-          if (item.category !== values.category) return item;
-
-          return {
-            ...values,
-            maximum: Math.max(item.maximum, values.maximum),
-          };
-        });
-
-        return { budgets: newItems };
-      } else {
-        return {
-          budgets: [...oldItems, values],
-        };
-      }
+      return { budgets: [...state.budgets, values] };
     }),
+
+  updateBudget: (category, values) =>
+    set((state: State) => ({
+      budgets: state.budgets.map((budget) =>
+        budget.category === category ? { ...budget, ...values } : budget
+      ),
+    })),
 
   deleteBudget: (category) =>
     set((state: State) => {
