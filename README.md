@@ -26,9 +26,24 @@ Built beyond the brief:
   storage is unavailable, e.g. in some private-browsing modes.
 - **Demo sign-in** with a route guard, so the app behaves like a signed-in
   product without pretending to be secure (see Limitations).
+- **Undo for every change you might regret.** Deleting a pot, budget or
+  bill, marking a bill paid, and adding or withdrawing money each show a
+  toast with Undo, which puts things back exactly where they were.
+- **Motion with a purpose.** Things that appear, disappear or change state
+  during a visit animate briefly (100–300ms, strong ease-out curves defined
+  once as CSS variables): cards fading out on delete, panels expanding,
+  dialogs and toasts, press feedback on buttons. Nothing animates on page
+  load, and with Reduce Motion on, movement becomes a fade.
+- **Feels native on phones.** Forms open as bottom sheets you can drag
+  closed; the layout clears the notch and home indicator; the browser's
+  toolbar colour matches each page; taps respond immediately without a grey
+  flash or a stuck hover state; amount fields open a decimal keypad and
+  email fields don't auto-capitalise. What can only be confirmed on a real
+  phone is listed in [docs/device-testing.md](docs/device-testing.md).
 - **Responsive and accessibility work** beyond the provided designs: tested
-  layouts from 375px to desktop, labelled form fields and icon-only nav
-  links, and statuses that don't rely on colour alone.
+  layouts from 320px to desktop, a sidebar that starts collapsed on smaller
+  laptops (with tooltips naming its icons), labelled form fields and
+  icon-only nav links, and statuses that don't rely on colour alone.
 - **Tests**: unit tests for the money, date and persistence logic, plus
   browser tests for the main flows and layouts.
 
@@ -45,7 +60,8 @@ Built beyond the brief:
 ## Tech stack
 
 Next.js 14 (Pages Router), React 18, TypeScript, Tailwind CSS with shadcn/ui,
-Zustand, React Hook Form + zod, Recharts, TanStack Table, `idb-keyval`.
+Zustand, React Hook Form + zod, Recharts, TanStack Table, `idb-keyval`,
+Sonner (toasts) and Vaul (bottom sheets).
 Tests use Vitest (with `fake-indexeddb`) and Playwright.
 
 ## Getting started
@@ -90,6 +106,8 @@ src/lib/store/         Zustand store, slices, IndexedDB storage, hooks
 src/utils/             Types, constants, formatters, date helpers
 src/__tests__/         Unit tests
 e2e/                   Playwright tests
+docs/                  Checklists that need a human, e.g. real-device testing
+plans/                 Animation audit plans and their results
 tasks/                 Spec, plan and task list for the latest build phase
 ```
 
@@ -144,6 +162,20 @@ create dozens of catch-up bills. Instead, a new visitor gets bills dated
 relative to their first visit: one paid, one overdue, one due soon and one
 further out.
 
+**Undo as well as confirmation.** Deletes still ask first, as the design
+specifies, but a confirmation is soon clicked through without reading, so
+every change that loses something also offers Undo. Frequent, small actions
+(marking a bill paid, adding money) skip the question and rely on Undo
+alone. It works because each action keeps what it removed (a bill's unpaid
+due dates, a pot's place in the list) for the toast to restore. "Reset demo
+data" on the error screen can't be undone, so it only asks.
+
+**Layout decided by CSS, not JavaScript.** The sidebar's starting width
+comes from breakpoints (collapsed below 1280px, expanded above) until you
+toggle it, so the first paint is already right and nothing jumps or animates
+on load. JavaScript only follows along for screen-reader state and for
+choosing a dialog or a bottom sheet, which are never open on load.
+
 **Logic is pure; time is passed in.** Schedule maths, statuses and summaries
 are plain functions that take "today" as an argument, so tests control time
 completely. Browser tests use a fixed clock for the same reason.
@@ -157,5 +189,6 @@ completely. Browser tests use a fixed clock for the same reason.
   security.
 - **"Due soon" is a flat 5 days** for every cadence, which covers most of a
   weekly bill's cycle. Left as is until it proves a problem in real use.
-- On the narrowest phones (320px), the recurring-bills table scrolls sideways
-  inside its card.
+- **Mobile behaviour is verified in emulation only.** Browser tests check the
+  tags and layouts, but touch feel, safe areas and the keyboard need a real
+  phone; see [docs/device-testing.md](docs/device-testing.md).
