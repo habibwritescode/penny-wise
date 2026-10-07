@@ -117,3 +117,26 @@ test("validation messages and new transactions give feedback", async ({
     "Corner Shop · -$12.50"
   );
 });
+
+// Radix overlays only stack correctly when they share one copy of
+// @radix-ui/react-dismissable-layer; mismatched versions close both at once.
+for (const width of [375, 1024]) {
+  test(`Escape closes an open select, not the whole form (${width}px)`, async ({
+    page,
+  }) => {
+    await page.setViewportSize({ width, height: 800 });
+    await signInAsDemo(page);
+    await page.goto("/transactions");
+    await page.getByRole("button", { name: "Add Transaction" }).click();
+    const form = page.getByRole("dialog", { name: "Add Transaction" });
+
+    await form.getByRole("combobox").first().click();
+    await expect(page.getByRole("listbox")).toBeVisible();
+    await page.keyboard.press("Escape");
+    await expect(page.getByRole("listbox")).toBeHidden();
+    await expect(form).toBeVisible();
+
+    await page.keyboard.press("Escape");
+    await expect(form).toBeHidden();
+  });
+}
