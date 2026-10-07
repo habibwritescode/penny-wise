@@ -27,4 +27,9 @@ export const COLOURS = {
   Pink: "#BE6C49",
 } as const;
 
+export const DEMO_USER = {
+  name: "Demo User",
+  email: "demo@pennywise.app",
+} as const;
+
 export const SIDEBAR_TRANSITION = "transition-all duration-500 ease-in-out";

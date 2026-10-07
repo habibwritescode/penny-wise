@@ -5,14 +5,21 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import FormInput from "@/components/form-input";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
+import useBoundStore from "@/lib/store/store";
 
 const formSchema = z.object({
   email: z.string().email().min(1, { message: "Required" }),
   password: z.string().min(1, { message: "Required" }),
-  name: z.string().min(1, { message: "Required" }),
+  name: z
+    .string()
+    .trim()
+    .min(1, { message: "Required" })
+    .max(40, { message: "Must be 40 characters or fewer" }),
 });
 
 const SignUpForm = () => {
+  const signIn = useBoundStore((store) => store.signIn);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -22,8 +29,11 @@ const SignUpForm = () => {
     },
   });
 
-  // TODO: submit to the auth API once it exists. Never log credentials.
-  const onSubmit = () => {};
+  // Demo auth: signing up just signs in; the password is not kept.
+  // AuthLayout redirects home once a user is set.
+  const onSubmit = ({ name, email }: z.infer<typeof formSchema>) => {
+    signIn({ name, email });
+  };
 
   return (
     <Form {...form}>

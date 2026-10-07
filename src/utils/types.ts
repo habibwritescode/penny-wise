@@ -1,5 +1,10 @@
 import { CATEGORIES } from "@/utils/constants";
 
+export interface IUser {
+  name: string;
+  email: string;
+}
+
 export interface IBudget {
   category: string;
   maximum: number;

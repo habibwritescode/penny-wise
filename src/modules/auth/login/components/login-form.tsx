@@ -5,6 +5,8 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import FormInput from "@/components/form-input";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
+import useBoundStore from "@/lib/store/store";
+import nameFromEmail from "@/utils/nameFromEmail";
 
 const formSchema = z.object({
   email: z.string().email().min(1, { message: "Required" }),
@@ -12,6 +14,8 @@ const formSchema = z.object({
 });
 
 const LoginForm = () => {
+  const signIn = useBoundStore((store) => store.signIn);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -20,8 +24,11 @@ const LoginForm = () => {
     },
   });
 
-  // TODO: submit to the auth API once it exists. Never log credentials.
-  const onSubmit = () => {};
+  // Demo auth: any valid email/password signs in; the password is not kept.
+  // AuthLayout redirects home once a user is set.
+  const onSubmit = ({ email }: z.infer<typeof formSchema>) => {
+    signIn({ name: nameFromEmail(email), email });
+  };
 
   return (
     <Form {...form}>

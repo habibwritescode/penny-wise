@@ -92,3 +92,25 @@ describe("migrateStore", () => {
     expect(migrated.pots[0].theme).toBe("#277C78");
   });
 });
+
+describe("auth slice", () => {
+  it("starts signed out", () => {
+    expect(store.getState().user).toBeNull();
+  });
+
+  it("signs in and out without touching finance data", () => {
+    const { budgets, pots, transactions } = store.getState();
+
+    store.getState().signIn({ name: "Habib", email: "habib@mail.com" });
+    expect(store.getState().user).toEqual({
+      name: "Habib",
+      email: "habib@mail.com",
+    });
+
+    store.getState().signOut();
+    expect(store.getState().user).toBeNull();
+    expect(store.getState().budgets).toBe(budgets);
+    expect(store.getState().pots).toBe(pots);
+    expect(store.getState().transactions).toBe(transactions);
+  });
+});

@@ -1,5 +1,6 @@
 import Typography from "@/components/typography";
 import Link from "next/link";
+import DemoAccess from "@/modules/auth/components/demo-access";
 import SignUpForm from "./components/signup-form";
 
 const SignUpPage = () => {
@@ -8,6 +9,8 @@ const SignUpPage = () => {
       <Typography tag="h1">Sign Up</Typography>
 
       <SignUpForm />
+
+      <DemoAccess />
 
       <div className="flex gap-2 justify-center">
         <Typography className="text-grey-500" variant="preset-4">

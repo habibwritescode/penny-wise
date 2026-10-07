@@ -6,9 +6,14 @@ import SidebarHeader from "../sidebar-header";
 import SidebarFooter from "../sidebar-footer";
 import { cn } from "@/lib/utils";
 import { SIDEBAR_TRANSITION } from "@/utils/constants";
+import useAuthRedirect from "@/lib/store/use-auth-redirect";
+import PageSkeleton from "../page-skeleton";
 
 const Layout = ({ children }: { children: React.ReactElement }) => {
   const [isSidebarExpanded, setIsSidebarExpanded] = useState(true);
+  // The shell renders immediately (including on the server); only the page
+  // content waits for persisted data, so first load shows a skeleton.
+  const isReady = useAuthRedirect("protected");
 
   return (
     <div className="flex">
@@ -27,7 +32,15 @@ const Layout = ({ children }: { children: React.ReactElement }) => {
           SIDEBAR_TRANSITION
         )}
       >
-        <div className="max-w-[1140px]">{children}</div>
+        <div className="max-w-[1140px]">
+          {isReady ? (
+            <div className="motion-safe:animate-in motion-safe:fade-in duration-300">
+              {children}
+            </div>
+          ) : (
+            <PageSkeleton />
+          )}
+        </div>
       </main>
       <BottomNav />
     </div>

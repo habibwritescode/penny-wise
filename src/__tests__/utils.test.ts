@@ -10,6 +10,7 @@ import { getBillsSummary } from "@/modules/recurring-bills/utils";
 import { getVisiblePages } from "@/components/data-table/data-table-pagination";
 import getThemeOptions from "@/utils/theme-options";
 import getInitials from "@/utils/getInitials";
+import nameFromEmail from "@/utils/nameFromEmail";
 import { positiveAmount } from "@/utils/schema";
 import { formatTransactionAmount } from "@/utils/formatCurrency";
 import { ITransaction } from "@/utils/types";
@@ -120,5 +121,13 @@ describe("formatting", () => {
   it("builds initials from up to two words", () => {
     expect(getInitials("Urban Services Hub")).toBe("US");
     expect(getInitials("emma")).toBe("E");
+  });
+});
+
+describe("nameFromEmail", () => {
+  it("turns the local part into a display name", () => {
+    expect(nameFromEmail("habib.afolabi@mail.com")).toBe("Habib Afolabi");
+    expect(nameFromEmail("jane_doe-smith@x.io")).toBe("Jane Doe Smith");
+    expect(nameFromEmail("sam@x.io")).toBe("Sam");
   });
 });

@@ -21,6 +21,7 @@ const calculateTotal = (
 
 const OverviewPage = () => {
   const transactions = useBoundStore((store) => store.transactions);
+  const user = useBoundStore((store) => store.user);
 
   const totalIncome = calculateTotal(transactions, "Income");
   const totalExpenses = calculateTotal(transactions, "Expense");
@@ -33,8 +34,13 @@ const OverviewPage = () => {
 
   return (
     <div>
-      <div className="flex justify-between items-center">
+      <div className="grid gap-2">
         <Typography tag="h1">Overview</Typography>
+        {user && (
+          <Typography variant="preset-4" className="text-grey-500">
+            Welcome back, {user.name}
+          </Typography>
+        )}
       </div>
 
       <section className="my-[32px] grid lg:grid-cols-3 gap-6">
