@@ -14,13 +14,13 @@ const TotalBills = () => {
 
   return (
     <div className="bg-primary p-6 rounded-xl flex gap-5 items-center sm:flex-col sm:gap-8 sm:items-start">
-      <WavyIcon />
-      <div>
+      <WavyIcon className="shrink-0" />
+      <div className="min-w-0">
         <Typography tag="p" variant="preset-4" className="mb-3 text-white">
           Total Bills
         </Typography>
 
-        <Typography tag="p" className="text-white">
+        <Typography tag="p" className="text-white break-all">
           {currencyFormatter.format(totalBills)}
         </Typography>
       </div>

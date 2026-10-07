@@ -15,14 +15,16 @@ const Pots = () => {
 
   return (
     <ContainerCard title="Pots" route="/pots">
-      <div className="grid xl:grid-cols-[247px_1fr] gap-5 mt-5">
+      <div className="grid xl:grid-cols-[minmax(247px,max-content)_minmax(0,1fr)] gap-5 mt-5">
         <div className="bg-beige-100 rounded-xl p-5 flex items-center gap-6">
-          <JarIcon />
-          <div className="grid gap-3">
+          <JarIcon className="shrink-0" />
+          <div className="grid gap-3 min-w-0">
             <Typography variant="preset-4" className="text-grey-500">
               Total Saved
             </Typography>
-            <Typography>{currencyFormatter.format(totalPotSaved)}</Typography>
+            <Typography className="break-all">
+              {currencyFormatter.format(totalPotSaved)}
+            </Typography>
           </div>
         </div>
 

@@ -1,4 +1,5 @@
 import Typography from "@/components/typography";
+import { cn } from "@/lib/utils";
 
 import Pots from "./components/pots";
 import Transactions from "./components/transactions";
@@ -50,7 +51,7 @@ const OverviewPage = () => {
           return (
             <div
               key={item.title}
-              className={`grid gap-3 p-6 rounded-xl ${isFirstItem ? "bg-grey-900" : "bg-white"}`}
+              className={`grid gap-3 p-6 rounded-xl min-w-0 ${isFirstItem ? "bg-grey-900" : "bg-white"}`}
             >
               <Typography
                 variant="preset-4"
@@ -59,7 +60,10 @@ const OverviewPage = () => {
                 {item.title}
               </Typography>
               <Typography
-                className={isFirstItem ? "text-white" : "text-grey-900"}
+                className={cn(
+                  "break-all",
+                  isFirstItem ? "text-white" : "text-grey-900"
+                )}
               >
                 {currencyFormatter.format(item.value)}
               </Typography>

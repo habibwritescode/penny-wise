@@ -8,16 +8,16 @@ type Props = {
 
 const ExpenseItem = ({ title, value, bgColor }: Props) => {
   return (
-    <div className="flex gap-4 h-11">
+    <div className="flex gap-4 min-h-11 min-w-0">
       <div
-        className={`w-1 h-full rounded-md`}
+        className="w-1 shrink-0 self-stretch rounded-md"
         style={{ backgroundColor: bgColor }}
       ></div>
-      <div className="grid gap-1">
+      <div className="grid gap-1 min-w-0">
         <Typography tag="p" variant="preset-5" className="text-grey-500">
           {title}
         </Typography>
-        <Typography tag="p" variant="preset-4-bold">
+        <Typography tag="p" variant="preset-4-bold" className="break-all">
           {value}
         </Typography>
       </div>

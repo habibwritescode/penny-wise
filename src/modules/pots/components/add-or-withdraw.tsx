@@ -69,11 +69,19 @@ const AddOrWitdrawPot = ({ pot, isOpen, onClose, isAdd }: Props) => {
       onClose={handleClose}
     >
       <>
-        <div className="flex justify-between items-center mb-4">
-          <Typography tag="p" variant="preset-4" className="text-grey-500">
+        <div className="flex justify-between items-center gap-4 mb-4">
+          <Typography
+            tag="p"
+            variant="preset-4"
+            className="shrink-0 text-grey-500"
+          >
             New Amount
           </Typography>
-          <Typography tag="p" variant="preset-1">
+          <Typography
+            tag="p"
+            variant="preset-1"
+            className="min-w-0 break-all text-right"
+          >
             {currencyFormatter.format(newTotal)}
           </Typography>
         </div>
