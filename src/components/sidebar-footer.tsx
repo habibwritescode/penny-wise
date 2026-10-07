@@ -2,7 +2,7 @@ import { LogOut } from "lucide-react";
 
 import { cn } from "@/lib/utils";
 import useBoundStore from "@/lib/store/store";
-import { SIDEBAR_TRANSITION } from "@/utils/constants";
+import { SIDEBAR_COLLAPSE } from "@/utils/constants";
 
 import ArrowIcon from "../../public/assets/icons/arrow-minimize.svg";
 import Typography from "./typography";
@@ -16,24 +16,37 @@ type ActionProps = React.ComponentProps<"button"> & {
   isExpanded: boolean;
   icon: React.ReactElement;
   label: string;
+  // Accessible name when it differs from the visible label.
+  ariaLabel?: string;
 };
 
-const SidebarAction = ({ isExpanded, icon, label, ...props }: ActionProps) => (
-  <button type="button" className="w-full group" aria-label={label} {...props}>
+// Icons stay put and line up with the nav icons (40px expanded, 24px
+// collapsed, animated); the label fades and is clipped by the sidebar.
+const SidebarAction = ({
+  isExpanded,
+  icon,
+  label,
+  ariaLabel,
+  ...props
+}: ActionProps) => (
+  <button
+    type="button"
+    className="w-full group"
+    aria-label={ariaLabel ?? label}
+    {...props}
+  >
     <div
       className={cn(
         "flex items-center gap-4",
-        isExpanded ? "pl-9" : "justify-center"
+        isExpanded ? "pl-10" : "pl-6",
+        SIDEBAR_COLLAPSE
       )}
     >
       {icon}
       <Typography
         variant="preset-3"
-        className={cn(
-          "overflow-hidden whitespace-nowrap text-grey-500 group-hover:text-grey-100",
-          isExpanded ? "opacity-100 max-w-[200px]" : "opacity-0 max-w-0",
-          SIDEBAR_TRANSITION
-        )}
+        data-hidden={!isExpanded}
+        className="shrink-0 whitespace-nowrap text-grey-500 group-hover:text-grey-100 sidebar-fade"
       >
         {label}
       </Typography>
@@ -51,12 +64,15 @@ const SidebarFooter = ({ isExpanded, handleToggle }: Props) => {
         label="Log Out"
         onClick={signOut}
         icon={
-          <LogOut className="h-5 w-5 shrink-0 text-[#B3B3B3] group-hover:text-grey-100" />
+          <LogOut className="h-5 w-5 shrink-0 text-[#B3B3B3] transition-colors duration-150 group-hover:text-grey-100" />
         }
       />
       <SidebarAction
         isExpanded={isExpanded}
-        label={isExpanded ? "Minimize Menu" : "Expand Menu"}
+        // The visible text only shows while expanded, so it never changes;
+        // swapping it on click would show "Expand Menu" as it fades out.
+        label="Minimize Menu"
+        ariaLabel={isExpanded ? "Minimize Menu" : "Expand Menu"}
         onClick={handleToggle}
         aria-expanded={isExpanded}
         icon={
@@ -64,7 +80,7 @@ const SidebarFooter = ({ isExpanded, handleToggle }: Props) => {
             className={cn(
               "shrink-0 text-[#B3B3B3] group-hover:text-grey-100",
               !isExpanded && "-rotate-180",
-              SIDEBAR_TRANSITION
+              SIDEBAR_COLLAPSE
             )}
           />
         }

@@ -32,4 +32,9 @@ export const DEMO_USER = {
   email: "demo@pennywise.app",
 } as const;
 
-export const SIDEBAR_TRANSITION = "transition-all duration-500 ease-in-out";
+// Only the continuous properties that change when the sidebar collapses:
+// widths, the left padding that positions icons, and the arrow's rotation.
+// Nothing discrete (gap, justify-content, max-width) may change, or it snaps
+// on the first frame. Labels and logos fade separately (.sidebar-fade).
+export const SIDEBAR_COLLAPSE =
+  "transition-[width,margin-left,padding-left,transform] duration-300 ease-in-out-strong motion-reduce:transition-none";

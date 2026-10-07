@@ -9,7 +9,7 @@ import RecurringIcon from "../../public/assets/icons/recurring.svg";
 import Typography from "./typography";
 
 import { cn } from "@/lib/utils";
-import { SIDEBAR_TRANSITION } from "@/utils/constants";
+import { SIDEBAR_COLLAPSE } from "@/utils/constants";
 
 export const navItems = [
   { title: "Overview", route: "/", icon: HomeIcon },
@@ -35,41 +35,38 @@ const SidebarNavList = ({ isExpanded }: Props) => {
           <li
             key={item.title}
             className={cn(
-              "group border-l-4 text-green flex h-14 cursor-pointer rounded-r-lg",
+              "group border-l-4 text-green flex h-14 cursor-pointer rounded-r-lg overflow-hidden",
               isActive
                 ? "bg-background border-l-green"
                 : "border-l-transparent",
-              isExpanded ? "pl-9" : "pl-3",
-              SIDEBAR_TRANSITION
+              // Collapsed, 20px centres the icon in the 64px pill.
+              isExpanded ? "pl-9" : "pl-5",
+              SIDEBAR_COLLAPSE
             )}
           >
             <Link
               href={item.route}
-              className={cn(
-                "flex items-center w-full",
-                isExpanded ? "gap-5" : "justify-center",
-                SIDEBAR_TRANSITION
-              )}
+              className="flex items-center gap-5 w-full"
             >
+              {/* Neither shrinks: in the narrow sidebar the label overflows
+                  and is clipped, instead of squeezing the icon to nothing. */}
               <item.icon
                 className={cn(
+                  "shrink-0",
                   isActive
                     ? "text-green"
                     : "text-[#B3B3B3] group-hover:text-grey-100",
-                  SIDEBAR_TRANSITION
+                  "transition-colors duration-150"
                 )}
               />
               <Typography
                 variant="preset-3"
+                data-hidden={!isExpanded}
                 className={cn(
-                  "overflow-hidden whitespace-nowrap",
-                  isExpanded
-                    ? "opacity-100 max-w-[200px]"
-                    : "opacity-0 max-w-0",
+                  "shrink-0 whitespace-nowrap sidebar-fade",
                   isActive
                     ? "text-grey-900"
-                    : "text-grey-500 group-hover:text-grey-100",
-                  SIDEBAR_TRANSITION
+                    : "text-grey-500 group-hover:text-grey-100"
                 )}
               >
                 {item.title}

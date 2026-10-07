@@ -5,7 +5,7 @@ import SidebarNavList from "../sidebar-nav-list";
 import SidebarHeader from "../sidebar-header";
 import SidebarFooter from "../sidebar-footer";
 import { cn } from "@/lib/utils";
-import { SIDEBAR_TRANSITION } from "@/utils/constants";
+import { SIDEBAR_COLLAPSE } from "@/utils/constants";
 import useAuthRedirect from "@/lib/store/use-auth-redirect";
 import useBillGeneration from "@/lib/store/use-bill-generation";
 import PageSkeleton from "../page-skeleton";
@@ -32,7 +32,7 @@ const Layout = ({ children }: { children: React.ReactElement }) => {
         className={cn(
           "w-full min-h-screen p-4 sm:p-10 mb-[80px] lg:mb-0",
           isSidebarExpanded ? "lg:ml-[300px]" : "lg:ml-[88px]",
-          SIDEBAR_TRANSITION
+          SIDEBAR_COLLAPSE
         )}
       >
         <div className="max-w-[1140px]">

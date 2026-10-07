@@ -129,6 +129,25 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  /* Sidebar labels and logos keep their full width and are clipped by the
+     narrowing sidebar while they fade: never squeezed. Fading out is quick
+     (before the clip is visible); fading in waits for the sidebar to open.
+     Hover colour stays fast in both states. */
+  .sidebar-fade {
+    transition:
+      color 150ms ease,
+      opacity 200ms var(--ease-out) 100ms;
+  }
+  .sidebar-fade[data-hidden="true"] {
+    opacity: 0;
+    transition:
+      color 150ms ease,
+      opacity 100ms var(--ease-out);
+  }
+}
+
 /* Reduced motion means gentler, not none: overlays keep their fade but drop
    the zoom and slide. Dialogs keep their centring translate (-50%). */
 @media (prefers-reduced-motion: reduce) {

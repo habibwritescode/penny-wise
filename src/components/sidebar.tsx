@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils";
-import { SIDEBAR_TRANSITION } from "@/utils/constants";
+import { SIDEBAR_COLLAPSE } from "@/utils/constants";
 
 type Props = {
   isExpanded: boolean;
@@ -12,10 +12,11 @@ const Sidebar = ({ isExpanded, children }: Props) => {
   return (
     <aside
       className={cn(
-        "z-10 hidden lg:block fixed bg-grey-900 h-screen rounded-r-[15px]",
+        // overflow-hidden clips labels and the full logo as the width narrows.
+        "z-10 hidden lg:block fixed bg-grey-900 h-screen rounded-r-[15px] overflow-hidden",
         "pt-10 pr-6 pb-[76px]",
         isExpanded ? "w-[300px]" : "w-[88px]",
-        SIDEBAR_TRANSITION
+        SIDEBAR_COLLAPSE
       )}
     >
       {children}

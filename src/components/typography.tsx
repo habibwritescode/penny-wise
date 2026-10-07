@@ -21,10 +21,12 @@ const textPresets: Record<ITextVariants, string> = {
 };
 
 // Passed through to the element: `title` (e.g. full text for truncated
-// labels) and `id` (e.g. a heading referenced by aria-labelledby).
+// labels), `id` (e.g. a heading referenced by aria-labelledby) and
+// `data-hidden` (styling hook, e.g. the sidebar label fade).
 interface ITypographyProps {
   title?: string;
   id?: string;
+  "data-hidden"?: boolean;
   variant?: ITextVariants;
   tag?: keyof JSX.IntrinsicElements; // Allows 'div', 'h1', 'p', 'span', etc.
   className?: string; // For additional Tailwind classes
