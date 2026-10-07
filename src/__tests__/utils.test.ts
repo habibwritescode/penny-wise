@@ -110,6 +110,14 @@ describe("positiveAmount", () => {
     }
     expect(positiveAmount.safeParse("12.5").success).toBe(true);
   });
+
+  it("rejects exponents, extra decimals and amounts over the cap", () => {
+    for (const value of ["3e12", "12.345", "1000000.01", "3000000000000"]) {
+      expect(positiveAmount.safeParse(value).success).toBe(false);
+    }
+    expect(positiveAmount.safeParse("1000000").success).toBe(true);
+    expect(positiveAmount.safeParse("0.01").success).toBe(true);
+  });
 });
 
 describe("formatting", () => {
