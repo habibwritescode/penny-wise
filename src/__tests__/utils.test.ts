@@ -49,6 +49,20 @@ describe("filterAndSortTransactions", () => {
     expect(result.map((item) => item.name)).toEqual(["Bistro"]);
   });
 
+  it("sorts highest/lowest by signed amount: income above expenses", () => {
+    const mixed = [
+      transaction({ id: "a", name: "Rent", amount: 900, type: "Expense" }),
+      transaction({ id: "b", name: "Salary", amount: 2000, type: "Income" }),
+      transaction({ id: "c", name: "Coffee", amount: 4, type: "Expense" }),
+      transaction({ id: "d", name: "Refund", amount: 20, type: "Income" }),
+    ];
+    const names = (sortFilter: string) =>
+      filterAndSortTransactions({ transactions: mixed, sortFilter }).map((t) => t.name);
+
+    expect(names("highest")).toEqual(["Salary", "Refund", "Coffee", "Rent"]);
+    expect(names("lowest")).toEqual(["Rent", "Coffee", "Refund", "Salary"]);
+  });
+
   it("searches by name, case-insensitively", () => {
     const result = filterAndSortTransactions({
       transactions,

@@ -11,6 +11,9 @@ export type ICategoryFilter = "All" | Category;
 export const getExpenses = (transactions: ITransaction[]) =>
   transactions.filter((item) => item.type === "Expense");
 
+const signed = (transaction: ITransaction) =>
+  transaction.type === "Income" ? transaction.amount : -transaction.amount;
+
 type FilterFunctionProps = {
   transactions: ITransaction[];
   sortFilter: string;
@@ -55,10 +58,12 @@ export const filterAndSortTransactions = ({
       return [...filteredTransactions].sort((a, b) =>
         b.name.localeCompare(a.name)
       );
+    // Signed, so income ranks above expenses: "highest" is the biggest
+    // money in, "lowest" the biggest money out.
     case "highest":
-      return [...filteredTransactions].sort((a, b) => b.amount - a.amount);
+      return [...filteredTransactions].sort((a, b) => signed(b) - signed(a));
     case "lowest":
-      return [...filteredTransactions].sort((a, b) => a.amount - b.amount);
+      return [...filteredTransactions].sort((a, b) => signed(a) - signed(b));
     default:
       return filteredTransactions;
   }
