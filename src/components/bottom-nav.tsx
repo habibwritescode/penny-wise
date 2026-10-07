@@ -13,12 +13,14 @@ const contentClass =
   "flex flex-col justify-center items-center w-full gap-1 h-full";
 const labelClass = "hidden sm:block whitespace-nowrap";
 
+// Shown below lg; keep in sync with sidebar.tsx (lg:block) and the
+// lg:ml-* / lg:mb-0 offsets in layout/main-layout.tsx.
 const BottomNav = () => {
   const router = useRouter();
   const signOut = useBoundStore((store) => store.signOut);
 
   return (
-    <div className="md:hidden fixed bottom-0 w-full bg-grey-900 sm:h-[74px] h-[52px] px-4 pt-2 sm:px-10 rounded-t-[15px]">
+    <div className="lg:hidden fixed bottom-0 w-full bg-grey-900 sm:h-[74px] h-[52px] px-4 pt-2 sm:px-10 rounded-t-[15px]">
       <ul className="flex h-full">
         {navItems.map((item) => {
           const isActive = router.asPath === item.route;

@@ -44,7 +44,7 @@ const OverviewPage = () => {
         )}
       </div>
 
-      <section className="my-[32px] grid lg:grid-cols-3 gap-6">
+      <section className="my-[32px] grid md:grid-cols-3 gap-6">
         {cardItems.map((item, index) => {
           const isFirstItem = index === 0;
 
@@ -72,13 +72,13 @@ const OverviewPage = () => {
         })}
       </section>
 
-      <section className="grid lg:grid-cols-10 gap-6">
-        <section className="lg:col-span-6 w-full grid gap-6 auto-rows-min">
+      <section className="grid xl:grid-cols-10 gap-6">
+        <section className="xl:col-span-6 w-full grid gap-6 auto-rows-min">
           <Pots />
           <Transactions />
         </section>
 
-        <section className="lg:col-span-4 grid gap-6">
+        <section className="xl:col-span-4 grid gap-6 auto-rows-min">
           <Budget />
           <RecurringBills />
         </section>

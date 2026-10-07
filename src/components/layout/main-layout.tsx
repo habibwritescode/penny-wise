@@ -25,10 +25,11 @@ const Layout = ({ children }: { children: React.ReactElement }) => {
           handleToggle={() => setIsSidebarExpanded((prev) => !prev)}
         />
       </Sidebar>
+      {/* Offsets match the sidebar (lg+) and bottom nav (below lg). */}
       <main
         className={cn(
-          "w-full min-h-screen p-4 sm:p-10 mb-[80px]",
-          isSidebarExpanded ? "md:ml-[300px]" : "md:ml-[88px]",
+          "w-full min-h-screen p-4 sm:p-10 mb-[80px] lg:mb-0",
+          isSidebarExpanded ? "lg:ml-[300px]" : "lg:ml-[88px]",
           SIDEBAR_TRANSITION
         )}
       >

@@ -6,11 +6,13 @@ type Props = {
   children: React.ReactNode;
 };
 
+// Shown from lg; keep in sync with bottom-nav.tsx (lg:hidden) and the
+// lg:ml-* offset in layout/main-layout.tsx.
 const Sidebar = ({ isExpanded, children }: Props) => {
   return (
     <aside
       className={cn(
-        "z-10 hidden md:block fixed bg-grey-900 h-screen rounded-r-[15px]",
+        "z-10 hidden lg:block fixed bg-grey-900 h-screen rounded-r-[15px]",
         "pt-10 pr-6 pb-[76px]",
         isExpanded ? "w-[300px]" : "w-[88px]",
         SIDEBAR_TRANSITION

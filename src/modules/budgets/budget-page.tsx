@@ -42,12 +42,12 @@ const BudgetsPage = () => {
           </Button>
         </div>
 
-        <section className="grid lg:grid-cols-10 gap-6">
-          <section className="lg:col-span-4">
+        <section className="grid xl:grid-cols-10 gap-6">
+          <section className="xl:col-span-4">
             <SpendingSummary />
           </section>
 
-          <section className="w-full lg:col-span-6 grid gap-6">
+          <section className="w-full xl:col-span-6 grid gap-6">
             {budgets.map((item) => (
               <BudgetCard
                 key={item.category}

@@ -13,15 +13,15 @@ const PageSkeleton = () => (
 
     <Block className="h-10 w-48" />
 
-    <div className="mt-10 grid gap-6 lg:grid-cols-3">
+    <div className="mt-10 grid gap-6 md:grid-cols-3">
       <Block className="h-28" />
       <Block className="h-28" />
       <Block className="h-28" />
     </div>
 
-    <div className="mt-6 grid gap-6 lg:grid-cols-10">
-      <Block className="h-96 lg:col-span-6" />
-      <Block className="h-96 lg:col-span-4" />
+    <div className="mt-6 grid gap-6 xl:grid-cols-10">
+      <Block className="h-96 xl:col-span-6" />
+      <Block className="h-96 xl:col-span-4" />
     </div>
   </div>
 );
