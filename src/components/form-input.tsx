@@ -35,35 +35,37 @@ const FormInput = ({
       render={({ field }) => (
         <FormItem>
           <FormLabel className="text-grey-500">{label}</FormLabel>
-          <FormControl>
-            <div className="relative">
+          {/* FormControl must wrap the input itself: it sets the id the label
+              points at, plus aria-invalid / aria-describedby for errors. */}
+          <div className="relative">
+            <FormControl>
               <Input
                 placeholder={placeholder}
                 {...field}
                 type={type}
                 disabled={disabled}
               />
+            </FormControl>
 
-              {inputType === "password" && (
-                <button
-                  type="button"
-                  className="absolute top-1/2 right-2 transform -translate-y-1/2"
-                  onClick={() =>
-                    setType(type === "password" ? "text" : "password")
-                  }
-                  aria-label={
-                    type === "password" ? "Show password" : "Hide password"
-                  }
-                >
-                  {type === "password" ? (
-                    <Eye className="w-4 h-4" />
-                  ) : (
-                    <EyeOff className="w-4 h-4" />
-                  )}
+            {inputType === "password" && (
+              <button
+                type="button"
+                className="absolute top-1/2 right-2 transform -translate-y-1/2"
+                onClick={() =>
+                  setType(type === "password" ? "text" : "password")
+                }
+                aria-label={
+                  type === "password" ? "Show password" : "Hide password"
+                }
+              >
+                {type === "password" ? (
+                  <Eye className="w-4 h-4" />
+                ) : (
+                  <EyeOff className="w-4 h-4" />
+                )}
                 </button>
               )}
-            </div>
-          </FormControl>
+          </div>
           <FormMessage />
         </FormItem>
       )}

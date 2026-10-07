@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useId, useState } from "react";
 
 import Typography from "@/components/typography";
 import currencyFormatter from "@/utils/formatCurrency";
@@ -20,6 +20,7 @@ type ModalType = "delete" | "edit" | "withdraw" | "add" | null;
 
 const PotsItem = ({ pot }: Props) => {
   const [openModal, setOpenModal] = useState<ModalType>(null);
+  const headingId = useId();
 
   const progressPercent = calculatePercent(pot.total, pot.target);
 
@@ -29,14 +30,17 @@ const PotsItem = ({ pot }: Props) => {
 
   return (
     <>
-      <div className="bg-white rounded-xl px-6 pt-[28px] pb-[38px]">
+      <article
+        aria-labelledby={headingId}
+        className="bg-white rounded-xl px-6 pt-[28px] pb-[38px]"
+      >
         <div className="flex items-center justify-between mb-6 w-full">
           <div className="flex gap-4 items-center">
             <div
               className="w-4 h-4 rounded-full bg-green"
               style={{ backgroundColor: pot.theme }}
             />
-            <Typography tag="h3" variant="preset-2">
+            <Typography tag="h3" variant="preset-2" id={headingId}>
               {pot.name}
             </Typography>
           </div>
@@ -106,7 +110,7 @@ const PotsItem = ({ pot }: Props) => {
             Withdraw
           </Button>
         </div>
-      </div>
+      </article>
 
       <DeletePot
         pot={pot}

@@ -33,7 +33,13 @@ const BottomNav = () => {
                 isActive ? "bg-background border-b-green" : "border-b-transparent"
               )}
             >
-              <Link href={item.route} className={contentClass}>
+              {/* Labels are hidden on phones, so the link needs its own name. */}
+              <Link
+                href={item.route}
+                aria-label={item.title}
+                aria-current={isActive ? "page" : undefined}
+                className={contentClass}
+              >
                 <item.icon
                   className={cn(
                     "shrink-0",

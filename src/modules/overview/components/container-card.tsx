@@ -1,5 +1,6 @@
 import Typography from "@/components/typography";
 import Link from "next/link";
+import { useId } from "react";
 
 import CaretIcon from "../../../../public/assets/icons/caret-right.svg";
 
@@ -16,10 +17,13 @@ const ContainerCard = ({
   route,
   children,
 }: IContainerCardProps) => {
+  const headingId = useId();
+
+  // A labelled region, so screen readers (and tests) can find each card by name.
   return (
-    <div className="bg-white p-8 rounded-2xl">
+    <section aria-labelledby={headingId} className="bg-white p-8 rounded-2xl">
       <div className="flex justify-between items-center">
-        <Typography tag="h2" variant="preset-2">
+        <Typography tag="h2" variant="preset-2" id={headingId}>
           {title}
         </Typography>
 
@@ -32,7 +36,7 @@ const ContainerCard = ({
       </div>
 
       {children}
-    </div>
+    </section>
   );
 };
 

@@ -17,15 +17,17 @@ interface Item {
 type Props = {
   items: Item[];
   trigger?: React.ReactElement;
+  // Accessible name for the menu button, e.g. "Actions for Rent" in a list.
+  label?: string;
 };
 
-const ActionDropdown = ({ items, trigger }: Props) => {
+const ActionDropdown = ({ items, trigger, label = "Actions" }: Props) => {
   return (
     <>
       <DropdownMenu modal={false}>
         <DropdownMenuTrigger asChild>
-          <Button variant="ghost" className="ml-1">
-            <span className="sr-only">Actions</span>
+          <Button variant="ghost" size="icon" className="ml-1 shrink-0">
+            <span className="sr-only">{label}</span>
             {trigger || <MenuIcon />}
           </Button>
         </DropdownMenuTrigger>
