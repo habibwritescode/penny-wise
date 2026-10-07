@@ -47,3 +47,17 @@ test("tall dialogs stay on screen on a short phone", async ({ page }) => {
   expect(box!.y).toBeGreaterThanOrEqual(0);
   expect(box!.y + box!.height).toBeLessThanOrEqual(568);
 });
+
+test("every page has exactly one main landmark", async ({ page }) => {
+  for (const path of ["/login", "/sign-up"]) {
+    await page.goto(path);
+    await page.getByRole("heading", { level: 1 }).waitFor();
+    await expect(page.getByRole("main"), path).toHaveCount(1);
+  }
+  await signInAsDemo(page);
+  for (const path of PAGES) {
+    await page.goto(path);
+    await page.getByRole("heading", { level: 1 }).waitFor();
+    await expect(page.getByRole("main"), path).toHaveCount(1);
+  }
+});

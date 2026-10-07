@@ -33,7 +33,8 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
   const getLayout = Component.getLayout ?? ((page) => <Layout>{page}</Layout>);
 
   return (
-    <main className={publicSans.className}>
+    // A plain wrapper for the font: each layout renders the page's single <main>.
+    <div className={publicSans.className}>
       <Head>
         <title>Pennywise</title>
         <meta
@@ -50,6 +51,6 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
         mobileOffset={{ bottom: 68 }}
         style={{ fontFamily: "inherit" }}
       />
-    </main>
+    </div>
   );
 }
