@@ -2,8 +2,16 @@ import Link from "next/link";
 import { LogOut } from "lucide-react";
 import { useRouter } from "next/router";
 import Typography from "./typography";
+import { cn } from "@/lib/utils";
 import { navItems } from "./sidebar-nav-list";
 import useBoundStore from "@/lib/store/store";
+
+// Equal-width tabs so all six fit at every width; labels never wrap.
+const itemClass =
+  "group flex-1 min-w-0 border-b-4 rounded-t-lg cursor-pointer";
+const contentClass =
+  "flex flex-col justify-center items-center w-full gap-1 h-full";
+const labelClass = "hidden sm:block whitespace-nowrap";
 
 const BottomNav = () => {
   const router = useRouter();
@@ -11,25 +19,35 @@ const BottomNav = () => {
 
   return (
     <div className="md:hidden fixed bottom-0 w-full bg-grey-900 sm:h-[74px] h-[52px] px-4 pt-2 sm:px-10 rounded-t-[15px]">
-      <ul className="flex justify-evenly h-full">
+      <ul className="flex h-full">
         {navItems.map((item) => {
           const isActive = router.asPath === item.route;
 
           return (
             <li
               key={item.title}
-              className={`${isActive ? "bg-background border-b-green border-b-4" : "border-b-transparent"} group border-b-4 px-3 sm:px-6 text-green cursor-pointer rounded-t-lg`}
+              className={cn(
+                itemClass,
+                isActive ? "bg-background border-b-green" : "border-b-transparent"
+              )}
             >
-              <Link
-                href={item.route}
-                className="flex flex-col justify-center items-center w-full gap-1 h-full"
-              >
+              <Link href={item.route} className={contentClass}>
                 <item.icon
-                  className={` ${isActive ? "text-green" : "text-[#B3B3B3] group-hover:text-grey-100"}`}
+                  className={cn(
+                    "shrink-0",
+                    isActive
+                      ? "text-green"
+                      : "text-[#B3B3B3] group-hover:text-grey-100"
+                  )}
                 />
                 <Typography
-                  variant="preset-3"
-                  className={`hidden sm:block ${isActive ? "text-grey-900" : "text-grey-300 group-hover:text-grey-100"} transition-all ease-in-out `}
+                  variant="preset-5-bold"
+                  className={cn(
+                    labelClass,
+                    isActive
+                      ? "text-grey-900"
+                      : "text-grey-300 group-hover:text-grey-100"
+                  )}
                 >
                   {item.title}
                 </Typography>
@@ -38,17 +56,17 @@ const BottomNav = () => {
           );
         })}
 
-        <li className="group border-b-4 border-b-transparent px-3 sm:px-6 rounded-t-lg">
+        <li className={cn(itemClass, "border-b-transparent")}>
           <button
             type="button"
             onClick={signOut}
             aria-label="Log Out"
-            className="flex flex-col justify-center items-center w-full gap-1 h-full"
+            className={contentClass}
           >
-            <LogOut className="h-5 w-5 text-[#B3B3B3] group-hover:text-grey-100" />
+            <LogOut className="h-5 w-5 shrink-0 text-[#B3B3B3] group-hover:text-grey-100" />
             <Typography
-              variant="preset-3"
-              className="hidden sm:block text-grey-300 group-hover:text-grey-100"
+              variant="preset-5-bold"
+              className={cn(labelClass, "text-grey-300 group-hover:text-grey-100")}
             >
               Log Out
             </Typography>
