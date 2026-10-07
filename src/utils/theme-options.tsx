@@ -1,4 +1,3 @@
-import Typography from "@/components/typography";
 import { COLOURS } from "@/utils/constants";
 
 type ColourName = keyof typeof COLOURS;
@@ -17,32 +16,17 @@ const getThemeOptions = (list: { theme: string }[], currentTheme?: string) => {
 
     return {
       name: (
-        <div className="flex justify-between items-center border-b border-grey-100 pb-3">
-          <div className="flex gap-3 items-center">
-            <span
-              className="h-4 w-4 rounded-full"
-              style={{ backgroundColor: `hsl(var(--${colourVariable}))` }}
-            />
-            <Typography tag="span" variant="preset-4" className="text-grey-500">
-              {colourName}
-            </Typography>
-          </div>
-
-          <div>
-            {isUsed && (
-              <Typography
-                tag="span"
-                variant="preset-5"
-                className="text-grey-500"
-              >
-                Already used
-              </Typography>
-            )}
-          </div>
-        </div>
+        <span className="flex gap-3 items-center">
+          <span
+            className="h-4 w-4 shrink-0 rounded-full"
+            style={{ backgroundColor: `hsl(var(--${colourVariable}))` }}
+          />
+          {colourName}
+        </span>
       ),
       value: colourHex,
       disabled: isUsed,
+      hint: isUsed ? "Already used" : undefined,
     };
   });
 };

@@ -17,6 +17,7 @@ type Options = {
   name: string | React.ReactElement;
   value: string;
   disabled?: boolean;
+  hint?: string;
 };
 
 type Props = {
@@ -60,7 +61,8 @@ const FormSelect = ({
                   key={option.value}
                   value={option.value}
                   disabled={option.disabled}
-                  className="grid grid-cols-1"
+                  hint={option.hint}
+                  className="py-3 rounded-none border-b border-grey-100 last:border-b-0"
                 >
                   {option.name}
                 </SelectItem>
