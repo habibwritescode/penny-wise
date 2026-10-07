@@ -1,35 +1,36 @@
+import { useMemo, useState } from "react";
+
 import { DataTable } from "@/components/data-table/data-table";
 import { LabeledDropdown } from "@/components/labeled-dropdown";
 import SearchInput from "@/components/search-input";
-import { SORT_OPTIONS, SortFilter } from "@/utils/types";
-import { useMemo, useState } from "react";
+import useBoundStore from "@/lib/store/store";
+import { todayLocal } from "@/utils/local-date";
 import columns from "../columns";
 import {
-  filterAndSortTransactions,
-  getRecurringBills,
-} from "../../transactions/utils";
-import useBoundStore from "@/lib/store/store";
+  BILL_SORT_OPTIONS,
+  getBillRows,
+  sortBillRows,
+  type BillSort,
+} from "../utils";
 import FilterIcon from "../../../../public/assets/icons/filter.svg";
 
 const RecurringBillsTable = () => {
-  const allTransactions = useBoundStore((store) => store.transactions);
+  const bills = useBoundStore((store) => store.bills);
+  const occurrences = useBoundStore((store) => store.occurrences);
 
   const [searchValue, setSearchValue] = useState("");
-  const [sortFilter, setSortFilter] = useState<SortFilter | "">("");
+  const [sort, setSort] = useState<BillSort>("due");
+  const today = todayLocal();
 
-  // Memoised so the table only resets to page 1 when the filters change.
-  const transactions = useMemo(
+  // Memoised so the table only resets to page 1 when the data or filters change.
+  const rows = useMemo(
     () =>
-      filterAndSortTransactions({
-        transactions: getRecurringBills(allTransactions),
-        sortFilter,
-        searchValue,
-      }),
-    [allTransactions, sortFilter, searchValue]
+      sortBillRows(getBillRows(bills, occurrences, today), sort, searchValue),
+    [bills, occurrences, today, sort, searchValue]
   );
 
   return (
-    <div className="bg-white p-8 rounded-xl">
+    <div className="bg-white p-5 sm:p-8 rounded-xl">
       <div className="flex justify-between gap-4 sm:gap-6 mb-6">
         <SearchInput
           placeholder="Search bills"
@@ -40,14 +41,18 @@ const RecurringBillsTable = () => {
         <div className="flex shrink-0 gap-4 sm:gap-6">
           <LabeledDropdown
             label="Sort by"
-            options={SORT_OPTIONS}
-            onChange={(value) => setSortFilter(value as SortFilter)}
+            options={[...BILL_SORT_OPTIONS]}
+            onChange={(value) => setSort(value as BillSort)}
             icon={<FilterIcon />}
           />
         </div>
       </div>
 
-      <DataTable columns={columns} data={transactions} />
+      <DataTable
+        columns={columns}
+        data={rows}
+        getRowId={(row) => row.bill.id}
+      />
     </div>
   );
 };

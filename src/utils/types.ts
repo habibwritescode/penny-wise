@@ -21,7 +21,6 @@ export interface ITransaction {
   name: string;
   category: string;
   date: string;
-  recurring: boolean;
   type: TransactionType;
 }
 

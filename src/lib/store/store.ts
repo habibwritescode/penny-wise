@@ -2,17 +2,22 @@ import { create } from "zustand";
 import { createJSONStorage, devtools, persist } from "zustand/middleware";
 import createAuthSlice, { IAuthSlice } from "@/lib/store/slices/auth";
 import createPotSlice, { IPotSlice } from "@/lib/store/slices/pot";
+import createBillSlice, { IBillSlice } from "@/lib/store/slices/bill";
 import createBudgetSlice, { IBudgetSlice } from "@/lib/store/slices/budget";
 import createTransactionSlice, {
   ITransactionSlice,
 } from "@/lib/store/slices/transaction";
 import { COLOURS } from "@/utils/constants";
+import { toLocalDate, todayLocal, type LocalDate } from "@/utils/local-date";
+import { nextDueDate } from "@/modules/recurring-bills/schedule";
+import type { IBillOccurrence, IRecurringBill, ITransaction } from "@/utils/types";
 import { appStorage } from "@/lib/store/idb-storage";
 
 export type BoundStoreT = ITransactionSlice &
   IBudgetSlice &
   IAuthSlice &
-  IPotSlice;
+  IPotSlice &
+  IBillSlice;
 
 type Themed = { theme: string };
 
@@ -22,15 +27,71 @@ const toHexTheme = <T extends Themed>(item: T): T => {
   return hex ? { ...item, theme: hex } : item;
 };
 
-export const migrateStore = (persisted: unknown, version: number) => {
-  const state = persisted as Partial<BoundStoreT>;
+// v1 marked recurring bills with a flag on the transaction; v2 has real
+// bills. Each flagged transaction becomes a monthly bill on that day of the
+// month, with the transaction kept as its paid occurrence, so no history is
+// lost. The schedule starts at the next due date after the upgrade: these were
+// never bills before, so catching up every month since the transaction would
+// invent a backlog of "overdue" bills nobody owed.
+type V1Transaction = ITransaction & { recurring?: boolean };
+
+const billsFromRecurringTransactions = (
+  transactions: V1Transaction[] = [],
+  today: LocalDate
+) => {
+  const bills: IRecurringBill[] = [];
+  const occurrences: IBillOccurrence[] = [];
+
+  for (const transaction of transactions.filter((t) => t.recurring)) {
+    const paidOn = toLocalDate(transaction.date);
+    const bill: IRecurringBill = {
+      id: crypto.randomUUID(),
+      name: transaction.name,
+      category: transaction.category,
+      amount: transaction.amount,
+      cadence: "monthly",
+      anchorDate: paidOn,
+      avatar: transaction.avatar,
+    };
+    bill.anchorDate = nextDueDate(bill, today);
+    bills.push(bill);
+    occurrences.push({
+      id: crypto.randomUUID(),
+      billId: bill.id,
+      dueDate: paidOn,
+      amount: transaction.amount,
+      transactionId: transaction.id,
+    });
+  }
+
+  return { bills, occurrences };
+};
+
+// Each step upgrades one version, and they run in order, so data saved at any
+// older version reaches the current shape.
+export const migrateStore = (
+  persisted: unknown,
+  version: number,
+  today: LocalDate = todayLocal()
+) => {
+  let state = persisted as Partial<BoundStoreT>;
 
   if (version < 1) {
-    return {
+    state = {
       ...state,
       budgets: state.budgets?.map(toHexTheme),
       pots: state.pots?.map(toHexTheme),
-    } as BoundStoreT;
+    };
+  }
+
+  if (version < 2) {
+    state = {
+      ...state,
+      ...billsFromRecurringTransactions(
+        state.transactions as V1Transaction[],
+        today
+      ),
+    };
   }
 
   return state as BoundStoreT;
@@ -44,11 +105,12 @@ const useBoundStore = create<BoundStoreT>()(
         ...createTransactionSlice(...a),
         ...createBudgetSlice(...a),
         ...createPotSlice(...a),
+        ...createBillSlice(...a),
       }),
       {
         name: "client-store",
         storage: createJSONStorage(() => appStorage),
-        version: 1,
+        version: 2,
         migrate: migrateStore,
         // Rehydrated in _app after mount so the first client render matches the server HTML.
         skipHydration: true,

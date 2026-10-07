@@ -7,6 +7,7 @@ import SidebarFooter from "../sidebar-footer";
 import { cn } from "@/lib/utils";
 import { SIDEBAR_TRANSITION } from "@/utils/constants";
 import useAuthRedirect from "@/lib/store/use-auth-redirect";
+import useBillGeneration from "@/lib/store/use-bill-generation";
 import PageSkeleton from "../page-skeleton";
 
 const Layout = ({ children }: { children: React.ReactElement }) => {
@@ -14,6 +15,7 @@ const Layout = ({ children }: { children: React.ReactElement }) => {
   // The shell renders immediately (including on the server); only the page
   // content waits for persisted data, so first load shows a skeleton.
   const isReady = useAuthRedirect("protected");
+  useBillGeneration();
 
   return (
     <div className="flex">

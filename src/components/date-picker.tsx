@@ -2,6 +2,7 @@ import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import { todayLocal } from "@/utils/local-date";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import {
@@ -21,9 +22,19 @@ type Props = {
   label: string;
   name: string;
   control: any;
+  // Transactions can't be in the future; a bill's next due date can.
+  allowFuture?: boolean;
+  // A bill's next due date can't be in the past.
+  disablePast?: boolean;
 };
 
-const DatePicker = ({ control, name, label }: Props) => {
+const DatePicker = ({
+  control,
+  name,
+  label,
+  allowFuture = false,
+  disablePast = false,
+}: Props) => {
   return (
     <FormField
       control={control}
@@ -56,7 +67,9 @@ const DatePicker = ({ control, name, label }: Props) => {
                 selected={field.value}
                 onSelect={field.onChange}
                 disabled={(date) =>
-                  date > new Date() || date < new Date("1900-01-01")
+                  (!allowFuture && date > new Date()) ||
+                  (disablePast && todayLocal(date) < todayLocal()) ||
+                  date < new Date("1900-01-01")
                 }
                 initialFocus
               />

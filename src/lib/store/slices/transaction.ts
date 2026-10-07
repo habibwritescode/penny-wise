@@ -1,6 +1,7 @@
 import { StateCreator } from "zustand";
 import type { BoundStoreT } from "@/lib/store/store";
 import { ITransaction } from "@/utils/types";
+import { billSeed } from "@/lib/store/seed";
 
 type State = {
   transactions: ITransaction[];
@@ -21,7 +22,6 @@ export const initialState = {
       name: "Sun Park",
       category: "General",
       date: "2025-08-17T16:12:05Z",
-      recurring: false,
       type: "Income" as const,
     },
     {
@@ -31,9 +31,10 @@ export const initialState = {
       name: "Urban Services Hub",
       category: "General",
       date: "2025-08-17T21:08:09Z",
-      recurring: true,
       type: "Expense" as const,
     },
+    // Payment for the demo bill that starts out paid (see seed.ts).
+    ...billSeed.payments,
   ],
 };
 

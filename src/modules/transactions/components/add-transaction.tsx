@@ -10,7 +10,6 @@ import useBoundStore from "@/lib/store/store";
 import FormSelect from "@/components/form-select";
 import { CATEGORIES } from "@/utils/constants";
 import DatePicker from "@/components/date-picker";
-import Checkbox from "@/components/checkbox";
 import { positiveAmount } from "@/utils/schema";
 
 const CATEGORY_OPTIONS = CATEGORIES.map((item) => ({
@@ -30,7 +29,6 @@ const formSchema = z.object({
     message: "Required",
   }),
   amount: positiveAmount,
-  recurring: z.boolean().default(false),
   type: z.enum(["Income", "Expense"], {
     errorMap: () => ({ message: "Invalid type" }),
   }),
@@ -52,7 +50,6 @@ const AddTransaction = ({ isOpen, onClose }: Props) => {
       type: undefined,
       date: new Date(),
       category: "",
-      recurring: false,
     },
   });
 
@@ -69,7 +66,6 @@ const AddTransaction = ({ isOpen, onClose }: Props) => {
       type: values.type,
       date: values.date.toISOString(),
       category: values.category,
-      recurring: values.recurring,
     });
 
     handleClose();
@@ -115,12 +111,6 @@ const AddTransaction = ({ isOpen, onClose }: Props) => {
             placeholder="Select Category"
             control={form.control}
             options={CATEGORY_OPTIONS}
-          />
-          <Checkbox
-            label="Mark as Recurring?"
-            name="recurring"
-            control={form.control}
-            description="This transaction will repeat on a regular basis"
           />
 
           <Button className="w-full" size="xl" type="submit">

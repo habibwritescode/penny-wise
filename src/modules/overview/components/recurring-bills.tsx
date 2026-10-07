@@ -1,17 +1,25 @@
 import Typography from "@/components/typography";
 import currencyFormatter from "@/utils/formatCurrency";
-import useBoundStore from "@/lib/store/store";
-import { getRecurringBills } from "@/modules/transactions/utils";
-import { getBillsSummary } from "@/modules/recurring-bills/utils";
+import useBillSummary from "@/modules/recurring-bills/use-bill-summary";
+import BillStatusBadge from "@/modules/recurring-bills/components/bill-status-badge";
+import { cn } from "@/lib/utils";
 import ContainerCard from "./container-card";
 
 const RecurringBills = () => {
-  const transactions = useBoundStore((store) => store.transactions);
-  const { paid, upcoming, dueSoon } = getBillsSummary(
-    getRecurringBills(transactions)
-  );
+  const { paid, upcoming, dueSoon, overdue } = useBillSummary();
 
   const listItems = [
+    // Only shown when something is overdue, and styled so it can't be missed.
+    ...(overdue.count
+      ? [
+          {
+            title: "Overdue",
+            borderColor: "hsl(var(--red))",
+            amount: overdue.total,
+            isOverdue: true,
+          },
+        ]
+      : []),
     {
       title: "Paid Bills",
       borderColor: "hsl(var(--green))",
@@ -36,12 +44,22 @@ const RecurringBills = () => {
           <div
             key={item.title}
             style={{ borderColor: item.borderColor }}
-            className="flex items-center justify-between bg-beige-100 h-[61px] w-full border-l-4 rounded-lg px-4"
+            className={cn(
+              "flex items-center justify-between gap-4 h-[61px] w-full border-l-4 rounded-lg px-4",
+              "isOverdue" in item ? "bg-red/10" : "bg-beige-100"
+            )}
           >
-            <Typography variant="preset-4" className="text-grey-500">
-              {item.title}
-            </Typography>
-            <Typography variant="preset-4-bold">
+            {"isOverdue" in item ? (
+              <BillStatusBadge status="overdue" />
+            ) : (
+              <Typography variant="preset-4" className="text-grey-500">
+                {item.title}
+              </Typography>
+            )}
+            <Typography
+              variant="preset-4-bold"
+              className={"isOverdue" in item ? "text-red" : undefined}
+            >
               {currencyFormatter.format(item.amount)}
             </Typography>
           </div>

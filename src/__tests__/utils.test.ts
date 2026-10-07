@@ -4,9 +4,7 @@ import { calculatePercent } from "@/utils/math";
 import {
   CATEGORY_FILTER_OPTIONS,
   filterAndSortTransactions,
-  getRecurringBills,
 } from "@/modules/transactions/utils";
-import { getBillsSummary } from "@/modules/recurring-bills/utils";
 import { getVisiblePages } from "@/components/data-table/data-table-pagination";
 import getThemeOptions from "@/utils/theme-options";
 import getInitials from "@/utils/getInitials";
@@ -21,7 +19,6 @@ const transaction = (overrides: Partial<ITransaction>): ITransaction => ({
   amount: 10,
   category: "General",
   date: "2024-08-10T00:00:00Z",
-  recurring: false,
   type: "Expense",
   ...overrides,
 });
@@ -59,23 +56,6 @@ describe("filterAndSortTransactions", () => {
       searchValue: "cIn",
     });
     expect(result.map((item) => item.name)).toEqual(["Cinema"]);
-  });
-});
-
-describe("getBillsSummary", () => {
-  it("splits recurring bills into paid, upcoming and due soon", () => {
-    const bills = getRecurringBills([
-      transaction({ id: "a", amount: 10, recurring: true, date: "2024-08-02T00:00:00Z" }),
-      transaction({ id: "b", amount: 20, recurring: true, date: "2024-08-12T00:00:00Z" }),
-      transaction({ id: "c", amount: 40, recurring: true, date: "2024-08-28T00:00:00Z" }),
-      transaction({ id: "d", amount: 99, recurring: true, type: "Income" }),
-    ]);
-
-    const summary = getBillsSummary(bills, new Date("2024-09-10T12:00:00Z"));
-
-    expect(summary.paid).toEqual({ count: 1, total: 10 });
-    expect(summary.upcoming).toEqual({ count: 2, total: 60 });
-    expect(summary.dueSoon).toEqual({ count: 1, total: 20 });
   });
 });
 

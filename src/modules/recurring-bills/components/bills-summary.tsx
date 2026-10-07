@@ -1,16 +1,14 @@
 import Typography from "@/components/typography";
-import useBoundStore from "@/lib/store/store";
 import currencyFormatter from "@/utils/formatCurrency";
-import { getRecurringBills } from "@/modules/transactions/utils";
-import { getBillsSummary } from "../utils";
+import useBillSummary from "../use-bill-summary";
 
 const BillsSummary = () => {
-  const transactions = useBoundStore((store) => store.transactions);
-  const { paid, upcoming, dueSoon } = getBillsSummary(
-    getRecurringBills(transactions)
-  );
+  const { paid, upcoming, dueSoon, overdue } = useBillSummary();
 
   const items = [
+    ...(overdue.count
+      ? [{ title: "Overdue", ...overdue, className: "text-red" }]
+      : []),
     { title: "Paid Bills", ...paid, className: "" },
     { title: "Total Upcoming", ...upcoming, className: "" },
     { title: "Due Soon", ...dueSoon, className: "text-red" },
