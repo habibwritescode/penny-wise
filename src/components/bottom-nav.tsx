@@ -21,7 +21,9 @@ const BottomNav = () => {
   const signOut = useBoundStore((store) => store.signOut);
 
   return (
-    <div className="lg:hidden fixed bottom-0 w-full bg-grey-900 sm:h-[74px] h-[52px] px-4 pt-2 sm:px-10 rounded-t-[15px]">
+    // Height and bottom padding grow by the home-indicator inset, so the tabs
+    // sit above it while the bar's background reaches the screen edge.
+    <div className="lg:hidden fixed bottom-0 w-full bg-grey-900 h-[calc(52px+env(safe-area-inset-bottom,0px))] sm:h-[calc(74px+env(safe-area-inset-bottom,0px))] pb-[env(safe-area-inset-bottom,0px)] pt-2 pl-[calc(1rem+env(safe-area-inset-left,0px))] pr-[calc(1rem+env(safe-area-inset-right,0px))] sm:pl-[calc(2.5rem+env(safe-area-inset-left,0px))] sm:pr-[calc(2.5rem+env(safe-area-inset-right,0px))] rounded-t-[15px]">
       <ul className="flex h-full">
         {navItems.map((item) => {
           const isActive = router.asPath === item.route;

@@ -30,7 +30,11 @@ const Layout = ({ children }: { children: React.ReactElement }) => {
       {/* Offsets match the sidebar (lg+) and bottom nav (below lg). */}
       <main
         className={cn(
-          "w-full min-h-screen p-4 sm:p-10 mb-[80px] lg:mb-0",
+          // dvh tracks the visible area as mobile browser chrome shows/hides
+          // (100vh where dvh isn't supported);
+          // the bottom margin and top padding clear the bottom nav, home
+          // indicator and (when installed) status bar.
+          "w-full min-h-screen supports-[min-height:100dvh]:min-h-dvh p-4 sm:p-10 pt-[max(1rem,env(safe-area-inset-top,0px))] sm:pt-[max(2.5rem,env(safe-area-inset-top,0px))] mb-[calc(80px+env(safe-area-inset-bottom,0px))] lg:mb-0",
           isSidebarExpanded ? "lg:ml-[300px]" : "lg:ml-[88px]",
           SIDEBAR_COLLAPSE
         )}

@@ -59,8 +59,11 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
       {/* Lifted clear of the mobile bottom nav (52px, 74px from sm). */}
       <Toaster
         position="bottom-right"
-        offset={{ bottom: 96, right: 24 }}
-        mobileOffset={{ bottom: 68 }}
+        offset={{
+          bottom: "calc(96px + env(safe-area-inset-bottom, 0px))",
+          right: 24,
+        }}
+        mobileOffset={{ bottom: "calc(68px + env(safe-area-inset-bottom, 0px))" }}
         style={{ fontFamily: "inherit" }}
       />
     </div>

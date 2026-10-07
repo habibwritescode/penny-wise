@@ -39,7 +39,7 @@ class AppErrorBoundary extends Component<Props, State> {
     if (!this.state.error) return this.props.children;
 
     return (
-      <div className="min-h-screen flex items-center justify-center p-4">
+      <div className="min-h-screen supports-[min-height:100dvh]:min-h-dvh flex items-center justify-center p-4">
         <div
           role="alert"
           className="w-full max-w-[560px] space-y-6 rounded-xl bg-white p-6 sm:p-8"

@@ -17,7 +17,7 @@ const StorageBanner = () => {
   return (
     <div
       role="status"
-      className="fixed inset-x-4 bottom-[68px] sm:bottom-[90px] lg:bottom-6 sm:left-auto sm:right-6 z-50 max-w-sm flex items-start gap-3 rounded-lg bg-grey-900 px-4 py-3 text-sm text-white shadow-lg"
+      className="fixed inset-x-4 bottom-[calc(68px+env(safe-area-inset-bottom,0px))] sm:bottom-[calc(90px+env(safe-area-inset-bottom,0px))] lg:bottom-6 sm:left-auto sm:right-6 z-50 max-w-sm flex items-start gap-3 rounded-lg bg-grey-900 px-4 py-3 text-sm text-white shadow-lg"
     >
       <TriangleAlert className="h-5 w-5 shrink-0 text-yellow" aria-hidden />
       <p>

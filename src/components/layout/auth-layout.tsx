@@ -26,9 +26,10 @@ const AuthLayout = ({ children }: { children: React.ReactElement }) => {
           key="theme-color-desktop"
         />
       </Head>
-      <div className="min-h-screen flex flex-col lg:flex-row lg:items-center lg:h-screen lg:gap-12 xl:gap-36 lg:p-5">
-        {/* Below lg there is no room for the illustration; show the logo bar instead. */}
-        <header className="lg:hidden flex justify-center bg-grey-900 rounded-b-lg py-6">
+      <div className="min-h-screen supports-[min-height:100dvh]:min-h-dvh flex flex-col lg:flex-row lg:items-center lg:h-screen lg:supports-[height:100dvh]:h-dvh lg:gap-12 xl:gap-36 lg:p-5">
+        {/* Below lg there's no room for the illustration, so a logo bar instead.
+            It extends under the status bar when installed, padding the logo clear. */}
+        <header className="lg:hidden flex justify-center bg-grey-900 rounded-b-lg py-6 pt-[max(1.5rem,env(safe-area-inset-top,0px))]">
           <Image
             src="/logo-full.svg"
             alt="Pennywise"

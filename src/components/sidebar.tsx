@@ -13,7 +13,7 @@ const Sidebar = ({ isExpanded, children }: Props) => {
     <aside
       className={cn(
         // overflow-hidden clips labels and the full logo as the width narrows.
-        "z-10 hidden lg:block fixed bg-grey-900 h-screen rounded-r-[15px] overflow-hidden",
+        "z-10 hidden lg:block fixed bg-grey-900 h-screen supports-[height:100dvh]:h-dvh rounded-r-[15px] overflow-hidden",
         "pt-10 pr-6 pb-[76px]",
         isExpanded ? "w-[300px]" : "w-[88px]",
         SIDEBAR_COLLAPSE
