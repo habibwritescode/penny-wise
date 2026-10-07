@@ -1,8 +1,8 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { createStore } from "zustand/vanilla";
 
 import type { BoundStoreT } from "@/lib/store/store";
-import { migrateStore } from "@/lib/store/store";
+import { hydrateStore, migrateStore } from "@/lib/store/store";
 import createAuthSlice from "@/lib/store/slices/auth";
 import createBudgetSlice from "@/lib/store/slices/budget";
 import createPotSlice from "@/lib/store/slices/pot";
@@ -112,5 +112,16 @@ describe("auth slice", () => {
     expect(store.getState().budgets).toBe(budgets);
     expect(store.getState().pots).toBe(pots);
     expect(store.getState().transactions).toBe(transactions);
+  });
+});
+
+describe("hydrateStore", () => {
+  it("loads saved data at most once, however often it's called", async () => {
+    // No IndexedDB in Node: the adapter falls back to memory and warns.
+    const warn = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const first = hydrateStore();
+    expect(hydrateStore()).toBe(first);
+    await first;
+    warn.mockRestore();
   });
 });

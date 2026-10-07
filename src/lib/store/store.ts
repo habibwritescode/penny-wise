@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { devtools, persist } from "zustand/middleware";
+import { createJSONStorage, devtools, persist } from "zustand/middleware";
 import createAuthSlice, { IAuthSlice } from "@/lib/store/slices/auth";
 import createPotSlice, { IPotSlice } from "@/lib/store/slices/pot";
 import createBudgetSlice, { IBudgetSlice } from "@/lib/store/slices/budget";
@@ -7,6 +7,7 @@ import createTransactionSlice, {
   ITransactionSlice,
 } from "@/lib/store/slices/transaction";
 import { COLOURS } from "@/utils/constants";
+import { appStorage } from "@/lib/store/idb-storage";
 
 export type BoundStoreT = ITransactionSlice &
   IBudgetSlice &
@@ -46,6 +47,7 @@ const useBoundStore = create<BoundStoreT>()(
       }),
       {
         name: "client-store",
+        storage: createJSONStorage(() => appStorage),
         version: 1,
         migrate: migrateStore,
         // Rehydrated in _app after mount so the first client render matches the server HTML.
@@ -56,3 +58,11 @@ const useBoundStore = create<BoundStoreT>()(
 );
 
 export default useBoundStore;
+
+// Loads saved data at most once. Calling persist.rehydrate() twice (e.g. React
+// StrictMode running effects twice in development) starts two async reads; the
+// slower one finishes last and overwrites anything written in between, such as
+// bill occurrences generated as soon as the first read completed.
+let hydration: Promise<void> | undefined;
+export const hydrateStore = () =>
+  (hydration ??= useBoundStore.persist.rehydrate() as Promise<void>);

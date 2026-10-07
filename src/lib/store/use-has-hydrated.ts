@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import useBoundStore from "@/lib/store/store";
 
-// The store rehydrates from localStorage after mount (see _app), so anything
+// The store rehydrates from IndexedDB after mount (see _app), so anything
 // that depends on persisted state must wait for this before deciding.
 // Start from the store's real state so later mounts (e.g. after login) don't
 // flash the skeleton. On the server `persist` isn't attached (no localStorage),
