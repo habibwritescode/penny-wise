@@ -5,6 +5,7 @@ import { Public_Sans } from "next/font/google";
 import Layout from "@/components/layout/main-layout";
 import { hydrateStore } from "@/lib/store/store";
 import StorageBanner from "@/components/storage-banner";
+import AppErrorBoundary from "@/components/app-error-boundary";
 import "@/styles/globals.css";
 
 import { useEffect, type ReactElement, type ReactNode } from "react";
@@ -39,7 +40,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
           content="Track transactions, budgets, savings pots and recurring bills."
         />
       </Head>
-      {getLayout(<Component {...pageProps} />)}
+      <AppErrorBoundary>{getLayout(<Component {...pageProps} />)}</AppErrorBoundary>
       <StorageBanner />
     </main>
   );

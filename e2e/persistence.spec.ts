@@ -108,3 +108,38 @@ test("shows a banner and keeps working when IndexedDB is unavailable", async ({
   expect(bannerBox!.y + bannerBox!.height).toBeLessThanOrEqual(navBox!.y);
 });
 
+test("corrupted saved data shows a way out instead of a blank page", async ({
+  page,
+}) => {
+  await signInAsDemo(page);
+  await expect.poll(() => readIndexedDbStore(page)).not.toBeNull();
+
+  // Corrupt one bill's date directly in IndexedDB, then reopen the app.
+  await page.evaluate(
+    () =>
+      new Promise<void>((resolve) => {
+        const open = indexedDB.open("penny-wise");
+        open.onsuccess = () => {
+          const store = open.result
+            .transaction("state", "readwrite")
+            .objectStore("state");
+          const get = store.get("client-store");
+          get.onsuccess = () => {
+            const saved = JSON.parse(get.result);
+            saved.state.bills[0].anchorDate = "not-a-date";
+            store.put(JSON.stringify(saved), "client-store").onsuccess = () =>
+              resolve();
+          };
+        };
+      })
+  );
+  await page.reload();
+
+  const alert = page.getByRole("alert").filter({ hasText: "Something went wrong" });
+  await expect(alert).toBeVisible();
+
+  await alert.getByRole("button", { name: "Reset demo data" }).click();
+  // Saved data (including the sign-in) is gone: back to a fresh start.
+  await page.waitForURL("/login");
+  await expect(page.getByRole("button", { name: "Try the demo" })).toBeVisible();
+});
