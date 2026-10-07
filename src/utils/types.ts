@@ -1,4 +1,5 @@
 import { CATEGORIES } from "@/utils/constants";
+import type { LocalDate } from "@/utils/local-date";
 
 export interface IUser {
   name: string;
@@ -50,3 +51,28 @@ export type SortFilter =
   | "highest"
   | "lowest";
   
+export type Cadence = "weekly" | "biweekly" | "monthly" | "quarterly" | "yearly";
+
+export interface IRecurringBill {
+  id: string;
+  name: string;
+  category: string;
+  // Current amount; applies to occurrences generated from now on.
+  amount: number;
+  cadence: Cadence;
+  // First due date; every later due date is computed from it.
+  anchorDate: LocalDate;
+  avatar?: string;
+}
+
+export interface IBillOccurrence {
+  id: string;
+  billId: string;
+  dueDate: LocalDate;
+  // Snapshot of the bill's amount when this occurrence was generated.
+  amount: number;
+  // Set when paid; the linked expense transaction.
+  transactionId?: string;
+}
+
+export type OccurrenceStatus = "paid" | "overdue" | "due-today";
