@@ -15,7 +15,7 @@ const PotsPage = () => {
   return (
     <>
       <div className="pb-8">
-        <div className="flex justify-between items-center mb-8">
+        <div className="flex flex-wrap justify-between items-center gap-4 mb-8">
           <Typography tag="h1">Pots</Typography>
 
           <Button

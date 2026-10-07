@@ -30,14 +30,14 @@ const RecurringBillsTable = () => {
 
   return (
     <div className="bg-white p-8 rounded-xl">
-      <div className="flex justify-between gap-6 -mb-4 md:mb-6">
+      <div className="flex justify-between gap-4 sm:gap-6 mb-6">
         <SearchInput
           placeholder="Search bills"
           value={searchValue}
           onChange={(event) => setSearchValue(event.target.value)}
         />
 
-        <div className="flex gap-6">
+        <div className="flex shrink-0 gap-4 sm:gap-6">
           <LabeledDropdown
             label="Sort by"
             options={SORT_OPTIONS}

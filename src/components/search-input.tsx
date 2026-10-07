@@ -8,11 +8,17 @@ type Props = {
   onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 };
 
+// Sized for a flex row of filters: grows up to 320px and can shrink.
 const SearchInput = ({ placeholder, value, onChange }: Props) => {
   return (
-    <div className="max-w-[320px] min-w-max w-full relative">
-      <Input placeholder={placeholder} value={value} onChange={onChange} />
-      <SearchIcon className="absolute top-1/2 right-4 transform -translate-y-1/2" />
+    <div className="max-w-[320px] min-w-0 flex-1 relative">
+      <Input
+        className="pr-10"
+        placeholder={placeholder}
+        value={value}
+        onChange={onChange}
+      />
+      <SearchIcon className="pointer-events-none absolute top-1/2 right-4 transform -translate-y-1/2" />
     </div>
   );
 };
