@@ -42,10 +42,34 @@ test("tall dialogs stay on screen on a short phone", async ({ page }) => {
   await page.goto("/transactions");
   await page.getByRole("button", { name: "Add Transaction" }).click();
 
-  const box = await page.getByRole("dialog").boundingBox();
-  expect(box).not.toBeNull();
-  expect(box!.y).toBeGreaterThanOrEqual(0);
-  expect(box!.y + box!.height).toBeLessThanOrEqual(568);
+  // On phones it's a bottom sheet that slides up, so wait for it to settle.
+  const dialog = page.getByRole("dialog");
+  await expect
+    .poll(async () => {
+      const box = await dialog.boundingBox();
+      return box && Math.round(box.y + box.height);
+    })
+    .toBe(568);
+  expect((await dialog.boundingBox())!.y).toBeGreaterThanOrEqual(0);
+});
+
+test("forms open as a bottom sheet on phones and a dialog on larger screens", async ({
+  page,
+}) => {
+  await page.setViewportSize({ width: 375, height: 812 });
+  await signInAsDemo(page);
+  await page.goto("/pots");
+  await page.getByRole("button", { name: "Add New Pot" }).click();
+  const sheet = page.getByRole("dialog", { name: "Add New Pot" });
+  await expect(sheet).toHaveAttribute("data-vaul-drawer", "");
+  await sheet.getByRole("button", { name: "Close" }).click();
+  await expect(sheet).toBeHidden();
+
+  await page.setViewportSize({ width: 768, height: 1024 });
+  await page.getByRole("button", { name: "Add New Pot" }).click();
+  const dialog = page.getByRole("dialog", { name: "Add New Pot" });
+  await expect(dialog).toBeVisible();
+  await expect(dialog).not.toHaveAttribute("data-vaul-drawer", "");
 });
 
 test("every page has exactly one main landmark", async ({ page }) => {
