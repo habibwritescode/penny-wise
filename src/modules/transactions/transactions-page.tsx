@@ -81,7 +81,11 @@ const TransactionsPage = () => {
           </div>
         </div>
 
-        <DataTable columns={columns} data={filteredTransactions} />
+        <DataTable
+          columns={columns}
+          data={filteredTransactions}
+          getRowId={(transaction) => transaction.id}
+        />
       </div>
 
       <AddTransaction
