@@ -77,3 +77,53 @@ test("tables fit narrow phones without scrolling sideways", async ({ page }) => 
     }
   }
 });
+
+test("the sidebar starts collapsed on small laptops and expanded on wide screens", async ({
+  page,
+}) => {
+  const sidebarWidth = () =>
+    page
+      .getByRole("complementary")
+      .evaluate((aside) => Math.round(aside.getBoundingClientRect().width));
+
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await signInAsDemo(page);
+  await expect(page.getByRole("button", { name: "Minimize Menu" })).toHaveAttribute(
+    "aria-expanded",
+    "true"
+  );
+  expect(await sidebarWidth()).toBe(300);
+
+  await page.setViewportSize({ width: 1024, height: 768 });
+  const expand = page.getByRole("button", { name: "Expand Menu" });
+  await expect(expand).toHaveAttribute("aria-expanded", "false");
+  await expect.poll(sidebarWidth).toBe(88);
+
+  // Choosing a width overrides the breakpoint.
+  await expand.click();
+  await expect(page.getByRole("button", { name: "Minimize Menu" })).toBeVisible();
+  await expect.poll(sidebarWidth).toBe(300);
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.getByRole("button", { name: "Minimize Menu" }).click();
+  await expect.poll(sidebarWidth).toBe(88);
+});
+
+test("the collapsed sidebar names its icons in tooltips", async ({ page }) => {
+  await page.setViewportSize({ width: 1024, height: 768 });
+  await signInAsDemo(page);
+  const sidebar = page.getByRole("complementary");
+
+  await sidebar.getByRole("link", { name: "Budgets" }).hover();
+  await expect(page.getByRole("tooltip", { name: "Budgets" })).toBeVisible();
+  // Glide down like a real pointer: a one-step jump lands inside Radix's
+  // "moving toward the open tooltip" grace area, which keeps Budgets open.
+  const pots = (await sidebar.getByRole("link", { name: "Pots" }).boundingBox())!;
+  await page.mouse.move(pots.x + pots.width / 2, pots.y + pots.height / 2, { steps: 8 });
+  await expect(page.getByRole("tooltip", { name: "Pots" })).toBeVisible();
+
+  // Expanded, the labels are visible, so no tooltips.
+  await sidebar.getByRole("button", { name: "Expand Menu" }).click();
+  await sidebar.getByRole("link", { name: "Budgets" }).hover();
+  await page.waitForTimeout(800);
+  await expect(page.getByRole("tooltip")).toHaveCount(0);
+});

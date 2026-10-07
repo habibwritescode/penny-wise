@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import { cn } from "@/lib/utils";
+import type { SidebarHidden } from "./sidebar-mode";
 
 type ITextVariants =
   | "preset-1"
@@ -26,7 +27,7 @@ const textPresets: Record<ITextVariants, string> = {
 interface ITypographyProps {
   title?: string;
   id?: string;
-  "data-hidden"?: boolean;
+  "data-hidden"?: boolean | SidebarHidden;
   variant?: ITextVariants;
   tag?: keyof JSX.IntrinsicElements; // Allows 'div', 'h1', 'p', 'span', etc.
   className?: string; // For additional Tailwind classes

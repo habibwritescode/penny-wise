@@ -175,6 +175,17 @@
       color 150ms ease,
       opacity 100ms var(--ease-out);
   }
+  /* "auto" sidebar mode: the breakpoint decides (see sidebar-mode.ts). */
+  @media (max-width: 1279px) {
+    .sidebar-fade[data-hidden="below-xl"] {
+      opacity: 0;
+    }
+  }
+  @media (min-width: 1280px) {
+    .sidebar-fade[data-hidden="xl-up"] {
+      opacity: 0;
+    }
+  }
 }
 
 /* Reduced motion means gentler, not none: overlays keep their fade but drop
