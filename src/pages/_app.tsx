@@ -37,6 +37,18 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
     <div className={publicSans.className}>
       <Head>
         <title>Pennywise</title>
+        {/* viewport-fit=cover makes env(safe-area-inset-*) real (it's 0 without
+            it). No interactive-widget=resizes-content: it would lift the fixed
+            bottom nav above the Android keyboard. Zoom stays enabled: inputs
+            are 16px on phones instead. */}
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1, viewport-fit=cover"
+        />
+        {/* Browser chrome matches the top of the page: the beige background.
+            AuthLayout overrides this on phones, where its top is the dark bar. */}
+        <meta name="theme-color" content="#F8F4F0" key="theme-color" />
+        <meta name="color-scheme" content="light" />
         <meta
           name="description"
           content="Track transactions, budgets, savings pots and recurring bills."
