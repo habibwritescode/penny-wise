@@ -2,26 +2,25 @@ import Modal from "@/components/modal";
 import { Button } from "@/components/ui/button";
 import Typography from "@/components/typography";
 import { IBudget } from "@/utils/types";
-import useBoundStore from "@/lib/store/store";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
   budget: IBudget;
+  // The card animates out, deletes, and offers Undo.
+  onConfirm: () => void;
 };
 
-const DeleteBudget = ({ isOpen, onClose, budget }: Props) => {
-  const deleteBudget = useBoundStore((store) => store.deleteBudget);
-
+const DeleteBudget = ({ isOpen, onClose, budget, onConfirm }: Props) => {
   const onSubmit = () => {
-    deleteBudget(budget.category);
     onClose();
+    onConfirm();
   };
 
   return (
     <Modal
       title={`Delete '${budget.category}'?`}
-      description="Are you sure you want to delete this budget? This action cannot be reversed, and all the data inside it will be removed forever."
+      description="This removes the budget. Your transactions in this category are kept. You can undo this straight afterwards."
       isOpen={isOpen}
       onClose={onClose}
     >

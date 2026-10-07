@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -79,6 +80,7 @@ const CreatePot = ({ isOpen, onClose, isEdit, pot }: Props) => {
       });
     }
 
+    toast.success(isEdit ? `${values.name} updated` : `${values.name} created`);
     handleClose();
   };
 

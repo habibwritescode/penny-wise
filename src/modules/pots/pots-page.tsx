@@ -4,9 +4,12 @@ import { useState } from "react";
 import PotsItem from "./components/pots-item";
 import CreatePot from "./components/create-pot";
 import useBoundStore from "@/lib/store/store";
+import useNewSinceMount from "@/lib/use-new-since-mount";
 
 const PotsPage = () => {
   const pots = useBoundStore((store) => store.pots);
+  // Only pots created (or restored) during the visit animate in.
+  const isNew = useNewSinceMount(pots.map((pot) => pot.name));
 
   const [openModal, setOpenModal] = useState<"add-pot" | null>(null);
 
@@ -35,7 +38,7 @@ const PotsPage = () => {
 
         <section className="grid md:grid-cols-2 gap-4">
           {pots.map((pot) => (
-            <PotsItem key={pot.name} pot={pot} />
+            <PotsItem key={pot.name} pot={pot} isNew={isNew(pot.name)} />
           ))}
         </section>
       </div>

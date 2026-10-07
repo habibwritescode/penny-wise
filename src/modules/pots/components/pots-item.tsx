@@ -1,4 +1,6 @@
 import { useId, useState } from "react";
+import { toast } from "sonner";
+import { CircleCheck } from "lucide-react";
 
 import Typography from "@/components/typography";
 import currencyFormatter from "@/utils/formatCurrency";
@@ -11,18 +13,47 @@ import { Button } from "@/components/ui/button";
 import { calculatePercent } from "@/utils/math";
 import AddOrWitdrawPot from "./add-or-withdraw";
 import CreatePot from "./create-pot";
+import useBoundStore from "@/lib/store/store";
+import useNewSinceMount from "@/lib/use-new-since-mount";
+import { LEAVE_MS, prefersReducedMotion } from "@/lib/motion";
+import { cn } from "@/lib/utils";
 
 type Props = {
   pot: IPot;
+  // Created during this visit: animate in (never on page load).
+  isNew?: boolean;
 };
 
 type ModalType = "delete" | "edit" | "withdraw" | "add" | null;
 
-const PotsItem = ({ pot }: Props) => {
+const PotsItem = ({ pot, isNew = false }: Props) => {
   const [openModal, setOpenModal] = useState<ModalType>(null);
+  const [isLeaving, setIsLeaving] = useState(false);
   const headingId = useId();
+  const deletePot = useBoundStore((store) => store.deletePot);
+  const restorePot = useBoundStore((store) => store.restorePot);
 
   const progressPercent = calculatePercent(pot.total, pot.target);
+  const isGoalReached = pot.target > 0 && pot.total >= pot.target;
+  // The badge pops in only when the goal is reached during this visit.
+  const isNewBadge = useNewSinceMount(isGoalReached ? ["goal"] : []);
+
+  // Fade the card out, then delete it, with Undo putting it back in place.
+  const handleDelete = () => {
+    const index = useBoundStore
+      .getState()
+      .pots.findIndex((item) => item.name === pot.name);
+    const remove = () => {
+      deletePot(pot.name);
+      toast(`${pot.name} deleted`, {
+        action: { label: "Undo", onClick: () => restorePot(pot, index) },
+      });
+    };
+
+    if (prefersReducedMotion()) return remove();
+    setIsLeaving(true);
+    window.setTimeout(remove, LEAVE_MS);
+  };
 
   const handleCloseModal = () => {
     setOpenModal(null);
@@ -32,10 +63,14 @@ const PotsItem = ({ pot }: Props) => {
     <>
       <article
         aria-labelledby={headingId}
-        className="bg-white rounded-xl px-6 pt-[28px] pb-[38px]"
+        className={cn(
+          "bg-white rounded-xl px-6 pt-[28px] pb-[38px]",
+          isNew && "enter-fade-scale",
+          isLeaving && "leave-fade-scale"
+        )}
       >
         <div className="flex items-center justify-between mb-6 w-full">
-          <div className="flex gap-4 items-center">
+          <div className="flex flex-wrap gap-x-4 gap-y-2 items-center min-w-0">
             <div
               className="w-4 h-4 rounded-full bg-green"
               style={{ backgroundColor: pot.theme }}
@@ -43,6 +78,17 @@ const PotsItem = ({ pot }: Props) => {
             <Typography tag="h3" variant="preset-2" id={headingId}>
               {pot.name}
             </Typography>
+            {isGoalReached && (
+              <span
+                className={cn(
+                  "inline-flex items-center gap-1 rounded-full bg-green/10 px-2 py-0.5 text-xs font-bold text-green whitespace-nowrap",
+                  isNewBadge("goal") && "enter-pop"
+                )}
+              >
+                <CircleCheck className="h-3.5 w-3.5 shrink-0" aria-hidden />
+                Goal reached
+              </span>
+            )}
           </div>
           <ActionDropdown
             items={[
@@ -116,6 +162,7 @@ const PotsItem = ({ pot }: Props) => {
         pot={pot}
         isOpen={openModal === "delete"}
         onClose={handleCloseModal}
+        onConfirm={handleDelete}
       />
 
       <AddOrWitdrawPot

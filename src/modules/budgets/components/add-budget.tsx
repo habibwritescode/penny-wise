@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -80,6 +81,9 @@ const AddBudget = ({ isOpen, onClose, budget, type }: Props) => {
       });
     }
 
+    toast.success(
+      isEdit ? `${values.category} budget updated` : `${values.category} budget created`
+    );
     handleClose();
   };
 

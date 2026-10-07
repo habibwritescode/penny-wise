@@ -13,6 +13,8 @@ type Action = {
     values: Pick<IBudget, "maximum" | "theme">
   ) => void;
   deleteBudget: (category: string) => void;
+  // Undo for deleteBudget: puts the budget back where it was.
+  restoreBudget: (budget: IBudget, index: number) => void;
 };
 
 export type IBudgetSlice = State & Action;
@@ -53,6 +55,15 @@ const createBudgetSlice: StateCreator<BoundStoreT, [], [], IBudgetSlice> = (
         budget.category === category ? { ...budget, ...values } : budget
       ),
     })),
+
+  restoreBudget: (budget, index) =>
+    set((state: State) => {
+      if (state.budgets.some((item) => item.category === budget.category))
+        return state;
+      const budgets = [...state.budgets];
+      budgets.splice(index, 0, budget);
+      return { budgets };
+    }),
 
   deleteBudget: (category) =>
     set((state: State) => {

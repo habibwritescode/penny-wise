@@ -6,6 +6,7 @@ import Layout from "@/components/layout/main-layout";
 import { hydrateStore } from "@/lib/store/store";
 import StorageBanner from "@/components/storage-banner";
 import AppErrorBoundary from "@/components/app-error-boundary";
+import { Toaster } from "sonner";
 import "@/styles/globals.css";
 
 import { useEffect, type ReactElement, type ReactNode } from "react";
@@ -42,6 +43,13 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
       </Head>
       <AppErrorBoundary>{getLayout(<Component {...pageProps} />)}</AppErrorBoundary>
       <StorageBanner />
+      {/* Lifted clear of the mobile bottom nav (52px, 74px from sm). */}
+      <Toaster
+        position="bottom-right"
+        offset={{ bottom: 96, right: 24 }}
+        mobileOffset={{ bottom: 68 }}
+        style={{ fontFamily: "inherit" }}
+      />
     </main>
   );
 }

@@ -1,3 +1,5 @@
+import { toast } from "sonner";
+
 import Modal from "@/components/modal";
 import { Button } from "@/components/ui/button";
 import Typography from "@/components/typography";
@@ -12,10 +14,19 @@ type Props = {
 
 const DeleteBill = ({ isOpen, onClose, bill }: Props) => {
   const deleteBill = useBoundStore((store) => store.deleteBill);
+  const restoreBill = useBoundStore((store) => store.restoreBill);
 
   const onConfirm = () => {
+    // Keep what's removed so Undo can put it back exactly.
+    const occurrences = useBoundStore
+      .getState()
+      .occurrences.filter((occurrence) => occurrence.billId === bill.id);
+
     deleteBill(bill.id);
     onClose();
+    toast(`${bill.name} deleted`, {
+      action: { label: "Undo", onClick: () => restoreBill(bill, occurrences) },
+    });
   };
 
   return (

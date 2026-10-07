@@ -10,6 +10,8 @@ type Action = {
   createPot: (pot: IPot) => void;
   updatePot: (name: string, values: Pick<IPot, "target" | "theme">) => void;
   deletePot: (name: string) => void;
+  // Undo for deletePot: puts the pot back where it was.
+  restorePot: (pot: IPot, index: number) => void;
   updatePotTotal: (total: number, name: string) => void;
 };
 
@@ -51,6 +53,14 @@ const createPotSlice: StateCreator<BoundStoreT, [], [], IPotSlice> = (
         pot.name === name ? { ...pot, ...values } : pot
       ),
     })),
+
+  restorePot: (pot, index) =>
+    set((state: State) => {
+      if (state.pots.some((item) => item.name === pot.name)) return state;
+      const pots = [...state.pots];
+      pots.splice(index, 0, pot);
+      return { pots };
+    }),
 
   deletePot: (name) =>
     set((state: State) => {

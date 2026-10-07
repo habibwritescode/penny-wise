@@ -32,11 +32,21 @@ test("an overdue bill is clearly shown and can be marked as paid", async ({
   await expect(billRow(page, "Aqua Flow Utilities")).toContainText("Overdue");
   await expect(billRow(page, "Spark Electric Solutions")).toContainText("Paid");
 
-  // Pay it.
-  await panel
-    .getByRole("button", { name: "Mark Aqua Flow Utilities as paid" })
-    .click();
+  // Pay it, then undo from the toast: the bill is due again.
+  const payButton = panel.getByRole("button", {
+    name: "Mark Aqua Flow Utilities as paid",
+  });
+  await payButton.click();
+  const toast = page
+    .locator("[data-sonner-toast]")
+    .filter({ hasText: "Aqua Flow Utilities marked as paid" });
+  await expect(toast).toBeVisible();
+  await toast.getByRole("button", { name: "Undo" }).click();
+  await expect(panel).toContainText("Aqua Flow Utilities");
+  await expect(billRow(page, "Aqua Flow Utilities")).toContainText("Overdue");
 
+  // Pay it for real.
+  await payButton.click();
   await expect(panel).toHaveCount(0);
   await expect(billRow(page, "Aqua Flow Utilities")).toContainText("Paid");
 
@@ -100,11 +110,22 @@ test("a bill can be added, edited without rewriting history, and deleted", async
     "$30.00"
   );
 
-  // Delete it: gone from the table and from the overdue panel.
-  await row.getByRole("button", { name: "Actions for Gym Membership" }).click();
-  await page.getByRole("menuitem", { name: "Delete Bill" }).click();
-  await page.getByRole("button", { name: "Yes, Confirm Deletion" }).click();
-  await expect(row).toHaveCount(0);
+  // Delete it, undo from the toast, then delete it for good.
+  const deleteGym = async () => {
+    await row.getByRole("button", { name: "Actions for Gym Membership" }).click();
+    await page.getByRole("menuitem", { name: "Delete Bill" }).click();
+    await page.getByRole("button", { name: "Yes, Confirm Deletion" }).click();
+    await expect(row).toHaveCount(0);
+  };
+  await deleteGym();
+  await page
+    .locator("[data-sonner-toast]")
+    .filter({ hasText: "Gym Membership deleted" })
+    .getByRole("button", { name: "Undo" })
+    .click();
+  await expect(row).toContainText("$35.00");
+
+  await deleteGym();
   await expect(panel.getByText("Gym Membership")).toHaveCount(0);
 });
 

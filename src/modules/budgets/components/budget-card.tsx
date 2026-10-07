@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { toast } from "sonner";
 
 import ExpenseItem from "@/components/expense-item";
 import Typography from "@/components/typography";
@@ -13,14 +14,39 @@ import { Progress } from "@/components/ui/progress";
 import DeleteBudget from "./delete-budget";
 import AddBudget from "./add-budget";
 import { calculatePercent } from "@/utils/math";
+import useBoundStore from "@/lib/store/store";
+import { LEAVE_MS, prefersReducedMotion } from "@/lib/motion";
+import { cn } from "@/lib/utils";
 
 type Props = {
   budget: IBudget;
   items: ITransaction[];
+  // Created during this visit: animate in (never on page load).
+  isNew?: boolean;
 };
 
-const BudgetCard = ({ budget, items }: Props) => {
+const BudgetCard = ({ budget, items, isNew = false }: Props) => {
   const [openModal, setOpenModal] = useState<"delete" | "edit" | null>(null);
+  const [isLeaving, setIsLeaving] = useState(false);
+  const deleteBudget = useBoundStore((store) => store.deleteBudget);
+  const restoreBudget = useBoundStore((store) => store.restoreBudget);
+
+  // Fade the card out, then delete it, with Undo putting it back in place.
+  const handleDelete = () => {
+    const index = useBoundStore
+      .getState()
+      .budgets.findIndex((item) => item.category === budget.category);
+    const remove = () => {
+      deleteBudget(budget.category);
+      toast(`${budget.category} budget deleted`, {
+        action: { label: "Undo", onClick: () => restoreBudget(budget, index) },
+      });
+    };
+
+    if (prefersReducedMotion()) return remove();
+    setIsLeaving(true);
+    window.setTimeout(remove, LEAVE_MS);
+  };
 
   const totalSpent = useMemo(() => {
     const total = items.reduce((acc, curr) => acc + curr.amount, 0);
@@ -34,7 +60,13 @@ const BudgetCard = ({ budget, items }: Props) => {
 
   return (
     <>
-      <div className="bg-white rounded-xl p-8">
+      <div
+        className={cn(
+          "bg-white rounded-xl p-8",
+          isNew && "enter-fade-scale",
+          isLeaving && "leave-fade-scale"
+        )}
+      >
         <div className="flex items-center justify-between mb-6 w-full">
           <div className="flex gap-4 items-center">
             <div
@@ -124,6 +156,7 @@ const BudgetCard = ({ budget, items }: Props) => {
         budget={budget}
         isOpen={openModal === "delete"}
         onClose={handleCloseModal}
+        onConfirm={handleDelete}
       />
 
       <AddBudget

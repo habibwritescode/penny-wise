@@ -5,6 +5,7 @@ import BudgetCard from "../../modules/budgets/components/budget-card";
 import AddBudget from "@/modules/budgets/components/add-budget";
 import { useState } from "react";
 import useBoundStore from "@/lib/store/store";
+import useNewSinceMount from "@/lib/use-new-since-mount";
 import { getCategoryItems } from "./utils";
 import { getExpenses } from "@/modules/transactions/utils";
 import SpendingSummary from "./components/summary";
@@ -14,6 +15,8 @@ type OpenModal = "add-budget" | null;
 const BudgetsPage = () => {
   const allTransactions = useBoundStore((store) => store.transactions);
   const budgets = useBoundStore((store) => store.budgets);
+  // Only budgets created (or restored) during the visit animate in.
+  const isNew = useNewSinceMount(budgets.map((budget) => budget.category));
 
   const outgoingTransactions = getExpenses(allTransactions);
 
@@ -52,6 +55,7 @@ const BudgetsPage = () => {
               <BudgetCard
                 key={item.category}
                 budget={item}
+                isNew={isNew(item.category)}
                 items={getCategoryItems(item.category, outgoingTransactions)}
               />
             ))}

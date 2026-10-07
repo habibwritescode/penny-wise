@@ -20,6 +20,9 @@ type Action = {
   deleteBill: (id: string) => void;
   generateDue: (today: LocalDate) => void;
   markPaid: (occurrenceId: string, today: LocalDate) => void;
+  // Undo support: reverse markPaid / deleteBill exactly.
+  unmarkPaid: (occurrenceId: string) => void;
+  restoreBill: (bill: IRecurringBill, occurrences: IBillOccurrence[]) => void;
 };
 
 export type IBillSlice = State & Action;
@@ -107,6 +110,30 @@ const createBillSlice: StateCreator<BoundStoreT, [], [], IBillSlice> = (
       ),
     });
   },
+
+  unmarkPaid: (occurrenceId) => {
+    const { occurrences, transactions } = get();
+    const occurrence = occurrences.find((o) => o.id === occurrenceId);
+    if (!occurrence?.transactionId) return;
+
+    set({
+      transactions: transactions.filter((t) => t.id !== occurrence.transactionId),
+      occurrences: occurrences.map((o) =>
+        o.id === occurrenceId ? { ...o, transactionId: undefined } : o
+      ),
+    });
+  },
+
+  restoreBill: (bill, billOccurrences) =>
+    set((state) => ({
+      bills: state.bills.some((b) => b.id === bill.id)
+        ? state.bills
+        : [...state.bills, bill],
+      occurrences: [
+        ...state.occurrences.filter((o) => o.billId !== bill.id),
+        ...billOccurrences,
+      ],
+    })),
 });
 
 export default createBillSlice;

@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -11,6 +12,7 @@ import FormSelect from "@/components/form-select";
 import { CATEGORIES } from "@/utils/constants";
 import DatePicker from "@/components/date-picker";
 import { positiveAmount } from "@/utils/schema";
+import { formatTransactionAmount } from "@/utils/formatCurrency";
 
 const CATEGORY_OPTIONS = CATEGORIES.map((item) => ({
   name: item,
@@ -68,6 +70,13 @@ const AddTransaction = ({ isOpen, onClose }: Props) => {
       category: values.category,
     });
 
+    // The new row may land on another page of the table, so confirm it here.
+    toast.success("Transaction added", {
+      description: `${values.name} · ${formatTransactionAmount({
+        amount: Number(values.amount),
+        type: values.type,
+      })}`,
+    });
     handleClose();
   };
 

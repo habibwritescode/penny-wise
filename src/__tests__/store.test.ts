@@ -88,6 +88,22 @@ describe("pot slice", () => {
   });
 });
 
+describe("undo for pots and budgets", () => {
+  it("restores a deleted pot in its original position", () => {
+    const pots = store.getState().pots;
+    store.getState().deletePot(pots[0].name);
+    store.getState().restorePot(pots[0], 0);
+    expect(store.getState().pots).toEqual(pots);
+  });
+
+  it("restores a deleted budget in its original position", () => {
+    const budgets = store.getState().budgets;
+    store.getState().deleteBudget(budgets[0].category);
+    store.getState().restoreBudget(budgets[0], 0);
+    expect(store.getState().budgets).toEqual(budgets);
+  });
+});
+
 describe("migrateStore", () => {
   it("converts v0 colour-name themes to hex", () => {
     const migrated = migrateStore(
@@ -215,6 +231,31 @@ describe("bill slice", () => {
     });
     expect(toLocalDate(payment.date)).toBe("2025-02-02");
     expect(occurrencesOf(bill.id)[0].transactionId).toBe(payment.id);
+  });
+
+  it("undoes a payment: removes the transaction and makes the occurrence unpaid", () => {
+    const bill = addRent();
+    store.getState().generateDue("2025-01-31");
+    const [occurrence] = occurrencesOf(bill.id);
+    const transactionsBefore = store.getState().transactions;
+
+    store.getState().markPaid(occurrence.id, "2025-02-02");
+    store.getState().unmarkPaid(occurrence.id);
+
+    expect(store.getState().transactions).toEqual(transactionsBefore);
+    expect(occurrencesOf(bill.id)[0].transactionId).toBeUndefined();
+  });
+
+  it("restores a deleted bill exactly, including its occurrences", () => {
+    const bill = addRent();
+    store.getState().generateDue("2025-02-28");
+    const occurrences = occurrencesOf(bill.id);
+
+    store.getState().deleteBill(bill.id);
+    store.getState().restoreBill(bill, occurrences);
+
+    expect(store.getState().bills).toContainEqual(bill);
+    expect(occurrencesOf(bill.id)).toEqual(occurrences);
   });
 
   it("deletes a bill and its occurrences but keeps payment transactions", () => {

@@ -2,26 +2,25 @@ import Modal from "@/components/modal";
 import { Button } from "@/components/ui/button";
 import Typography from "@/components/typography";
 import { IPot } from "@/utils/types";
-import useBoundStore from "@/lib/store/store";
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
   pot: IPot;
+  // The card animates out, deletes, and offers Undo.
+  onConfirm: () => void;
 };
 
-const DeletePot = ({ isOpen, onClose, pot }: Props) => {
-  const deletePot = useBoundStore((store) => store.deletePot);
-
+const DeletePot = ({ isOpen, onClose, pot, onConfirm }: Props) => {
   const onSubmit = () => {
-    deletePot(pot.name);
     onClose();
+    onConfirm();
   };
 
   return (
     <Modal
       title={`Delete '${pot.name}'?`}
-      description="Are you sure you want to delete this pot? This action cannot be reversed, and all the data inside it will be removed forever."
+      description="This removes the pot and the money saved in it. You can undo this straight afterwards."
       isOpen={isOpen}
       onClose={onClose}
     >

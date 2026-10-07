@@ -1,4 +1,5 @@
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
@@ -56,9 +57,32 @@ const AddOrWitdrawPot = ({ pot, isOpen, onClose, isAdd }: Props) => {
       return;
     }
 
+    const change = newTotal - pot.total;
     updatePotTotal(newTotal, pot.name);
-
     handleClose();
+
+    // Undo applies the opposite change to the current total, so it stays
+    // correct even if the pot changed again in the meantime.
+    const undo = () => {
+      const current = useBoundStore
+        .getState()
+        .pots.find((item) => item.name === pot.name);
+      if (current) updatePotTotal(current.total - change, pot.name);
+    };
+    const amount = currencyFormatter.format(Math.abs(change));
+    const reachedGoal = isAdd && pot.total < pot.target && newTotal >= pot.target;
+
+    if (reachedGoal) {
+      toast.success("Savings goal reached", {
+        description: `${pot.name} hit its ${currencyFormatter.format(pot.target)} target.`,
+        action: { label: "Undo", onClick: undo },
+      });
+    } else {
+      toast.success(
+        isAdd ? `Added ${amount} to ${pot.name}` : `Withdrew ${amount} from ${pot.name}`,
+        { action: { label: "Undo", onClick: undo } }
+      );
+    }
   };
 
   return (
