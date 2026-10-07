@@ -107,7 +107,7 @@ const AddBudget = ({ isOpen, onClose, budget, type }: Props) => {
       onClose={handleClose}
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form noValidate onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormSelect
             name="category"
             label="Budget Category"

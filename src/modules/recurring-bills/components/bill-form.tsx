@@ -113,7 +113,7 @@ const BillForm = ({ isOpen, onClose, bill }: Props) => {
       onClose={handleClose}
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form noValidate onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormInput
             name="name"
             label="Bill Name"

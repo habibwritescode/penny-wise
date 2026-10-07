@@ -14,6 +14,8 @@ const SearchInput = ({ placeholder, value, onChange }: Props) => {
     <div className="max-w-[320px] min-w-0 flex-1 relative">
       <Input
         className="pr-10"
+        // The keyboard's return key says "Search".
+        enterKeyHint="search"
         placeholder={placeholder}
         value={value}
         onChange={onChange}

@@ -88,7 +88,7 @@ const AddTransaction = ({ isOpen, onClose }: Props) => {
       onClose={handleClose}
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <form noValidate onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <FormInput
             name="name"
             placeholder="Name of Recipient/Sender"

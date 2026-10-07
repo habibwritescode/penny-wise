@@ -32,16 +32,19 @@ const LoginForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)}>
+      <form noValidate onSubmit={form.handleSubmit(onSubmit)}>
         <div className="space-y-4">
           <FormInput
             name="email"
+            inputType="email"
+            autoComplete="email"
             placeholder="Email"
             label="Email"
             control={form.control}
           />
           <FormInput
             inputType="password"
+            autoComplete="current-password"
             name="password"
             placeholder="Password"
             label="Password"

@@ -133,7 +133,7 @@ const AddOrWitdrawPot = ({ pot, isOpen, onClose, isAdd }: Props) => {
         </div>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form noValidate onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormInput
               name="amount"
               label={`Amount to ${isAdd ? "Add" : "Withdraw"}`}
