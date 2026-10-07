@@ -6,14 +6,14 @@ import LoginForm from "./components/login-form";
 
 const LoginPage = () => {
   return (
-    <div className="bg-white p-8 space-y-8 rounded-xl max-w-[560px]">
+    <>
       <Typography tag="h1">Login</Typography>
 
       <LoginForm />
 
       <DemoAccess />
 
-      <div className="flex gap-2 justify-center">
+      <div className="flex flex-wrap gap-x-2 gap-y-1 justify-center">
         <Typography className="text-grey-500" variant="preset-4">
           Need to create an account?
         </Typography>
@@ -24,7 +24,7 @@ const LoginPage = () => {
           </Typography>
         </Link>
       </div>
-    </div>
+    </>
   );
 };
 

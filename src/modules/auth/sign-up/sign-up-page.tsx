@@ -5,14 +5,14 @@ import SignUpForm from "./components/signup-form";
 
 const SignUpPage = () => {
   return (
-    <div className="bg-white p-8 space-y-8 rounded-xl max-w-[560px]">
+    <>
       <Typography tag="h1">Sign Up</Typography>
 
       <SignUpForm />
 
       <DemoAccess />
 
-      <div className="flex gap-2 justify-center">
+      <div className="flex flex-wrap gap-x-2 gap-y-1 justify-center">
         <Typography className="text-grey-500" variant="preset-4">
           Already have an account?
         </Typography>
@@ -23,7 +23,7 @@ const SignUpPage = () => {
           </Typography>
         </Link>
       </div>
-    </div>
+    </>
   );
 };
 
