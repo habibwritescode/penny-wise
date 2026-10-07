@@ -166,3 +166,93 @@
     --tw-exit-translate-y: -50% !important;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   Entrances and exits. Entrance classes are only applied to things that appear
+   during a visit (see useNewSinceMount), never on page load: @starting-style
+   fires on every mount. Browsers without @starting-style just show them. */
+
+/* Cards created during the visit; leaving cards fade before they're removed. */
+.enter-fade-scale {
+  transition:
+    opacity 200ms var(--ease-out),
+    transform 200ms var(--ease-out);
+}
+.leave-fade-scale {
+  opacity: 0;
+  transform: scale(0.97);
+  transition:
+    opacity 150ms var(--ease-out),
+    transform 150ms var(--ease-out);
+}
+
+/* A rare, earned moment (e.g. a savings goal reached): soft overshoot. */
+.enter-pop {
+  transition:
+    opacity 400ms var(--ease-pop),
+    transform 400ms var(--ease-pop);
+}
+
+/* Form validation messages. */
+.enter-message {
+  transition:
+    opacity 150ms var(--ease-out),
+    transform 150ms var(--ease-out);
+}
+
+/* Rows and panels that open and close vertically. */
+.collapsible {
+  display: grid;
+  grid-template-rows: 1fr;
+  opacity: 1;
+  transition:
+    grid-template-rows 200ms var(--ease-out),
+    opacity 200ms var(--ease-out);
+}
+.collapsible[data-closed="true"] {
+  grid-template-rows: 0fr;
+  opacity: 0;
+}
+
+@starting-style {
+  .enter-fade-scale {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  .enter-pop {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  .enter-message {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  .collapsible.collapsible-enter {
+    grid-template-rows: 0fr;
+    opacity: 0;
+  }
+}
+
+/* Reduced motion: keep the fades, drop movement, scaling and height changes. */
+@media (prefers-reduced-motion: reduce) {
+  .leave-fade-scale {
+    transform: none;
+  }
+  .collapsible {
+    grid-template-rows: 1fr;
+    transition: opacity 200ms ease;
+  }
+  .collapsible[data-closed="true"] {
+    grid-template-rows: 1fr;
+  }
+  @starting-style {
+    .enter-fade-scale,
+    .enter-pop,
+    .enter-message {
+      transform: none;
+    }
+    .collapsible.collapsible-enter {
+      grid-template-rows: 1fr;
+    }
+  }
+}

@@ -156,7 +156,8 @@ const FormMessage = React.forwardRef<
     <p
       ref={ref}
       id={formMessageId}
-      className={cn("text-sm font-medium text-destructive", className)}
+      // Only mounted when there's an error, so the entrance runs as it appears.
+      className={cn("text-sm font-medium text-destructive enter-message", className)}
       {...props}
     >
       {body}
