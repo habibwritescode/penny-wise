@@ -7,6 +7,10 @@ const config: Config = {
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/modules/**/*.{js,ts,jsx,tsx,mdx}",
+    // Class strings also live in shared helpers, e.g. SIDEBAR_COLLAPSE in
+    // src/utils/constants.ts; without these globs Tailwind never generates them.
+    "./src/utils/**/*.{js,ts,jsx,tsx}",
+    "./src/lib/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
