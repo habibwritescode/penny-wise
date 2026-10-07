@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { appStorage } from "@/lib/store/idb-storage";
 
 type Props = { children: ReactNode };
-type State = { error: Error | null };
+type State = { error: Error | null; confirmingReset: boolean };
 
 const STORE_KEY = "client-store";
 
@@ -15,9 +15,9 @@ const STORE_KEY = "client-store";
  * offers a reload and, if that doesn't help, a reset of the saved data.
  */
 class AppErrorBoundary extends Component<Props, State> {
-  state: State = { error: null };
+  state: State = { error: null, confirmingReset: false };
 
-  static getDerivedStateFromError(error: Error): State {
+  static getDerivedStateFromError(error: Error): Partial<State> {
     return { error };
   }
 
@@ -51,14 +51,44 @@ class AppErrorBoundary extends Component<Props, State> {
             resetting deletes everything saved here and starts again with the
             demo data.
           </Typography>
-          <div className="flex flex-wrap gap-4">
-            <Button size="xl" onClick={() => window.location.reload()}>
-              Reload
-            </Button>
-            <Button size="xl" variant="outline" onClick={this.resetData}>
-              Reset demo data
-            </Button>
-          </div>
+          {/* Resetting deletes everything saved, so it takes a second, explicit step. */}
+          {this.state.confirmingReset ? (
+            <div className="space-y-4">
+              <Typography variant="preset-4-bold">
+                Delete everything saved in this browser?
+              </Typography>
+              <div className="flex flex-wrap gap-4">
+                <Button
+                  size="xl"
+                  variant="destructive"
+                  className="bg-red"
+                  onClick={this.resetData}
+                >
+                  Yes, reset
+                </Button>
+                <Button
+                  size="xl"
+                  variant="outline"
+                  onClick={() => this.setState({ confirmingReset: false })}
+                >
+                  Cancel
+                </Button>
+              </div>
+            </div>
+          ) : (
+            <div className="flex flex-wrap gap-4">
+              <Button size="xl" onClick={() => window.location.reload()}>
+                Reload
+              </Button>
+              <Button
+                size="xl"
+                variant="outline"
+                onClick={() => this.setState({ confirmingReset: true })}
+              >
+                Reset demo data
+              </Button>
+            </div>
+          )}
         </div>
       </div>
     );

@@ -138,7 +138,18 @@ test("corrupted saved data shows a way out instead of a blank page", async ({
   const alert = page.getByRole("alert").filter({ hasText: "Something went wrong" });
   await expect(alert).toBeVisible();
 
-  await alert.getByRole("button", { name: "Reset demo data" }).click();
+  // Resetting deletes everything, so it asks first; Cancel backs out.
+  // dispatchEvent: in dev, Next's error overlay (<nextjs-portal>) covers the
+  // page shortly after a caught error and would intercept real clicks. It
+  // doesn't exist in production builds.
+  const press = (name: string) =>
+    alert.getByRole("button", { name }).dispatchEvent("click");
+  await press("Reset demo data");
+  await press("Cancel");
+  await expect(alert.getByRole("button", { name: "Reload" })).toBeVisible();
+  await press("Reset demo data");
+  await expect(alert).toContainText("Delete everything saved in this browser?");
+  await press("Yes, reset");
   // Saved data (including the sign-in) is gone: back to a fresh start.
   await page.waitForURL("/login");
   await expect(page.getByRole("button", { name: "Try the demo" })).toBeVisible();
