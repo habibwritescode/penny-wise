@@ -9,7 +9,7 @@ import getInitials from "@/utils/getInitials";
 const columns: ColumnDef<ITransaction>[] = [
   {
     accessorKey: "name",
-    header: () => <div className="hidden md:block ">Bill Title</div>,
+    header: "Bill Title",
     cell: ({ row }) => {
       const name = String(row.getValue("name"));
       const avatarSrc = row.original.avatar;
@@ -17,7 +17,7 @@ const columns: ColumnDef<ITransaction>[] = [
       return (
         <div className="flex gap-2 flex-col">
           <div className="flex gap-4 items-center">
-            <Avatar>
+            <Avatar className="shrink-0">
               <AvatarImage src={avatarSrc} alt={name} />
               <AvatarFallback>{getInitials(name)}</AvatarFallback>
             </Avatar>
@@ -33,16 +33,18 @@ const columns: ColumnDef<ITransaction>[] = [
 
   {
     accessorKey: "date",
-    header: () => <div className="hidden md:block">Due Date</div>,
+    header: "Due Date",
+    meta: { className: "hidden md:table-cell whitespace-nowrap" },
     cell: ({ row }) => (
-      <Typography variant="preset-5" className="text-green hidden md:block">
+      <Typography variant="preset-5" className="text-green">
         Monthly-{dateTimeFormatter.getDayOfMonth(row.getValue("date"))}
       </Typography>
     ),
   },
   {
     accessorKey: "amount",
-    header: () => <div className="hidden md:block text-right">Amount</div>,
+    header: () => <div className="text-right">Amount</div>,
+    meta: { className: "whitespace-nowrap" },
     cell: ({ row }) => {
       const amount = parseFloat(row.getValue("amount"));
       const formatted = currencyFormatter.format(amount);

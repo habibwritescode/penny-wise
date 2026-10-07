@@ -9,7 +9,7 @@ import getInitials from "@/utils/getInitials";
 const columns: ColumnDef<ITransaction>[] = [
   {
     accessorKey: "name",
-    header: () => <div className="hidden md:block">Recipient/Sender</div>,
+    header: "Recipient/Sender",
     cell: ({ row }) => {
       const name = String(row.getValue("name"));
       const avatarSrc = row.original.avatar;
@@ -17,7 +17,7 @@ const columns: ColumnDef<ITransaction>[] = [
 
       return (
         <div className="flex gap-4 items-center">
-          <Avatar>
+          <Avatar className="shrink-0">
             <AvatarImage src={avatarSrc} alt={name} />
             <AvatarFallback>{getInitials(name)}</AvatarFallback>
           </Avatar>
@@ -36,25 +36,28 @@ const columns: ColumnDef<ITransaction>[] = [
   },
   {
     accessorKey: "category",
-    header: () => <div className="hidden md:block">Category</div>,
+    header: "Category",
+    meta: { className: "hidden md:table-cell" },
     cell: ({ row }) => (
-      <Typography variant="preset-5" className="text-grey-500 hidden md:block">
+      <Typography variant="preset-5" className="text-grey-500">
         {row.getValue("category")}
       </Typography>
     ),
   },
   {
     accessorKey: "date",
-    header: () => <div className="hidden md:block">Transaction Date</div>,
+    header: "Transaction Date",
+    meta: { className: "hidden md:table-cell whitespace-nowrap" },
     cell: ({ row }) => (
-      <Typography variant="preset-5" className="hidden md:block text-grey-500">
+      <Typography variant="preset-5" className="text-grey-500">
         {dateTimeFormatter.formatToLongDate(row.getValue("date"))}
       </Typography>
     ),
   },
   {
     accessorKey: "amount",
-    header: () => <div className="text-right hidden md:block">Amount</div>,
+    header: () => <div className="text-right">Amount</div>,
+    meta: { className: "whitespace-nowrap" },
     cell: ({ row }) => {
       const isIncome = row.original.type === "Income";
 
