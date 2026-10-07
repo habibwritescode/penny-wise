@@ -2,6 +2,9 @@ import type { Config } from "tailwindcss";
 
 const config: Config = {
   darkMode: ["class"],
+  // hover: styles only apply on devices that can actually hover, so a tapped
+  // element on a phone doesn't keep its hover style ("sticky hover").
+  future: { hoverOnlyWhenSupported: true },
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -18,6 +21,13 @@ const config: Config = {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic":
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
+      },
+      // Stronger than the built-in curves (also usable for animate-in/out).
+      transitionTimingFunction: {
+        // Entering and responding: starts fast, so it feels instant.
+        "out-strong": "var(--ease-out)",
+        // Moving on screen (e.g. collapsing the sidebar).
+        "in-out-strong": "var(--ease-in-out)",
       },
       // START OF SHADCN
       borderRadius: {
