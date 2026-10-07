@@ -20,7 +20,9 @@ const textPresets: Record<ITextVariants, string> = {
   "preset-5-bold": "text-xs font-bold leading-normal",
 };
 
+// `title` is passed through to the element (e.g. full text for truncated labels).
 interface ITypographyProps {
+  title?: string;
   variant?: ITextVariants;
   tag?: keyof JSX.IntrinsicElements; // Allows 'div', 'h1', 'p', 'span', etc.
   className?: string; // For additional Tailwind classes

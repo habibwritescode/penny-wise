@@ -9,11 +9,13 @@ import {
 
 import currencyFormatter from "@/utils/formatCurrency";
 import useBoundStore from "@/lib/store/store";
+import { cn } from "@/lib/utils";
 import { getExpenses } from "@/modules/transactions/utils";
 
 const chartConfig = {} satisfies ChartConfig;
 
-const BudgetChart = () => {
+// className lets callers size the chart, e.g. a fixed width beside a list.
+const BudgetChart = ({ className }: { className?: string }) => {
   const allTransactions = useBoundStore((store) => store.transactions);
   const budgets = useBoundStore((store) => store.budgets);
 
@@ -41,7 +43,7 @@ const BudgetChart = () => {
   );
 
   return (
-    <div className="w-full">
+    <div className={cn("w-full", className)}>
       <ChartContainer
         config={chartConfig}
         className="mx-auto aspect-square max-w-[240px] max-h-[250px]"

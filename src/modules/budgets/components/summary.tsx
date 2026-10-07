@@ -18,28 +18,36 @@ const SpendingSummary = () => {
   const outgoingTransactions = getExpenses(allTransactions);
 
   return (
-    <div className="flex flex-col sm:flex-row md:flex-col bg-white rounded-xl w-full px-8 py-6 max-h-fit">
-      <BudgetChart />
+    <div className="flex flex-col sm:flex-row sm:items-center sm:gap-8 xl:flex-col xl:items-stretch xl:gap-0 bg-white rounded-xl w-full px-8 py-6 max-h-fit">
+      <BudgetChart className="sm:w-60 sm:shrink-0 xl:w-full" />
 
-      <div className="mt-6">
+      <div className="mt-6 sm:mt-0 xl:mt-6 flex-1 min-w-0">
         <Typography tag="h3" variant="preset-2">
           Spending Summary
         </Typography>
 
         <ul className="mt-2 divide-y divide-grey-100">
           {budgets.map((item) => (
-            <li key={item.category} className="flex justify-between py-4">
-              <div className="flex items-center gap-4">
+            <li
+              key={item.category}
+              className="flex justify-between items-center gap-4 py-4"
+            >
+              <div className="flex items-center gap-4 min-w-0">
                 <div
-                  className={`w-1 h-5 rounded-[8px]`}
+                  className="w-1 h-5 shrink-0 rounded-[8px]"
                   style={{ backgroundColor: item.theme }}
                 ></div>
-                <Typography tag="p" variant="preset-4">
+                <Typography
+                  tag="p"
+                  variant="preset-4"
+                  className="truncate"
+                  title={item.category}
+                >
                   {item.category}
                 </Typography>
               </div>
 
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 shrink-0 whitespace-nowrap">
                 <Typography tag="span" variant="preset-3">
                   {currencyFormatter.format(
                     getTotal(

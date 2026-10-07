@@ -10,9 +10,9 @@ const Budget = () => {
 
   return (
     <ContainerCard title="Budgets" route="/budgets">
-      <div className="flex flex-col xl:flex-row mt-14">
-        <BudgetChart />
-        <div className="grid grid-cols-2 xl:grid-cols-1 gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center xl:flex-col xl:items-stretch gap-6 mt-8">
+        <BudgetChart className="sm:w-60 sm:shrink-0 xl:w-full" />
+        <div className="grid grid-cols-2 sm:grid-cols-1 xl:grid-cols-2 gap-4 flex-1 min-w-0">
           {budgets.slice(0, 4).map((item) => (
             <ExpenseItem
               key={item.category}
