@@ -15,7 +15,10 @@ const Pots = () => {
 
   return (
     <ContainerCard title="Pots" route="/pots">
-      <div className="grid xl:grid-cols-[minmax(247px,max-content)_minmax(0,1fr)] gap-5 mt-5">
+      {/* Panel beside the list only when the card is wide: md-xl (overview is
+          one column) and from 1400px. In the narrow xl column they stack, or
+          pot names wrap. */}
+      <div className="grid md:grid-cols-[minmax(247px,max-content)_minmax(0,1fr)] xl:grid-cols-1 min-[1400px]:grid-cols-[minmax(247px,max-content)_minmax(0,1fr)] gap-5 mt-5">
         <div className="bg-beige-100 rounded-xl p-5 flex items-center gap-6">
           <JarIcon className="shrink-0" />
           <div className="grid gap-3 min-w-0">

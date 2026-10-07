@@ -36,7 +36,8 @@ const columns: ColumnDef<IBillRow>[] = [
 
       return (
         <div className="flex gap-4 items-center">
-          <Avatar className="shrink-0">
+          {/* Hidden on the narrowest phones (under 360px) so the row fits. */}
+          <Avatar className="shrink-0 max-[359px]:hidden">
             <AvatarImage src={avatar} alt={name} />
             <AvatarFallback>{getInitials(name)}</AvatarFallback>
           </Avatar>

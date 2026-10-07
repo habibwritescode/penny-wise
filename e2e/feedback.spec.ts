@@ -78,7 +78,7 @@ test("new cards animate in, existing ones don't", async ({ page }) => {
   const savings = page.getByRole("article", { name: "Savings" });
   await expect(savings).not.toHaveClass(/enter-fade-scale/);
 
-  await page.getByRole("button", { name: "+ Add New Pot" }).click();
+  await page.getByRole("button", { name: "Add New Pot" }).click();
   await page.getByLabel("Pot Name").fill("Holiday");
   await page.getByLabel("Target").fill("500");
   await page.getByLabel("Theme").click();
@@ -96,7 +96,7 @@ test("validation messages and new transactions give feedback", async ({
 }) => {
   await signInAsDemo(page);
   await page.goto("/transactions");
-  await page.getByRole("button", { name: "+ Add Transaction" }).click();
+  await page.getByRole("button", { name: "Add Transaction" }).click();
   const dialog = page.getByRole("dialog");
 
   // Submitting empty: messages appear (with their entrance).

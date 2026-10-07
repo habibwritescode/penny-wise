@@ -68,7 +68,7 @@ test("a bill can be added, edited without rewriting history, and deleted", async
   await page.goto("/recurring-bills");
 
   // Add a monthly bill due today (the date picker defaults to today).
-  await page.getByRole("button", { name: "+ Add New Bill" }).click();
+  await page.getByRole("button", { name: "Add New Bill" }).click();
   const dialog = page.getByRole("dialog");
   await dialog.getByLabel("Bill Name").fill("Gym Membership");
   await dialog.getByLabel("Category").click();

@@ -10,6 +10,8 @@ const columns: ColumnDef<ITransaction>[] = [
   {
     accessorKey: "name",
     header: "Recipient/Sender",
+    // The card is already padded; on phones the outer cell padding is wasted width.
+    meta: { className: "pl-0 md:pl-4" },
     cell: ({ row }) => {
       const name = String(row.getValue("name"));
       const avatarSrc = row.original.avatar;
@@ -17,7 +19,8 @@ const columns: ColumnDef<ITransaction>[] = [
 
       return (
         <div className="flex gap-4 items-center">
-          <Avatar className="shrink-0">
+          {/* Hidden on the narrowest phones (under 360px) so the row fits. */}
+          <Avatar className="shrink-0 max-[359px]:hidden">
             <AvatarImage src={avatarSrc} alt={name} />
             <AvatarFallback>{getInitials(name)}</AvatarFallback>
           </Avatar>
@@ -57,7 +60,7 @@ const columns: ColumnDef<ITransaction>[] = [
   {
     accessorKey: "amount",
     header: () => <div className="text-right">Amount</div>,
-    meta: { className: "whitespace-nowrap" },
+    meta: { className: "whitespace-nowrap pr-0 md:pr-4" },
     cell: ({ row }) => {
       const isIncome = row.original.type === "Income";
 

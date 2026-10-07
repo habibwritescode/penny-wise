@@ -11,7 +11,7 @@ import {
 } from "./utils";
 import columns from "./columns";
 import { SORT_OPTIONS, SortFilter } from "@/utils/types";
-import { Button } from "@/components/ui/button";
+import AddButton from "@/components/add-button";
 import AddTransaction from "./components/add-transaction";
 import useBoundStore from "@/lib/store/store";
 import SortIcon from "../../../public/assets/icons/sort.svg";
@@ -46,18 +46,13 @@ const TransactionsPage = () => {
       <div className="flex flex-wrap justify-between items-center gap-4">
         <Typography tag="h1">Transactions</Typography>
 
-        <Button
-          className="rounded-[8px]"
-          size="xl"
+        <AddButton
+          label="Add Transaction"
           onClick={() => setOpenModal("add-transaction")}
-        >
-          <Typography tag="span" variant="preset-4-bold" className="text-white">
-            + Add Transaction
-          </Typography>
-        </Button>
+        />
       </div>
 
-      <div className="mt-10 bg-white p-8 rounded-xl">
+      <div className="mt-10 bg-white p-5 sm:p-8 rounded-xl">
         <div className="flex justify-between gap-4 sm:gap-6 mb-6">
           <SearchInput
             placeholder="Search transactions"

@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import Typography from "@/components/typography";
-import { Button } from "@/components/ui/button";
+import AddButton from "@/components/add-button";
 import BillForm from "./components/bill-form";
 import RecurringBillsTable from "./components/table";
 import TotalBills from "./components/total-bills";
@@ -16,19 +16,7 @@ const RecurringBillsPage = () => {
       <div className="pb-8">
         <div className="flex flex-wrap justify-between items-center gap-4">
           <Typography tag="h1">Recurring Bills</Typography>
-          <Button
-            className="rounded-[8px]"
-            size="xl"
-            onClick={() => setIsAdding(true)}
-          >
-            <Typography
-              tag="span"
-              variant="preset-4-bold"
-              className="text-white"
-            >
-              + Add New Bill
-            </Typography>
-          </Button>
+          <AddButton label="Add New Bill" onClick={() => setIsAdding(true)} />
         </div>
 
         <OverdueBills />

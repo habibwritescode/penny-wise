@@ -1,5 +1,5 @@
 import Typography from "@/components/typography";
-import { Button } from "@/components/ui/button";
+import AddButton from "@/components/add-button";
 import { useState } from "react";
 import PotsItem from "./components/pots-item";
 import CreatePot from "./components/create-pot";
@@ -21,19 +21,7 @@ const PotsPage = () => {
         <div className="flex flex-wrap justify-between items-center gap-4 mb-8">
           <Typography tag="h1">Pots</Typography>
 
-          <Button
-            className="rounded-[8px]"
-            size="xl"
-            onClick={() => setOpenModal("add-pot")}
-          >
-            <Typography
-              tag="span"
-              variant="preset-4-bold"
-              className="text-white"
-            >
-              + Add New Pot
-            </Typography>
-          </Button>
+          <AddButton label="Add New Pot" onClick={() => setOpenModal("add-pot")} />
         </div>
 
         <section className="grid md:grid-cols-2 gap-4">

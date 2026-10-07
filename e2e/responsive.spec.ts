@@ -40,7 +40,7 @@ test("tall dialogs stay on screen on a short phone", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 568 });
   await signInAsDemo(page);
   await page.goto("/transactions");
-  await page.getByRole("button", { name: "+ Add Transaction" }).click();
+  await page.getByRole("button", { name: "Add Transaction" }).click();
 
   const box = await page.getByRole("dialog").boundingBox();
   expect(box).not.toBeNull();
@@ -59,5 +59,21 @@ test("every page has exactly one main landmark", async ({ page }) => {
     await page.goto(path);
     await page.getByRole("heading", { level: 1 }).waitFor();
     await expect(page.getByRole("main"), path).toHaveCount(1);
+  }
+});
+
+test("tables fit narrow phones without scrolling sideways", async ({ page }) => {
+  await signInAsDemo(page);
+  for (const width of [320, 375]) {
+    await page.setViewportSize({ width, height: 812 });
+    for (const path of ["/transactions", "/recurring-bills"]) {
+      await page.goto(path);
+      await page.getByRole("heading", { level: 1 }).waitFor();
+      const overflow = await page.evaluate(() => {
+        const wrapper = document.querySelector("table")!.parentElement!;
+        return wrapper.scrollWidth - wrapper.clientWidth;
+      });
+      expect(overflow, `${path} at ${width}px`).toBe(0);
+    }
   }
 });

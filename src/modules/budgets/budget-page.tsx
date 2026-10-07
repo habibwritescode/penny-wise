@@ -1,5 +1,5 @@
 import Typography from "@/components/typography";
-import { Button } from "@/components/ui/button";
+import AddButton from "@/components/add-button";
 
 import BudgetCard from "../../modules/budgets/components/budget-card";
 import AddBudget from "@/modules/budgets/components/add-budget";
@@ -30,19 +30,7 @@ const BudgetsPage = () => {
         <div className="flex flex-wrap justify-between items-center gap-4 mb-8">
           <Typography tag="h1">Budgets</Typography>
 
-          <Button
-            className="rounded-[8px]"
-            size="xl"
-            onClick={() => setOpenModal("add-budget")}
-          >
-            <Typography
-              tag="span"
-              variant="preset-4-bold"
-              className="text-white"
-            >
-              + Add New Budget
-            </Typography>
-          </Button>
+          <AddButton label="Add New Budget" onClick={() => setOpenModal("add-budget")} />
         </div>
 
         <section className="grid xl:grid-cols-10 gap-6">
