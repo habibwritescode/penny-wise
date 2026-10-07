@@ -1,4 +1,5 @@
 import type { AppProps } from "next/app";
+import Head from "next/head";
 import { Public_Sans } from "next/font/google";
 
 import Layout from "@/components/layout/main-layout";
@@ -30,6 +31,13 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
 
   return (
     <main className={publicSans.className}>
+      <Head>
+        <title>Pennywise</title>
+        <meta
+          name="description"
+          content="Track transactions, budgets, savings pots and recurring bills."
+        />
+      </Head>
       {getLayout(<Component {...pageProps} />)}
     </main>
   );
