@@ -129,3 +129,21 @@
     @apply bg-background text-foreground;
   }
 }
+/* Reduced motion means gentler, not none: overlays keep their fade but drop
+   the zoom and slide. Dialogs keep their centring translate (-50%). */
+@media (prefers-reduced-motion: reduce) {
+  .anchored-overlay {
+    --tw-enter-scale: 1 !important;
+    --tw-exit-scale: 1 !important;
+    --tw-enter-translate-x: 0 !important;
+    --tw-enter-translate-y: 0 !important;
+    --tw-exit-translate-x: 0 !important;
+    --tw-exit-translate-y: 0 !important;
+  }
+  .dialog-content {
+    --tw-enter-scale: 1 !important;
+    --tw-exit-scale: 1 !important;
+    --tw-enter-translate-y: -50% !important;
+    --tw-exit-translate-y: -50% !important;
+  }
+}

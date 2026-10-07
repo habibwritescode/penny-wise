@@ -9,8 +9,9 @@ import useBoundStore from "@/lib/store/store";
 // Equal-width tabs so all six fit at every width; labels never wrap.
 const itemClass =
   "group flex-1 min-w-0 border-b-4 rounded-t-lg cursor-pointer";
+// Pressing a tab scales it slightly (dims instead with reduced motion), so the tap feels acknowledged.
 const contentClass =
-  "flex flex-col justify-center items-center w-full gap-1 h-full";
+  "flex flex-col justify-center items-center w-full gap-1 h-full transition-transform duration-150 ease-out-strong active:scale-[0.97] motion-reduce:active:scale-100 motion-reduce:active:opacity-70";
 const labelClass = "hidden sm:block whitespace-nowrap";
 
 // Shown below lg; keep in sync with sidebar.tsx (lg:block) and the

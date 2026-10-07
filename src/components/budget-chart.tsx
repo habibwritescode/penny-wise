@@ -53,7 +53,10 @@ const BudgetChart = ({ className }: { className?: string }) => {
             cursor={false}
             content={<ChartTooltipContent hideLabel />}
           />
+          {/* A data chart people check often: show the numbers straight away
+              (Recharts would otherwise wait 400ms, then animate for 1.5s). */}
           <Pie
+            isAnimationActive={false}
             data={chartData}
             dataKey="amount"
             nameKey="budget"

@@ -37,7 +37,7 @@ const Layout = ({ children }: { children: React.ReactElement }) => {
       >
         <div className="max-w-[1140px]">
           {isReady ? (
-            <div className="motion-safe:animate-in motion-safe:fade-in duration-300">
+            <div className="motion-safe:animate-in motion-safe:fade-in duration-200 ease-out-strong">
               {children}
             </div>
           ) : (
