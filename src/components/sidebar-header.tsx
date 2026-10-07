@@ -17,10 +17,10 @@ const SidebarHeader = ({ isExpanded }: Props) => {
           !isExpanded && "opacity-0 max-w-0"
         )}
         src="/logo-full.svg"
-        alt="logo"
+        alt="Pennywise"
         aria-hidden={!isExpanded}
-        width={121.45}
-        height={21.76}
+        width={134.73}
+        height={24}
         priority
       />
       <Image
@@ -30,10 +30,10 @@ const SidebarHeader = ({ isExpanded }: Props) => {
           isExpanded && "opacity-0 max-w-0"
         )}
         src="/logo-min.svg"
-        alt="logo"
+        alt="Pennywise"
         aria-hidden={isExpanded}
-        width={12.48}
-        height={21.76}
+        width={18.75}
+        height={24}
         priority
       />
     </div>
