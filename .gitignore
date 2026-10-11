@@ -40,5 +40,3 @@ next-env.d.ts
 /playwright-report/
 /.next-e2e/
 /.next-build/
-
-.claude
