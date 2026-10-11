@@ -194,6 +194,3 @@ the date themselves. Browser tests use a fixed clock for the same reason.
 - **"Due soon" is a flat 5 days** for every cadence, which covers most of a
   weekly bill's cycle. It stays that way until it causes a problem in real
   use.
-- **Mobile behaviour is verified in emulation only.** Browser tests check the
-  tags and layouts, but touch feel, safe areas and the keyboard need a real
-  phone.
