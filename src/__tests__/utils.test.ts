@@ -124,6 +124,11 @@ describe("formatting", () => {
     expect(getInitials("Urban Services Hub")).toBe("US");
     expect(getInitials("emma")).toBe("E");
   });
+
+  it("skips emoji and punctuation", () => {
+    expect(getInitials("🍕 Pizza Night")).toBe("PN");
+    expect(getInitials("PAYPAL *NORTHWIND")).toBe("PN");
+  });
 });
 
 describe("nameFromEmail", () => {
