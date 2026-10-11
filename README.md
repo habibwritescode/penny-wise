@@ -110,8 +110,6 @@ src/lib/store/         Zustand store, slices, IndexedDB storage, hooks
 src/utils/             Types, constants, formatters, date helpers
 src/__tests__/         Unit tests
 e2e/                   Playwright tests
-plans/                 Animation audit plans and their results
-tasks/                 Spec, plan and task list for the latest build phase
 ```
 
 ## Architecture decisions
