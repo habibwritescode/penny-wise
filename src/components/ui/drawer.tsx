@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 
 // A bottom sheet (Vaul, built on Radix Dialog): drag down or flick to
 // dismiss. Vaul animates it with its own iOS-like curve,
-// cubic-bezier(0.32, 0.72, 0, 1), and handles the scroll lock and keyboard.
+// cubic-bezier(0.32, 0.72, 0, 1), and locks page scroll while open.
 
 const Drawer = DrawerPrimitive.Root;
 

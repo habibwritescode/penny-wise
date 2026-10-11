@@ -46,7 +46,11 @@ const Modal = ({ title, description, isOpen, onClose, children }: Props) => {
 
   if (isPhone) {
     return (
-      <Drawer open={isOpen} onOpenChange={onChange}>
+      // Vaul's keyboard handling (repositionInputs) misreads keyboard height
+      // changes, e.g. text keyboard → decimal pad, as the keyboard closing, and
+      // pins the sheet in the wrong place on iOS (vaul#521, #615). Off, Safari
+      // scrolls the focused field into view itself.
+      <Drawer open={isOpen} onOpenChange={onChange} repositionInputs={false}>
         <DrawerContent>
           {/* Only this scrolls, so a tall form scrolls inside the sheet
               instead of dragging it. */}
