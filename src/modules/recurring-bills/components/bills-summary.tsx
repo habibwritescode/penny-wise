@@ -11,7 +11,11 @@ const BillsSummary = () => {
       : []),
     { title: "Paid Bills", ...paid, className: "" },
     { title: "Total Upcoming", ...upcoming, className: "" },
-    { title: "Due Soon", ...dueSoon, className: "text-red" },
+    {
+      title: "Due Soon",
+      ...dueSoon,
+      className: dueSoon.count ? "text-red" : "",
+    },
   ];
 
   return (

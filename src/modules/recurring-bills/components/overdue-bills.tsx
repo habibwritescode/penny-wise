@@ -23,6 +23,9 @@ import BillStatusBadge from "./bill-status-badge";
 // due), but not on page load. See .collapsible in globals.css.
 
 
+// Bills missed for months can leave dozens of rows; the oldest few come first.
+const COLLAPSED_COUNT = 5;
+
 // Every unpaid occurrence that's due, oldest first, each payable on its own.
 const OverdueBills = () => {
   const bills = useBoundStore((store) => store.bills);
@@ -30,6 +33,7 @@ const OverdueBills = () => {
   const markPaid = useBoundStore((store) => store.markPaid);
   const unmarkPaid = useBoundStore((store) => store.unmarkPaid);
   const [leaving, setLeaving] = useState<ReadonlySet<string>>(new Set());
+  const [showAll, setShowAll] = useState(false);
   const today = todayLocal();
 
   const due = useMemo(
@@ -66,6 +70,8 @@ const OverdueBills = () => {
   };
 
   const allLeaving = due.every(({ occurrence }) => leaving.has(occurrence.id));
+  const hiddenCount = due.length - COLLAPSED_COUNT;
+  const shown = showAll ? due : due.slice(0, COLLAPSED_COUNT);
 
   return (
     <div
@@ -82,12 +88,12 @@ const OverdueBills = () => {
           </Typography>
           <Typography variant="preset-4" className="mt-1 text-grey-500">
             {due.length === 1
-              ? "1 bill is due and hasn't been paid."
-              : `${due.length} bills are due and haven't been paid.`}
+              ? "1 payment is due and hasn't been made."
+              : `${due.length} payments are due and haven't been made.`}
           </Typography>
 
           <ul className="mt-4 divide-y divide-grey-100">
-            {due.map(({ bill, occurrence }) => {
+            {shown.map(({ bill, occurrence }) => {
               const isLeaving = leaving.has(occurrence.id);
 
               return (
@@ -151,6 +157,18 @@ const OverdueBills = () => {
               );
             })}
           </ul>
+
+          {hiddenCount > 0 && (
+            <Button
+              variant="ghost"
+              size="sm"
+              className="mt-2 -ml-3 text-grey-500"
+              aria-expanded={showAll}
+              onClick={() => setShowAll((value) => !value)}
+            >
+              {showAll ? "Show fewer" : `Show all ${due.length}`}
+            </Button>
+          )}
         </section>
       </div>
     </div>
