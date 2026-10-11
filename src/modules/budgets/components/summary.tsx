@@ -4,7 +4,8 @@ import useBoundStore from "@/lib/store/store";
 import currencyFormatter from "@/utils/formatCurrency";
 import { ITransaction } from "@/utils/types";
 import { getExpenses } from "@/modules/transactions/utils";
-import { getCategoryItems } from "../utils";
+import { getCategoryItems, getOverBudget } from "../utils";
+import { cn } from "@/lib/utils";
 
 const getTotal = (items: ITransaction[] = []) => {
   const total = items?.reduce((acc, curr) => acc + curr.amount, 0);
@@ -27,48 +28,53 @@ const SpendingSummary = () => {
         </Typography>
 
         <ul className="mt-2 divide-y divide-grey-100">
-          {budgets.map((item) => (
-            <li
-              key={item.category}
-              className="flex justify-between items-center gap-4 py-4"
-            >
-              <div className="flex items-center gap-4 min-w-0">
-                <div
-                  className="w-1 h-5 shrink-0 rounded-[8px]"
-                  style={{ backgroundColor: item.theme }}
-                ></div>
-                <Typography
-                  tag="p"
-                  variant="preset-4"
-                  className="truncate"
-                  title={item.category}
-                >
-                  {item.category}
-                </Typography>
-              </div>
+          {budgets.map((item) => {
+            const spent = getTotal(
+              getCategoryItems(item.category, outgoingTransactions)
+            );
 
-              <div className="flex flex-wrap justify-end items-baseline gap-x-2 min-w-0 text-right">
-                <Typography
-                  tag="span"
-                  variant="preset-3"
-                  className="whitespace-nowrap"
-                >
-                  {currencyFormatter.format(
-                    getTotal(
-                      getCategoryItems(item.category, outgoingTransactions)
-                    )
-                  )}
-                </Typography>
-                <Typography
-                  tag="span"
-                  variant="preset-5"
-                  className="whitespace-nowrap"
-                >
-                  of {currencyFormatter.format(item.maximum)}
-                </Typography>
-              </div>
-            </li>
-          ))}
+            return (
+              <li
+                key={item.category}
+                className="flex justify-between items-center gap-4 py-4"
+              >
+                <div className="flex items-center gap-4 min-w-0">
+                  <div
+                    className="w-1 h-5 shrink-0 rounded-[8px]"
+                    style={{ backgroundColor: item.theme }}
+                  ></div>
+                  <Typography
+                    tag="p"
+                    variant="preset-4"
+                    className="truncate"
+                    title={item.category}
+                  >
+                    {item.category}
+                  </Typography>
+                </div>
+
+                <div className="flex flex-wrap justify-end items-baseline gap-x-2 min-w-0 text-right">
+                  <Typography
+                    tag="span"
+                    variant="preset-3"
+                    className={cn(
+                      "whitespace-nowrap",
+                      getOverBudget(spent, item.maximum) > 0 && "text-red"
+                    )}
+                  >
+                    {currencyFormatter.format(spent)}
+                  </Typography>
+                  <Typography
+                    tag="span"
+                    variant="preset-5"
+                    className="whitespace-nowrap"
+                  >
+                    of {currencyFormatter.format(item.maximum)}
+                  </Typography>
+                </div>
+              </li>
+            );
+          })}
         </ul>
       </div>
     </div>

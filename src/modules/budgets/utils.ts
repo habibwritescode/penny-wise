@@ -10,3 +10,8 @@ export const getCategoryItems = (
 
   return items;
 };
+
+// Spending minus the limit, in whole cents, so floating-point sums such as
+// 0.1 + 0.2 against a 0.3 limit come out exactly 0 rather than "over".
+export const getOverBudget = (spent: number, maximum: number) =>
+  Math.round((spent - maximum) * 100) / 100;

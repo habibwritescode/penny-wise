@@ -8,6 +8,7 @@ import {
 import { getVisiblePages } from "@/components/data-table/data-table-pagination";
 import getThemeOptions from "@/utils/theme-options";
 import getInitials from "@/utils/getInitials";
+import { getOverBudget } from "@/modules/budgets/utils";
 import nameFromEmail from "@/utils/nameFromEmail";
 import { positiveAmount } from "@/utils/schema";
 import { formatTransactionAmount } from "@/utils/formatCurrency";
@@ -128,6 +129,18 @@ describe("formatting", () => {
   it("skips emoji and punctuation", () => {
     expect(getInitials("🍕 Pizza Night")).toBe("PN");
     expect(getInitials("PAYPAL *NORTHWIND")).toBe("PN");
+  });
+});
+
+describe("getOverBudget", () => {
+  it("is zero when spending exactly meets the limit", () => {
+    expect(getOverBudget(50, 50)).toBe(0);
+    expect(getOverBudget(0.1 + 0.2, 0.3)).toBe(0);
+  });
+
+  it("is positive when over and negative when under", () => {
+    expect(getOverBudget(50.01, 50)).toBe(0.01);
+    expect(getOverBudget(40, 50)).toBe(-10);
   });
 });
 

@@ -14,6 +14,7 @@ import { Progress } from "@/components/ui/progress";
 import DeleteBudget from "./delete-budget";
 import AddBudget from "./add-budget";
 import { calculatePercent } from "@/utils/math";
+import { getOverBudget } from "../utils";
 import useBoundStore from "@/lib/store/store";
 import { LEAVE_MS, prefersReducedMotion } from "@/lib/motion";
 import { cn } from "@/lib/utils";
@@ -53,6 +54,8 @@ const BudgetCard = ({ budget, items, isNew = false }: Props) => {
 
     return Math.abs(total);
   }, [items]);
+
+  const overBy = getOverBudget(totalSpent, budget.maximum);
 
   const handleCloseModal = () => {
     setOpenModal(null);
@@ -110,13 +113,20 @@ const BudgetCard = ({ budget, items, isNew = false }: Props) => {
             value={currencyFormatter.format(totalSpent)}
             bgColor={budget.theme}
           />
-          <ExpenseItem
-            title="Remaining"
-            value={currencyFormatter.format(
-              Math.max(budget.maximum - totalSpent, 0)
-            )}
-            bgColor="#F8F4F0"
-          />
+          {overBy > 0 ? (
+            <ExpenseItem
+              title="Over by"
+              value={currencyFormatter.format(overBy)}
+              bgColor="hsl(var(--red))"
+              valueClassName="text-red"
+            />
+          ) : (
+            <ExpenseItem
+              title="Remaining"
+              value={currencyFormatter.format(Math.max(-overBy, 0))}
+              bgColor="#F8F4F0"
+            />
+          )}
         </div>
 
         <div className="bg-beige-100 p-5 pb-2 rounded-[12px]">
