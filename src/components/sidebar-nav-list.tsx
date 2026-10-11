@@ -33,7 +33,7 @@ const SidebarNavList = ({ mode, isExpanded }: Props) => {
   return (
     <ul className="mt-16 h-full overflow-y-auto overscroll-contain">
       {navItems.map((item) => {
-        const isActive = router.asPath === item.route;
+        const isActive = router.pathname === item.route;
 
         return (
           <li

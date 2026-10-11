@@ -26,7 +26,7 @@ const BottomNav = () => {
     <div className="lg:hidden fixed bottom-0 w-full bg-grey-900 h-[calc(52px+env(safe-area-inset-bottom,0px))] sm:h-[calc(74px+env(safe-area-inset-bottom,0px))] pb-[env(safe-area-inset-bottom,0px)] pt-2 pl-[calc(1rem+env(safe-area-inset-left,0px))] pr-[calc(1rem+env(safe-area-inset-right,0px))] sm:pl-[calc(2.5rem+env(safe-area-inset-left,0px))] sm:pr-[calc(2.5rem+env(safe-area-inset-right,0px))] rounded-t-[15px]">
       <ul className="flex h-full">
         {navItems.map((item) => {
-          const isActive = router.asPath === item.route;
+          const isActive = router.pathname === item.route;
 
           return (
             <li
