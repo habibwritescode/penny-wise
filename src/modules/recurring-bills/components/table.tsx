@@ -52,6 +52,9 @@ const RecurringBillsTable = () => {
         columns={columns}
         data={rows}
         getRowId={(row) => row.bill.id}
+        emptyMessage={
+          bills.length ? "No bills match your search." : "No recurring bills yet."
+        }
       />
     </div>
   );

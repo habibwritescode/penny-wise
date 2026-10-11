@@ -23,12 +23,14 @@ interface DataTableProps<TData, TValue> {
   // Stable row identity. Without it rows are keyed by position, so per-row
   // state (e.g. an open dialog) would follow the position after a re-sort.
   getRowId?: (row: TData) => string;
+  emptyMessage?: string;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   getRowId,
+  emptyMessage = "No results.",
 }: DataTableProps<TData, TValue>) {
   const [pagination, setPagination] = useState({
     pageIndex: 0, //initial page index
@@ -91,23 +93,28 @@ export function DataTable<TData, TValue>({
             ))
           ) : (
             <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
+              <TableCell
+                colSpan={columns.length}
+                className="h-24 text-center text-grey-500"
+              >
+                {emptyMessage}
               </TableCell>
             </TableRow>
           )}
         </TableBody>
       </Table>
 
-      <TablePagination
-        totalPages={table.getPageCount()}
-        currentPage={pagination.pageIndex + 1}
-        setPage={table.setPageIndex}
-        onPrevious={() => table.previousPage()}
-        onNext={() => table.nextPage()}
-        isPreviousPageDisabled={!table.getCanPreviousPage()}
-        isNextPageDisabled={!table.getCanNextPage()}
-      />
+      {table.getPageCount() > 1 && (
+        <TablePagination
+          totalPages={table.getPageCount()}
+          currentPage={pagination.pageIndex + 1}
+          setPage={table.setPageIndex}
+          onPrevious={() => table.previousPage()}
+          onNext={() => table.nextPage()}
+          isPreviousPageDisabled={!table.getCanPreviousPage()}
+          isNextPageDisabled={!table.getCanNextPage()}
+        />
+      )}
     </div>
   );
 }

@@ -23,38 +23,44 @@ const Transactions = () => {
       route="/transactions"
       linkTitle="View All"
     >
-      <ul className="divide-y divide-grey-100">
-        {filteredTransactions.slice(0, 5).map((item) => (
-          <li key={item.id} className="flex justify-between gap-4 py-6">
-            <div className="flex gap-4 items-center min-w-0">
-              <Avatar className="shrink-0">
-                <AvatarImage src={item.avatar} alt={item.name} />
-                <AvatarFallback>{getInitials(item.name)}</AvatarFallback>
-              </Avatar>
-              <Typography
-                variant="preset-4-bold"
-                className="min-w-0 [overflow-wrap:anywhere]"
-              >
-                {item.name}
-              </Typography>
-            </div>
+      {filteredTransactions.length ? (
+        <ul className="divide-y divide-grey-100">
+          {filteredTransactions.slice(0, 5).map((item) => (
+            <li key={item.id} className="flex justify-between gap-4 py-6">
+              <div className="flex gap-4 items-center min-w-0">
+                <Avatar className="shrink-0">
+                  <AvatarImage src={item.avatar} alt={item.name} />
+                  <AvatarFallback>{getInitials(item.name)}</AvatarFallback>
+                </Avatar>
+                <Typography
+                  variant="preset-4-bold"
+                  className="min-w-0 [overflow-wrap:anywhere]"
+                >
+                  {item.name}
+                </Typography>
+              </div>
 
-            <div className="grid shrink-0">
-              <Typography
-                variant="preset-4-bold"
-                className={
-                  item.type === "Income" ? "text-green" : "text-grey-900"
-                }
-              >
-                {formatTransactionAmount(item)}
-              </Typography>
-              <Typography variant="preset-5" className="text-grey-500">
-                {dateTimeFormatter.formatToLongDate(item.date)}
-              </Typography>
-            </div>
-          </li>
-        ))}
-      </ul>
+              <div className="grid shrink-0">
+                <Typography
+                  variant="preset-4-bold"
+                  className={
+                    item.type === "Income" ? "text-green" : "text-grey-900"
+                  }
+                >
+                  {formatTransactionAmount(item)}
+                </Typography>
+                <Typography variant="preset-5" className="text-grey-500">
+                  {dateTimeFormatter.formatToLongDate(item.date)}
+                </Typography>
+              </div>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <Typography variant="preset-4" className="mt-5 text-grey-500">
+          No transactions yet.
+        </Typography>
+      )}
     </ContainerCard>
   );
 };

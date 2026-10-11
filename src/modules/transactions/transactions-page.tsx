@@ -80,6 +80,11 @@ const TransactionsPage = () => {
           columns={columns}
           data={filteredTransactions}
           getRowId={(transaction) => transaction.id}
+          emptyMessage={
+            transactions.length
+              ? "No transactions match your search."
+              : "No transactions yet."
+          }
         />
       </div>
 

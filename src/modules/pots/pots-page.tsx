@@ -24,11 +24,20 @@ const PotsPage = () => {
           <AddButton label="Add New Pot" onClick={() => setOpenModal("add-pot")} />
         </div>
 
-        <section className="grid md:grid-cols-2 gap-4">
-          {pots.map((pot) => (
-            <PotsItem key={pot.name} pot={pot} isNew={isNew(pot.name)} />
-          ))}
-        </section>
+        {pots.length ? (
+          <section className="grid md:grid-cols-2 gap-4">
+            {pots.map((pot) => (
+              <PotsItem key={pot.name} pot={pot} isNew={isNew(pot.name)} />
+            ))}
+          </section>
+        ) : (
+          <Typography
+            variant="preset-4"
+            className="bg-white rounded-xl p-8 text-grey-500"
+          >
+            No pots yet. Add a pot to start saving towards a goal.
+          </Typography>
+        )}
       </div>
 
       <CreatePot isOpen={openModal === "add-pot"} onClose={handleCloseModal} />
