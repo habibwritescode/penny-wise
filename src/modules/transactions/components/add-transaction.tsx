@@ -25,7 +25,11 @@ const TYPE_OPTIONS = ["Income", "Expense"].map((item) => ({
 }));
 
 const formSchema = z.object({
-  name: z.string().min(1, { message: "Required" }),
+  name: z
+    .string()
+    .trim()
+    .min(1, { message: "Required" })
+    .max(40, { message: "Must be 40 characters or fewer" }),
   category: z.string().min(1, { message: "Required" }),
   date: z.date({
     message: "Required",

@@ -15,10 +15,18 @@ import getThemeOptions from "@/utils/theme-options";
 import { positiveAmount } from "@/utils/schema";
 
 const formSchema = z.object({
-  name: z.string().trim().min(1, { message: "Required" }),
+  name: z
+    .string()
+    .trim()
+    .min(1, { message: "Required" })
+    .max(40, { message: "Must be 40 characters or fewer" }),
   target: positiveAmount,
   theme: z.string().min(1, { message: "Required" }),
 });
+
+// The name can't be changed when editing, so a pot saved before the length
+// limit existed must still be editable.
+const editSchema = formSchema.extend({ name: z.string() });
 
 type Props = {
   isOpen: boolean;
@@ -46,7 +54,7 @@ const CreatePot = ({ isOpen, onClose, isEdit, pot }: Props) => {
   }, [pot]);
 
   const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(isEdit ? editSchema : formSchema),
     defaultValues,
   });
 
