@@ -76,12 +76,12 @@ export const migrateStore = (
 ) => {
   let state = persisted as Partial<BoundStoreT>;
 
+  // Only set keys the saved data has: loading merges the result over the
+  // defaults, so an explicit `pots: undefined` would wipe them.
   if (version < 1) {
-    state = {
-      ...state,
-      budgets: state.budgets?.map(toHexTheme),
-      pots: state.pots?.map(toHexTheme),
-    };
+    const { budgets, pots } = state;
+    if (budgets) state = { ...state, budgets: budgets.map(toHexTheme) };
+    if (pots) state = { ...state, pots: pots.map(toHexTheme) };
   }
 
   if (version < 2) {

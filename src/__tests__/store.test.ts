@@ -117,6 +117,13 @@ describe("migrateStore", () => {
     expect(migrated.budgets[0].theme).toBe("#97A0AC");
     expect(migrated.pots[0].theme).toBe("#277C78");
   });
+
+  it("leaves out lists the v0 data didn't have, so loading keeps the defaults", () => {
+    const migrated = migrateStore({ user: null }, 0);
+
+    expect(migrated).not.toHaveProperty("pots");
+    expect(migrated).not.toHaveProperty("budgets");
+  });
 });
 
 describe("auth slice", () => {
