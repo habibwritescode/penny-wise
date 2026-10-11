@@ -105,7 +105,8 @@ const PotsItem = ({ pot, isNew = false }: Props) => {
           />
         </div>
 
-        <div className="flex justify-between items-center gap-4 mb-4">
+        {/* Wraps so a large amount drops below the label, never splitting. */}
+        <div className="flex flex-wrap justify-between items-center gap-x-4 gap-y-1 mb-4">
           <Typography
             tag="p"
             variant="preset-4"
@@ -116,7 +117,7 @@ const PotsItem = ({ pot, isNew = false }: Props) => {
           <Typography
             tag="p"
             variant="preset-1"
-            className="min-w-0 break-all text-right"
+            className="ml-auto whitespace-nowrap"
           >
             {currencyFormatter.format(pot.total || 0)}
           </Typography>

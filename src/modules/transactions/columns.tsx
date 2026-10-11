@@ -18,14 +18,16 @@ const columns: ColumnDef<ITransaction>[] = [
       const category = String(row.getValue("category"));
 
       return (
-        <div className="flex gap-4 items-center">
+        <div className="flex gap-4 items-center min-w-0">
           {/* Hidden on the narrowest phones (under 360px) so the row fits. */}
           <Avatar className="shrink-0 max-[359px]:hidden">
             <AvatarImage src={avatarSrc} alt={name} />
             <AvatarFallback>{getInitials(name)}</AvatarFallback>
           </Avatar>
-          <div className="grid gap-1">
-            <Typography variant="preset-4-bold">{name}</Typography>
+          <div className="grid gap-1 min-w-0">
+            <Typography variant="preset-4-bold" className="[overflow-wrap:anywhere]">
+              {name}
+            </Typography>
             <Typography
               variant="preset-5"
               className="block md:hidden text-grey-500"

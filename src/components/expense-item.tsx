@@ -17,7 +17,7 @@ const ExpenseItem = ({ title, value, bgColor }: Props) => {
         <Typography tag="p" variant="preset-5" className="text-grey-500">
           {title}
         </Typography>
-        <Typography tag="p" variant="preset-4-bold" className="break-all">
+        <Typography tag="p" variant="preset-4-bold" className="whitespace-nowrap">
           {value}
         </Typography>
       </div>

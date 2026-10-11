@@ -44,14 +44,16 @@ const OverviewPage = () => {
         )}
       </div>
 
-      <section className="my-[32px] grid md:grid-cols-3 gap-6">
+      {/* Flex, not three fixed columns: a card whose amount doesn't fit
+          moves to the next row instead of splitting the number. */}
+      <section className="my-[32px] grid md:flex md:flex-wrap gap-6">
         {cardItems.map((item, index) => {
           const isFirstItem = index === 0;
 
           return (
             <div
               key={item.title}
-              className={`grid gap-3 p-6 rounded-xl min-w-0 ${isFirstItem ? "bg-grey-900" : "bg-white"}`}
+              className={`grid gap-3 p-6 rounded-xl md:flex-1 md:basis-48 ${isFirstItem ? "bg-grey-900" : "bg-white"}`}
             >
               <Typography
                 variant="preset-4"
@@ -61,7 +63,7 @@ const OverviewPage = () => {
               </Typography>
               <Typography
                 className={cn(
-                  "break-all",
+                  "whitespace-nowrap",
                   isFirstItem ? "text-white" : "text-grey-900"
                 )}
               >
@@ -72,13 +74,13 @@ const OverviewPage = () => {
         })}
       </section>
 
-      <section className="grid xl:grid-cols-10 gap-6">
-        <section className="xl:col-span-6 w-full grid gap-6 auto-rows-min">
+      <section className="grid grid-cols-1 xl:grid-cols-10 gap-6">
+        <section className="xl:col-span-6 w-full grid grid-cols-1 gap-6 auto-rows-min">
           <Pots />
           <Transactions />
         </section>
 
-        <section className="xl:col-span-4 grid gap-6 auto-rows-min">
+        <section className="xl:col-span-4 grid grid-cols-1 gap-6 auto-rows-min">
           <Budget />
           <RecurringBills />
         </section>

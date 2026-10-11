@@ -47,15 +47,23 @@ const SpendingSummary = () => {
                 </Typography>
               </div>
 
-              <div className="flex items-center gap-2 shrink-0 whitespace-nowrap">
-                <Typography tag="span" variant="preset-3">
+              <div className="flex flex-wrap justify-end items-baseline gap-x-2 min-w-0 text-right">
+                <Typography
+                  tag="span"
+                  variant="preset-3"
+                  className="whitespace-nowrap"
+                >
                   {currencyFormatter.format(
                     getTotal(
                       getCategoryItems(item.category, outgoingTransactions)
                     )
                   )}
                 </Typography>
-                <Typography tag="span" variant="preset-5">
+                <Typography
+                  tag="span"
+                  variant="preset-5"
+                  className="whitespace-nowrap"
+                >
                   of {currencyFormatter.format(item.maximum)}
                 </Typography>
               </div>

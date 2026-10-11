@@ -109,7 +109,11 @@ const OverdueBills = () => {
                           their own line on phones instead of squeezing the
                           details. */}
                       <div className="grid min-w-0 flex-1 basis-[13rem] gap-1">
-                        <Typography variant="preset-4-bold" className="truncate">
+                        <Typography
+                          variant="preset-4-bold"
+                          className="truncate"
+                          title={bill.name}
+                        >
                           {bill.name}
                         </Typography>
                         <div className="flex flex-wrap items-center gap-2">

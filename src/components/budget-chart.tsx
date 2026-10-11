@@ -14,6 +14,22 @@ import { getExpenses } from "@/modules/transactions/utils";
 
 const chartConfig = {} satisfies ChartConfig;
 
+const compactFormatter = new Intl.NumberFormat("en-US", {
+  currency: "USD",
+  style: "currency",
+  notation: "compact",
+  minimumFractionDigits: 0,
+  maximumFractionDigits: 2,
+});
+
+// The label sits in the donut's 120px hole, which fits about "$9,999.99" in
+// full. Larger values show as "$1.13M"; the summary list beside the chart has
+// the exact amounts.
+const formatForLabel = (value: number) =>
+  value < 10_000
+    ? currencyFormatter.format(value)
+    : compactFormatter.format(value);
+
 // className lets callers size the chart, e.g. a fixed width beside a list.
 const BudgetChart = ({ className }: { className?: string }) => {
   const allTransactions = useBoundStore((store) => store.transactions);
@@ -78,14 +94,14 @@ const BudgetChart = ({ className }: { className?: string }) => {
                         y={viewBox.cy}
                         className="fill-foreground text-xl font-bold"
                       >
-                        {currencyFormatter.format(budgetTransactionsTotal())}
+                        {formatForLabel(budgetTransactionsTotal())}
                       </tspan>
                       <tspan
                         x={viewBox.cx}
                         y={(viewBox.cy || 0) + 24}
                         className="fill-muted-foreground"
                       >
-                        of {currencyFormatter.format(totalBudgetLimit)} limit
+                        of {formatForLabel(totalBudgetLimit)} limit
                       </tspan>
                     </text>
                   );

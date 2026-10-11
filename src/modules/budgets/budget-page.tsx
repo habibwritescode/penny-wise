@@ -33,12 +33,12 @@ const BudgetsPage = () => {
           <AddButton label="Add New Budget" onClick={() => setOpenModal("add-budget")} />
         </div>
 
-        <section className="grid xl:grid-cols-10 gap-6">
+        <section className="grid grid-cols-1 xl:grid-cols-10 gap-6">
           <section className="xl:col-span-4">
             <SpendingSummary />
           </section>
 
-          <section className="w-full xl:col-span-6 grid gap-6">
+          <section className="w-full xl:col-span-6 grid grid-cols-1 gap-6">
             {budgets.map((item) => (
               <BudgetCard
                 key={item.category}

@@ -25,16 +25,21 @@ const Transactions = () => {
     >
       <ul className="divide-y divide-grey-100">
         {filteredTransactions.slice(0, 5).map((item) => (
-          <li key={item.id} className="flex justify-between py-6">
-            <div className="flex gap-4 items-center">
-              <Avatar>
+          <li key={item.id} className="flex justify-between gap-4 py-6">
+            <div className="flex gap-4 items-center min-w-0">
+              <Avatar className="shrink-0">
                 <AvatarImage src={item.avatar} alt={item.name} />
                 <AvatarFallback>{getInitials(item.name)}</AvatarFallback>
               </Avatar>
-              <Typography variant="preset-4-bold">{item.name}</Typography>
+              <Typography
+                variant="preset-4-bold"
+                className="min-w-0 [overflow-wrap:anywhere]"
+              >
+                {item.name}
+              </Typography>
             </div>
 
-            <div className="grid">
+            <div className="grid shrink-0">
               <Typography
                 variant="preset-4-bold"
                 className={

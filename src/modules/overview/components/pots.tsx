@@ -18,14 +18,15 @@ const Pots = () => {
       {/* Panel beside the list only when the card is wide: md-xl (overview is
           one column) and from 1400px. In the narrow xl column they stack, or
           pot names wrap. */}
-      <div className="grid md:grid-cols-[minmax(247px,max-content)_minmax(0,1fr)] xl:grid-cols-1 min-[1400px]:grid-cols-[minmax(247px,max-content)_minmax(0,1fr)] gap-5 mt-5">
-        <div className="bg-beige-100 rounded-xl p-5 flex items-center gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-[minmax(247px,max-content)_minmax(0,1fr)] xl:grid-cols-1 min-[1400px]:grid-cols-[minmax(247px,max-content)_minmax(0,1fr)] gap-5 mt-5">
+        {/* Wraps so a large total drops below the jar instead of overflowing. */}
+        <div className="bg-beige-100 rounded-xl p-5 flex flex-wrap items-center gap-x-6 gap-y-3">
           <JarIcon className="shrink-0" />
           <div className="grid gap-3 min-w-0">
             <Typography variant="preset-4" className="text-grey-500">
               Total Saved
             </Typography>
-            <Typography className="break-all">
+            <Typography className="whitespace-nowrap max-[359px]:text-2xl">
               {currencyFormatter.format(totalPotSaved)}
             </Typography>
           </div>

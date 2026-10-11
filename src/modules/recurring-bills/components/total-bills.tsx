@@ -15,7 +15,7 @@ const TotalBills = () => {
           Total Bills
         </Typography>
 
-        <Typography tag="p" className="text-white break-all">
+        <Typography tag="p" className="text-white whitespace-nowrap max-[359px]:text-2xl">
           {currencyFormatter.format(monthlyTotal)}
         </Typography>
         <Typography tag="p" variant="preset-5" className="mt-1 text-white/70">
