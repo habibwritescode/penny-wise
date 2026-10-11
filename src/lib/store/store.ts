@@ -126,5 +126,12 @@ export default useBoundStore;
 // slower one finishes last and overwrites anything written in between, such as
 // bill occurrences generated as soon as the first read completed.
 let hydration: Promise<void> | undefined;
+const rehydrate = () => useBoundStore.persist.rehydrate() as Promise<void>;
 export const hydrateStore = () =>
-  (hydration ??= useBoundStore.persist.rehydrate() as Promise<void>);
+  (hydration ??=
+    process.env.NODE_ENV === "production"
+      ? rehydrate()
+      : // Dev-only stress-test data (src/lib/dev); never in the production bundle.
+        import("@/lib/dev/fixture-mode")
+          .then(({ loadFixture }) => loadFixture(useBoundStore))
+          .then((loaded) => (loaded ? undefined : rehydrate())));

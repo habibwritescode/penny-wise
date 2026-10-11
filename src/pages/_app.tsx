@@ -7,12 +7,18 @@ import { hydrateStore } from "@/lib/store/store";
 import StorageBanner from "@/components/storage-banner";
 import AppErrorBoundary from "@/components/app-error-boundary";
 import { Toaster } from "sonner";
+import dynamic from "next/dynamic";
 import "@/styles/globals.css";
 
 import { useEffect, type ReactElement, type ReactNode } from "react";
 import type { NextPage } from "next";
 
 const publicSans = Public_Sans({ subsets: ["latin"] });
+
+const DevDataToggle =
+  process.env.NODE_ENV === "production"
+    ? () => null
+    : dynamic(() => import("@/components/dev-data-toggle"), { ssr: false });
 
 export type NextPageWithLayout<P = {}, IP = P> = NextPage<P, IP> & {
   getLayout?: (page: ReactElement) => ReactNode;
@@ -56,6 +62,7 @@ export default function App({ Component, pageProps }: AppPropsWithLayout) {
       </Head>
       <AppErrorBoundary>{getLayout(<Component {...pageProps} />)}</AppErrorBoundary>
       <StorageBanner />
+      <DevDataToggle />
       {/* Lifted clear of the mobile bottom nav (52px, 74px from sm). */}
       <Toaster
         position="bottom-right"
